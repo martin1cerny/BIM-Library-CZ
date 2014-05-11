@@ -1,23 +1,44 @@
 ﻿<Window x:Class="BimLibrary.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525" 
-        xmlns:ribbon="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon">
+        Title="BIM Library Creator" Height="350" Width="525" 
+        xmlns:ribbon="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon"
+        xmlns:app="clr-namespace:BimLibrary">
     <DockPanel>
         <ribbon:Ribbon Name="ribbon" DockPanel.Dock="Top">
             <ribbon:Ribbon.ApplicationMenu>
                 <ribbon:RibbonApplicationMenu KeyTip="P">
+                    <ribbon:RibbonApplicationMenuItem Header="Open" ImageSource="/BimLibrary;component/Icons/folder_open.ico" Command="{x:Static app:MainWindow.OpenLibrary}"/>
                     <ribbon:RibbonApplicationMenuItem Header="Create new"/>
-                    <ribbon:RibbonApplicationMenuItem Header="Save" ImageSource="pack://application:,,,/BimLibrary.Properties.Resources.FloppyDisk"/>
+                    <ribbon:RibbonApplicationMenuItem Header="Save" ImageSource="/BimLibrary;component/Icons/FloppyDisk.ico" Command="{x:Static app:MainWindow.Save}"/>
+                    <ribbon:RibbonApplicationMenuItem Header="Save as" ImageSource="/BimLibrary;component/Icons/FloppyDisk.ico" Command="{x:Static app:MainWindow.SaveAs}"/>
                     <ribbon:RibbonApplicationMenuItem Header="Export to">
-                        <ribbon:RibbonApplicationMenuItem Header="IFC"/>
-                        <ribbon:RibbonApplicationMenuItem Header="IFCzip"/>
-                        <ribbon:RibbonApplicationMenuItem Header="gbXML"/>
+                        <ribbon:RibbonApplicationMenuItem Header="IFC" ImageSource="/BimLibrary;component/Icons/ifc.png" />
+                        <ribbon:RibbonApplicationMenuItem Header="IFCzip" ImageSource="/BimLibrary;component/Icons/ifczip.png" />
+                        <ribbon:RibbonApplicationMenuItem Header="gbXML" ImageSource="/BimLibrary;component/Icons/gbXML.png" />
                     </ribbon:RibbonApplicationMenuItem>
-                    <ribbon:RibbonApplicationMenuItem Header="Close"/>
+                    <ribbon:RibbonApplicationMenuItem Header="Close" ImageSource="/BimLibrary;component/Icons/112_RightArrowShort_Orange.ico" Command="{x:Static app:MainWindow.CloseApplication}"/>
                 </ribbon:RibbonApplicationMenu>
             </ribbon:Ribbon.ApplicationMenu>
-            
+            <ribbon:RibbonTab Header="Library elements">
+                <ribbon:RibbonGroup Header="Layered elements">
+                    <ribbon:RibbonButton Label="New"  />
+                    <ribbon:RibbonButton Label="Change"  />
+                </ribbon:RibbonGroup>
+                <ribbon:RibbonGroup Header="Non-layered elements">
+                    
+                </ribbon:RibbonGroup>
+            </ribbon:RibbonTab>
+            <ribbon:RibbonTab Header="Properties">
+
+            </ribbon:RibbonTab>
+            <ribbon:RibbonTab Header="Classifications">
+
+            </ribbon:RibbonTab>
+            <ribbon:RibbonTab Header="Materials">
+
+            </ribbon:RibbonTab>
+
         </ribbon:Ribbon>
     </DockPanel>
 </Window>
