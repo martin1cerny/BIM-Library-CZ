@@ -1,8 +1,23 @@
 ﻿<Window x:Class="BimLibrary.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        Title="MainWindow" Height="350" Width="525" 
+        xmlns:ribbon="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon">
+    <DockPanel>
+        <ribbon:Ribbon Name="ribbon" DockPanel.Dock="Top">
+            <ribbon:Ribbon.ApplicationMenu>
+                <ribbon:RibbonApplicationMenu KeyTip="P">
+                    <ribbon:RibbonApplicationMenuItem Header="Create new"/>
+                    <ribbon:RibbonApplicationMenuItem Header="Save" ImageSource="pack://application:,,,/BimLibrary.Properties.Resources.FloppyDisk"/>
+                    <ribbon:RibbonApplicationMenuItem Header="Export to">
+                        <ribbon:RibbonApplicationMenuItem Header="IFC"/>
+                        <ribbon:RibbonApplicationMenuItem Header="IFCzip"/>
+                        <ribbon:RibbonApplicationMenuItem Header="gbXML"/>
+                    </ribbon:RibbonApplicationMenuItem>
+                    <ribbon:RibbonApplicationMenuItem Header="Close"/>
+                </ribbon:RibbonApplicationMenu>
+            </ribbon:Ribbon.ApplicationMenu>
+            
+        </ribbon:Ribbon>
+    </DockPanel>
 </Window>

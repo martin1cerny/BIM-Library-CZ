@@ -21,7 +21,7 @@ namespace BimLibrary
     {
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent(); 
         }
     }
 }
