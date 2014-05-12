@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="BimLibrary.UserControls.ClassView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Name="This"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <Label>Classifications</Label>
+            <ComboBox ItemsSource="{Binding ElementName=This, Path=Classifications}" DisplayMemberPath="Name" SelectedItem="{Binding ElementName=This, Path=SelectedClassification}"/>
+        </StackPanel>
+        <TreeView ItemsSource="{Binding ElementName=This, Path=SelectedClassification.RootClassificationItems}">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <Label Content="{Binding Name}"/>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+    </DockPanel>
+    
+</UserControl>
