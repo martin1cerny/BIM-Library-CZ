@@ -18,7 +18,7 @@ namespace BimLibrary
 
 
         private const string _propMapFile = "property_mappings.xml";
-        private const string _libFile = "library.ifc";
+        private const string _libFile = "library.xbim";
         private const string _defaultExtension = ".xbl";
         private const string _tempDir = "BimLibraryData";
 
@@ -80,7 +80,9 @@ namespace BimLibrary
 
                 var modelEntry = zip[_libFile];
                 modelEntry.Extract(TempDataDir);
-                _model = XbimModel.CreateModel(tempModelPath);
+                if (_model == null)
+                    _model = new XbimModel();
+                _model.Open(tempModelPath, Xbim.XbimExtensions.XbimDBAccess.ReadWrite);
             }
         }
 
@@ -98,7 +100,8 @@ namespace BimLibrary
                 file = Path.ChangeExtension(file, _defaultExtension);
 
             var modelPath = Path.Combine(TempDataDir, _libFile);
-            _model.SaveAs(modelPath, XbimStorageType.IFC);
+            _model.CacheStop();
+            _model.Close();
 
             using (ZipFile zip = new ZipFile())
             {
@@ -113,8 +116,8 @@ namespace BimLibrary
                 zip.Save(file);
             }
 
-            if (File.Exists(modelPath))
-                File.Delete(modelPath);
+            //reopen closed model
+            _model.Open(modelPath, Xbim.XbimExtensions.XbimDBAccess.ReadWrite);
         }
 
         public void Close(bool save)

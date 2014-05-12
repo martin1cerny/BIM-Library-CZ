@@ -47,7 +47,6 @@ namespace BimLibrary
 
         private void ExecutedOpenLibraryCommand(object sender, ExecutedRoutedEventArgs e)
         {
-            _library = new LibraryModel();
             var dlg = new OpenFileDialog();
             dlg.CheckFileExists = true;
             dlg.CheckPathExists = true;
@@ -55,7 +54,10 @@ namespace BimLibrary
             dlg.Title = "Select librarty file please...";
             if (dlg.ShowDialog() == true)
             {
-                _library.Close(true);
+                if (_library == null)
+                    _library = new LibraryModel();
+                else
+                    _library.Close(true);
                 _library.Open(dlg.FileName);
             }
             
@@ -132,6 +134,27 @@ namespace BimLibrary
             dlg.OverwritePrompt = true;
             if (dlg.ShowDialog() == true)
                 _library.SaveAs(dlg.FileName);
+        }
+    }
+
+    public class BoolToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (targetType == typeof(Visibility))
+            {
+                var val = (bool)value;
+                if (val)
+                    return Visibility.Visible;
+                else
+                    return Visibility.Collapsed;
+            }
+            return Visibility.Hidden;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }

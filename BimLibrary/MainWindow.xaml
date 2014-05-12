@@ -17,10 +17,10 @@
                         <ribbon:RibbonApplicationMenuItem Header="IFCzip" ImageSource="/BimLibrary;component/Icons/ifczip.png" />
                         <ribbon:RibbonApplicationMenuItem Header="gbXML" ImageSource="/BimLibrary;component/Icons/gbXML.png" />
                     </ribbon:RibbonApplicationMenuItem>
-                    <ribbon:RibbonApplicationMenuItem Header="Close" ImageSource="/BimLibrary;component/Icons/112_RightArrowShort_Orange.ico" Command="{x:Static app:MainWindow.CloseApplication}"/>
+                    <ribbon:RibbonApplicationMenuItem Header="Close" ImageSource="/BimLibrary;component/Icons/delete.ico" Command="{x:Static app:MainWindow.CloseApplication}"/>
                 </ribbon:RibbonApplicationMenu>
             </ribbon:Ribbon.ApplicationMenu>
-            <ribbon:RibbonTab Header="Library elements">
+            <ribbon:RibbonTab Header="Library elements" >
                 <ribbon:RibbonGroup Header="Layered elements">
                     <ribbon:RibbonButton Label="New"  />
                     <ribbon:RibbonButton Label="Change"  />
@@ -33,12 +33,17 @@
 
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Header="Classifications">
-
+                <ribbon:RibbonGroup>
+                    <ribbon:RibbonButton Label="New classification system"/>
+                    <ribbon:RibbonButton Label="New classification item"/>
+                </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Header="Materials">
-
+                <ribbon:RibbonGroup>
+                    <ribbon:RibbonButton Label="New Material"/>
+                    <ribbon:RibbonButton Label="Edit" LargeImageSource="/BimLibrary;component/Icons/edit.ico" />
+                </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
-
         </ribbon:Ribbon>
     </DockPanel>
 </Window>
