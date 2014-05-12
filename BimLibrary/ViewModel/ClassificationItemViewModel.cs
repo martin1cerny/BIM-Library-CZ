@@ -29,7 +29,7 @@ namespace BimLibrary.ViewModel
             });
         }
 
-        public string Name { 
+        public string Notation { 
             get 
             { 
                 return _item.Notation.NotationValue; 
@@ -39,9 +39,24 @@ namespace BimLibrary.ViewModel
                 if (_item.Notation == null)
                     _item.Notation = _item.ModelOf.Instances.New<IfcClassificationNotationFacet>();
                 _item.Notation.NotationValue = value;
-                OnPropertyChanged("Name");
+                OnPropertyChanged("Notation");
             }
         }
+
+        public string Title
+        {
+            get
+            {
+                return _item.Title;
+            }
+            set
+            {
+                _item.Title = value;
+                OnPropertyChanged("Title");
+            }
+        }
+
+
 
         private ObservableCollection<ClassificationItemViewModel> _children;
         public ObservableCollection<ClassificationItemViewModel> Children

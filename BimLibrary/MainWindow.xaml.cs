@@ -15,6 +15,7 @@ using Microsoft.Win32;
 using Xbim.IO;
 using Xbim.Ifc2x3.MaterialResource;
 using BimLibrary.Windows;
+using Xbim.Ifc2x3.ExternalReferenceResource;
 
 namespace BimLibrary
 {
@@ -200,6 +201,21 @@ namespace BimLibrary
                     txn.Commit();
             }
 
+        }
+
+        private void ribNewClassificationSystem_Click(object sender, RoutedEventArgs e)
+        {
+            using (var txn = _model.BeginTransaction("Classification system creation"))
+            {
+                var classification = _model.Instances.New<IfcClassification>();
+                var win = new ClassificationWindow();
+                win.Classification = new ViewModel.ClassificationViewModel(classification);
+                var res = win.ShowDialog();
+
+                //commit only is the result is true
+                if (res == true)
+                    txn.Commit();
+            }
         }
     }
 

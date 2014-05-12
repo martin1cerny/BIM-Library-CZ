@@ -34,7 +34,7 @@
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Header="Classifications">
                 <ribbon:RibbonGroup>
-                    <ribbon:RibbonButton Label="New classification system"/>
+                    <ribbon:RibbonButton Label="New classification system" Click="ribNewClassificationSystem_Click" Name="ribNewClassificationSystem"/>
                     <ribbon:RibbonButton Label="New classification item"/>
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>

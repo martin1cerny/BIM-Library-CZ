@@ -14,7 +14,10 @@
         <TreeView ItemsSource="{Binding ElementName=This, Path=SelectedClassification.RootClassificationItems}">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                    <Label Content="{Binding Name}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{Binding Notation}"/>
+                        <Label Content="{Binding Title}"/>
+                    </StackPanel>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>

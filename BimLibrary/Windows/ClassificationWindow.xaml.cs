@@ -26,34 +26,7 @@ namespace BimLibrary.Windows
             InitializeComponent();
         }
 
-
-
-
-        public IModel Model
-        {
-            get { return (IModel)GetValue(ModelProperty); }
-            set { SetValue(ModelProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for Model.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ModelProperty =
-            DependencyProperty.Register("Model", typeof(IModel), typeof(ClassificationWindow), new UIPropertyMetadata(null));
-
         
-
-
-        public bool New
-        {
-            get { return (bool)GetValue(NewProperty); }
-            set { SetValue(NewProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for New.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty NewProperty =
-            DependencyProperty.Register("New", typeof(bool), typeof(ClassificationWindow), new UIPropertyMetadata(false));
-
-
-
         public ClassificationViewModel Classification
         {
             get { return (ClassificationViewModel)GetValue(ClassificationProperty); }
@@ -62,7 +35,7 @@ namespace BimLibrary.Windows
 
         // Using a DependencyProperty as the backing store for Classification.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ClassificationProperty =
-            DependencyProperty.Register("Classification", typeof(ClassificationViewModel), typeof(ClassificationWindow), new UIPropertyMetadata(null));
+            DependencyProperty.Register("Classification", typeof(ClassificationViewModel), typeof(ClassificationWindow), new UIPropertyMetadata(null, ClassificationChanged));
 
         private static void ClassificationChanged(object sender, DependencyPropertyChangedEventArgs args)
         {
@@ -78,27 +51,13 @@ namespace BimLibrary.Windows
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
-            if (New && Model != null)
-            {
-                var classifications = Model.Instances.Where<IfcClassification>(c => c.Name == txtClassificationName.Text);
-                //there shouldn't be any classification with the same name
-                if (classifications.Any())
-                {
-                    DialogResult = false;
-                    throw new Exception("There shouldn't be more than one classification of the same name.");
-                }
-                else
-                {
-                    DialogResult = true;
-                    Close();
-                }
-
-            }
-
+            DialogResult = true;
+            Close();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = false;
             Close();
         }
 

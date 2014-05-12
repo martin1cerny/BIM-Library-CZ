@@ -18,7 +18,7 @@
             </Grid.ColumnDefinitions>
 
             <Label Content="Classification name: " Grid.Row="0" Grid.Column="0"/>
-            <TextBox Text="{Binding Name}" IsEnabled="{Binding ElementName=This, Path=New}" Grid.Row="0" Grid.Column="1" Name="txtClassificationName"/>
+            <TextBox Text="{Binding Name}" Grid.Row="0" Grid.Column="1" Name="txtClassificationName"/>
         </Grid>
     </DockPanel>
     
