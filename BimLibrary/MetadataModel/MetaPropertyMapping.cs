@@ -9,16 +9,13 @@ namespace BimLibrary.MetadataModel
 {
     public class MetaPropertyMapping
     {
-        private Type _type;
-        public Type RelatingType
+        private int _ifcEntityLabel;
+        public int IfcEntityLabel
         {
-            get { return _type; }
+            get { return _ifcEntityLabel; }
             set
             {
-                if (typeof(IfcProduct).IsAssignableFrom(value) || typeof(IfcMaterial).IsAssignableFrom(value))
-                    _type = value;
-                else
-                    throw new Exception("Only IfcProducts and IfcMaterials are supported.");
+                _ifcEntityLabel = value;
             }
         }
 

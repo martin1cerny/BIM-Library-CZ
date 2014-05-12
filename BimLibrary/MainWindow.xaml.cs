@@ -12,6 +12,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using Xbim.IO;
+using Xbim.Ifc2x3.MaterialResource;
+using BimLibrary.Windows;
 
 namespace BimLibrary
 {
@@ -21,12 +24,21 @@ namespace BimLibrary
     public partial class MainWindow : Window
     {
         private LibraryModel _library;
+        private XbimModel _model { get { return _library.Model; } }
+
 
         public MainWindow()
         {
             InitializeComponent();
 
             Loaded += new RoutedEventHandler(MainWindow_Loaded);
+            Closing += new System.ComponentModel.CancelEventHandler(MainWindow_Closing);
+        }
+
+        void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //close library and save changes, delete temp files
+            _library.Close(true);
         }
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -39,6 +51,8 @@ namespace BimLibrary
             AddCommand(CloseApplication, ExecutedCloseApplicationCommand, CanExecuteCloseApplicationCommand);
             AddCommand(SaveAs, ExecutedSaveAsCommand, CanExecuteSaveAsCommand);
             AddCommand(Save, ExecutedSaveCommand, CanExecuteSaveCommand);
+            AddCommand(ExportIFC, ExecutedExportIFCCommand, CanExecuteExportIFCCommand);
+            AddCommand(ExportIFCzip, ExecutedExportIFCzipCommand, CanExecuteExportIFCzipCommand);
         }
 
         #region Commands
@@ -74,8 +88,6 @@ namespace BimLibrary
 
         private void ExecutedCloseApplicationCommand(object sender, ExecutedRoutedEventArgs e)
         {
-            if (_library.HasPath)
-                _library.Save();
             this.Close();
         }
 
@@ -116,6 +128,44 @@ namespace BimLibrary
         }
         #endregion
 
+        #region ExportIFC
+        public static RoutedCommand ExportIFC = new RoutedCommand();
+
+        private void ExecutedExportIFCCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            var dlg = new SaveFileDialog();
+            dlg.Title = "Export to IFC 2x3";
+            dlg.DefaultExt = _library.DefaultExtension;
+            dlg.OverwritePrompt = true;
+            if (dlg.ShowDialog() == true)
+                _library.ExportToIFC(dlg.FileName);
+        }
+
+        private void CanExecuteExportIFCCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+        #endregion
+
+        #region ExportIFCzip
+        public static RoutedCommand ExportIFCzip = new RoutedCommand();
+
+        private void ExecutedExportIFCzipCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            var dlg = new SaveFileDialog();
+            dlg.Title = "Export to IFC 2x3";
+            dlg.DefaultExt = _library.DefaultExtension;
+            dlg.OverwritePrompt = true;
+            if (dlg.ShowDialog() == true)
+                _library.ExportToIFCzip(dlg.FileName);
+        }
+
+        private void CanExecuteExportIFCzipCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+        #endregion
+
         private void AddCommand(ICommand command, ExecutedRoutedEventHandler executed, CanExecuteRoutedEventHandler canExecute)
         {
             var binding = new CommandBinding();
@@ -134,6 +184,22 @@ namespace BimLibrary
             dlg.OverwritePrompt = true;
             if (dlg.ShowDialog() == true)
                 _library.SaveAs(dlg.FileName);
+        }
+
+        private void ribNewMaterial_Click(object sender, RoutedEventArgs e)
+        {
+            using (var txn = _model.BeginTransaction("Material creation"))
+            {
+                var material = _model.Instances.New<IfcMaterial>();
+                MaterialWindow win = new MaterialWindow();
+                win.Material = new ViewModel.MaterialViewModel(material);
+                var res = win.ShowDialog();
+
+                //commit only is the result is true
+                if (res == true)
+                    txn.Commit();
+            }
+
         }
     }
 

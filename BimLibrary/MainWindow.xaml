@@ -13,8 +13,8 @@
                     <ribbon:RibbonApplicationMenuItem Header="Save" ImageSource="/BimLibrary;component/Icons/FloppyDisk.ico" Command="{x:Static app:MainWindow.Save}"/>
                     <ribbon:RibbonApplicationMenuItem Header="Save as" ImageSource="/BimLibrary;component/Icons/FloppyDisk.ico" Command="{x:Static app:MainWindow.SaveAs}"/>
                     <ribbon:RibbonApplicationMenuItem Header="Export to">
-                        <ribbon:RibbonApplicationMenuItem Header="IFC" ImageSource="/BimLibrary;component/Icons/ifc.png" />
-                        <ribbon:RibbonApplicationMenuItem Header="IFCzip" ImageSource="/BimLibrary;component/Icons/ifczip.png" />
+                        <ribbon:RibbonApplicationMenuItem Header="IFC" ImageSource="/BimLibrary;component/Icons/ifc.png" Command="{x:Static app:MainWindow.ExportIFC}"/>
+                        <ribbon:RibbonApplicationMenuItem Header="IFCzip" ImageSource="/BimLibrary;component/Icons/ifczip.png"  Command="{x:Static app:MainWindow.ExportIFCzip}"/>
                         <ribbon:RibbonApplicationMenuItem Header="gbXML" ImageSource="/BimLibrary;component/Icons/gbXML.png" />
                     </ribbon:RibbonApplicationMenuItem>
                     <ribbon:RibbonApplicationMenuItem Header="Close" ImageSource="/BimLibrary;component/Icons/delete.ico" Command="{x:Static app:MainWindow.CloseApplication}"/>
@@ -40,7 +40,7 @@
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Header="Materials">
                 <ribbon:RibbonGroup>
-                    <ribbon:RibbonButton Label="New Material"/>
+                    <ribbon:RibbonButton Label="New Material" Name="ribNewMaterial" Click="ribNewMaterial_Click"/>
                     <ribbon:RibbonButton Label="Edit" LargeImageSource="/BimLibrary;component/Icons/edit.ico" />
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>

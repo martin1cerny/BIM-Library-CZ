@@ -37,6 +37,8 @@ namespace BimLibrary
         public bool HasPath { get { return !String.IsNullOrEmpty(_path); } }
         public string DefaultExtension { get { return _defaultExtension; } }
 
+        public XbimModel Model { get { return _model; } }
+
         private void CleanTempDir()
         {
             foreach (var file in Directory.EnumerateFiles(TempDataDir, "*", SearchOption.AllDirectories))
@@ -140,6 +142,22 @@ namespace BimLibrary
             lib._propertyMappings = new MetaPropertyMappings();
 
             return lib;
+        }
+
+        public void ExportToIFC(string path)
+        {
+            path = Path.ChangeExtension(path, ".ifc");
+            if (String.IsNullOrEmpty(path))
+                throw new ArgumentNullException();
+            _model.SaveAs(path, XbimStorageType.IFC);
+        }
+
+        public void ExportToIFCzip(string path)
+        {
+            path = Path.ChangeExtension(path, ".ifczip");
+            if (String.IsNullOrEmpty(path))
+                throw new ArgumentNullException();
+            _model.SaveAs(path, XbimStorageType.IFCZIP);
         }
     }
 }
