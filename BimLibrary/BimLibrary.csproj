@@ -111,13 +111,11 @@
     <Compile Include="ViewModel\ClassificationViewModel.cs" />
     <Compile Include="ViewModel\MaterialViewModel.cs" />
     <Compile Include="ViewModel\PropertiesViewModel.cs" />
-<<<<<<< HEAD
     <Compile Include="Windows\MaterialWindow.xaml.cs">
       <DependentUpon>MaterialWindow.xaml</DependentUpon>
-=======
+	</Compile>
     <Compile Include="Windows\ClassificationWindow.xaml.cs">
       <DependentUpon>ClassificationWindow.xaml</DependentUpon>
->>>>>>> 5f9dda73b875363a6234a11f1e12bb8b566b360f
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -132,15 +130,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-<<<<<<< HEAD
     <Page Include="Windows\MaterialWindow.xaml">
-=======
+	  <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\ClassView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\ClassificationWindow.xaml">
->>>>>>> 5f9dda73b875363a6234a11f1e12bb8b566b360f
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
