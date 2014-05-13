@@ -107,13 +107,19 @@
     <Compile Include="UserControls\ClassView.xaml.cs">
       <DependentUpon>ClassView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\MaterialsView.xaml.cs">
+      <DependentUpon>MaterialsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\ClassificationItemViewModel.cs" />
     <Compile Include="ViewModel\ClassificationViewModel.cs" />
     <Compile Include="ViewModel\MaterialViewModel.cs" />
     <Compile Include="ViewModel\PropertiesViewModel.cs" />
+    <Compile Include="Windows\ClassificationItemWindow.xaml.cs">
+      <DependentUpon>ClassificationItemWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\MaterialWindow.xaml.cs">
       <DependentUpon>MaterialWindow.xaml</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="Windows\ClassificationWindow.xaml.cs">
       <DependentUpon>ClassificationWindow.xaml</DependentUpon>
     </Compile>
@@ -130,8 +136,16 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControls\MaterialsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ClassificationItemWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\MaterialWindow.xaml">
-	  <SubType>Designer</SubType>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ClassView.xaml">
@@ -177,10 +191,11 @@
     <Resource Include="Icons\FloppyDisk.ico" />
     <Resource Include="Icons\folder_open.ico" />
     <Resource Include="Icons\gbXML.png" />
-    <Resource Include="Icons\ifc.png" />
-    <Resource Include="Icons\ifczip.png" />
     <Resource Include="Icons\delete.ico" />
     <Resource Include="Icons\edit.ico" />
+    <Resource Include="Icons\components.ico" />
+    <Resource Include="Icons\ifc.ico" />
+    <Resource Include="Icons\ifczip.ico" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

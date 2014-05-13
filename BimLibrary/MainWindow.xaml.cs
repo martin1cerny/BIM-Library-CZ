@@ -16,13 +16,16 @@ using Xbim.IO;
 using Xbim.Ifc2x3.MaterialResource;
 using BimLibrary.Windows;
 using Xbim.Ifc2x3.ExternalReferenceResource;
+using BimLibrary.ViewModel;
+using System.Collections.ObjectModel;
+using Microsoft.Windows.Controls.Ribbon;
 
 namespace BimLibrary
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : RibbonWindow
     {
         private LibraryModel _library;
         private XbimModel _model { get { return _library.Model; } }
@@ -54,6 +57,8 @@ namespace BimLibrary
             AddCommand(Save, ExecutedSaveCommand, CanExecuteSaveCommand);
             AddCommand(ExportIFC, ExecutedExportIFCCommand, CanExecuteExportIFCCommand);
             AddCommand(ExportIFCzip, ExecutedExportIFCzipCommand, CanExecuteExportIFCzipCommand);
+
+            SetDataContext();
         }
 
         #region Commands
@@ -74,6 +79,8 @@ namespace BimLibrary
                 else
                     _library.Close(true);
                 _library.Open(dlg.FileName);
+
+                SetDataContext();
             }
             
         }
@@ -198,7 +205,11 @@ namespace BimLibrary
 
                 //commit only is the result is true
                 if (res == true)
+                {
                     txn.Commit();
+                    if (materialsView.Materials != null)
+                        materialsView.Materials.Add(new MaterialViewModel(material));
+                }
             }
 
         }
@@ -214,9 +225,62 @@ namespace BimLibrary
 
                 //commit only is the result is true
                 if (res == true)
+                {
                     txn.Commit();
+                    classView.Classifications.Add(win.Classification);
+                }
             }
         }
+
+        private void SetDataContext()
+        {
+            var provider = new ObjectDataProvider();
+            provider.ObjectInstance = _library;
+            DataContext = provider;
+        }
+
+        private void ribNewClassItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (classView.SelectedClassification == null)
+            {
+                MessageBox.Show("You have to select active classification system first or create one.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+            using (var txn = _model.BeginTransaction("Classification system creation"))
+            {
+                var item = _model.Instances.New<IfcClassificationItem>(ci => { 
+                    ci.ItemOf = classView.SelectedClassification.IfcClassification;
+                    
+                });
+                if (classView.SelectedClassification.SelectedItem != null)
+                {
+                    var parent = classView.SelectedClassification.SelectedItem.IfcClassificationItem;
+                    if (parent != null)
+                    {
+                        var relation = parent.IsClassifyingItemIn.FirstOrDefault();
+                        if (relation == null)
+                            relation = _model.Instances.New<IfcClassificationItemRelationship>();
+                        relation.RelatingItem = parent;
+                        relation.RelatedItems.Add_Reversible(item);
+                    }
+                }
+
+                var win = new ClassificationItemWindow();
+                win.ClassificationItem = new ClassificationItemViewModel(item);
+                var res = win.ShowDialog();
+
+                //commit only is the result is true
+                if (res == true)
+                {
+                    txn.Commit();
+                    if (classView.SelectedClassification.SelectedItem == null)
+                        classView.SelectedClassification.RootClassificationItems.Add(win.ClassificationItem);
+                    else if (classView.SelectedClassification.SelectedItem.Children != null)
+                        classView.SelectedClassification.SelectedItem.Children.Add(win.ClassificationItem);
+                }
+            }
+        }
+
     }
 
     public class BoolToVisibilityConverter : IValueConverter

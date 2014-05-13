@@ -31,7 +31,9 @@ namespace BimLibrary.ViewModel
 
         public string Notation { 
             get 
-            { 
+            {
+                if (_item.Notation == null)
+                    return null;
                 return _item.Notation.NotationValue; 
             }
             set
@@ -56,25 +58,39 @@ namespace BimLibrary.ViewModel
             }
         }
 
+        private bool _isSelected;
 
-
-        private ObservableCollection<ClassificationItemViewModel> _children;
-        public ObservableCollection<ClassificationItemViewModel> Children
+        public bool IsSelected
         {
-            get {
-                if (_children == null)
-                {
+            get { return _isSelected; }
+            set { _isSelected = value; OnPropertyChanged("IsSelected"); }
+        }
+
+        private bool _isExpanded;
+
+        public bool IsExpanded
+        {
+            get { return _isExpanded; }
+            set { 
+                _isExpanded = value;
+                if (value && !_children.Any())
                     LoadChildren();
-                }
-                return _children; 
+                OnPropertyChanged("IsExpanded"); 
             }
         }
 
-        public void LoadChildren()
+
+
+        private ObservableCollection<ClassificationItemViewModel> _children = new ObservableCollection<ClassificationItemViewModel>();
+        public ObservableCollection<ClassificationItemViewModel> Children
+        {
+            get { return _children;  }
+        }
+
+        private void LoadChildren()
         {
             if (_item.IsClassifyingItemIn.Any())
             {
-                _children = new ObservableCollection<ClassificationItemViewModel>();
                 foreach (var rel in _item.IsClassifyingItemIn)
                 {
                     foreach (var item in rel.RelatedItems)

@@ -7,10 +7,11 @@ using Xbim.IO;
 using Xbim.XbimExtensions.Interfaces;
 using Ionic.Zip;
 using System.IO;
+using System.ComponentModel;
 
 namespace BimLibrary
 {
-    public class LibraryModel
+    public class LibraryModel : INotifyPropertyChanged
     {
         private XbimModel _model;
         private MetaPropertyMappings _propertyMappings;
@@ -38,6 +39,7 @@ namespace BimLibrary
         public string DefaultExtension { get { return _defaultExtension; } }
 
         public XbimModel Model { get { return _model; } }
+        public MetaPropertyMappings PropertyMappings { get { return _propertyMappings; } }
 
         private void CleanTempDir()
         {
@@ -85,6 +87,7 @@ namespace BimLibrary
                 if (_model == null)
                     _model = new XbimModel();
                 _model.Open(tempModelPath, Xbim.XbimExtensions.XbimDBAccess.ReadWrite);
+                OnPropertyChanged("Model");
             }
         }
 
@@ -102,7 +105,12 @@ namespace BimLibrary
                 file = Path.ChangeExtension(file, _defaultExtension);
 
             var modelPath = Path.Combine(TempDataDir, _libFile);
-            _model.CacheStop();
+            
+            //temp model
+            if (_model.DatabaseName != modelPath)
+                _model.SaveAs(modelPath, XbimStorageType.XBIM);
+            else
+                _model.CacheStop();
             _model.Close();
 
             using (ZipFile zip = new ZipFile())
@@ -120,6 +128,9 @@ namespace BimLibrary
 
             //reopen closed model
             _model.Open(modelPath, Xbim.XbimExtensions.XbimDBAccess.ReadWrite);
+
+            OnPropertyChanged("Model");
+            OnPropertyChanged("PropertyMappings");
         }
 
         public void Close(bool save)
@@ -133,6 +144,9 @@ namespace BimLibrary
 
             _model = null;
             _propertyMappings = null;
+
+            OnPropertyChanged("Model");
+            OnPropertyChanged("PropertyMappings");
         }
 
         public static LibraryModel Create()
@@ -140,6 +154,9 @@ namespace BimLibrary
             var lib = new LibraryModel();
             lib._model = XbimModel.CreateTemporaryModel();
             lib._propertyMappings = new MetaPropertyMappings();
+
+            lib.OnPropertyChanged("Model");
+            lib.OnPropertyChanged("PropertyMappings");
 
             return lib;
         }
@@ -159,5 +176,14 @@ namespace BimLibrary
                 throw new ArgumentNullException();
             _model.SaveAs(path, XbimStorageType.IFCZIP);
         }
+
+        #region Property Changed implementation
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string property)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
+        }
+        #endregion
     }
 }

@@ -8,10 +8,22 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <Label>Classifications</Label>
-            <ComboBox ItemsSource="{Binding ElementName=This, Path=Classifications}" DisplayMemberPath="Name" SelectedItem="{Binding ElementName=This, Path=SelectedClassification}"/>
+            <Label>Classification system</Label>
+            <ComboBox ItemsSource="{Binding ElementName=This, Path=Classifications}" DisplayMemberPath="Name" SelectedItem="{Binding ElementName=This, Path=SelectedClassification}" MinWidth="90"/>
         </StackPanel>
         <TreeView ItemsSource="{Binding ElementName=This, Path=SelectedClassification.RootClassificationItems}">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                    <Setter Property="FontWeight" Value="Normal" />
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="FontWeight" Value="Bold" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TreeView.ItemContainerStyle>
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                     <StackPanel Orientation="Horizontal">

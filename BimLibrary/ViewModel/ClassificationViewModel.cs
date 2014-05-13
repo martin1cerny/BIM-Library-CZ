@@ -55,6 +55,36 @@ namespace BimLibrary.ViewModel
             OnPropertyChanged("RootClassificationItems");
         }
 
+        public ClassificationItemViewModel SelectedItem
+        {
+            get
+            {
+                return GetSelected(RootClassificationItems);
+            }
+        }
+
+        private ClassificationItemViewModel GetSelected(IEnumerable<ClassificationItemViewModel> items)
+        {
+            foreach (var item in items)
+            {
+                if (item.IsSelected)
+                    return item;
+            }
+
+            //if no one is selected search next level
+            foreach (var item in items)
+            {
+                if (item.Children != null)
+                {
+                    var result = GetSelected(item.Children);
+                    if (result != null)
+                        return result;
+                }
+            }
+
+            return null;
+        }
+
         #region PropertyChanged implementation
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string property)

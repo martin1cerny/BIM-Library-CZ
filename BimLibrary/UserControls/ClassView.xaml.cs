@@ -61,14 +61,12 @@ namespace BimLibrary.UserControls
         public ClassificationViewModel SelectedClassification
         {
             get { return (ClassificationViewModel)GetValue(SelectedClassificationProperty); }
-            set { SetValue(SelectedClassificationProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for SelectedClassification.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedClassificationProperty =
             DependencyProperty.Register("SelectedClassification", typeof(ClassificationViewModel), typeof(ClassView), new UIPropertyMetadata(null));
         #endregion
-
 
 
         #region Classifications
@@ -95,6 +93,7 @@ namespace BimLibrary.UserControls
             }
         }
         #endregion
+
 
     }
 }

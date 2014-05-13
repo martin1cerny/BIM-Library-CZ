@@ -1,9 +1,16 @@
-﻿<Window x:Class="BimLibrary.MainWindow"
+﻿<ribbon:RibbonWindow x:Class="BimLibrary.MainWindow"
+        xmlns:ctrls="clr-namespace:BimLibrary.UserControls"  
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="BIM Library Creator" Height="350" Width="525" 
         xmlns:ribbon="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon"
-        xmlns:app="clr-namespace:BimLibrary">
+        xmlns:app="clr-namespace:BimLibrary" Icon="/BimLibrary;component/Icons/components.ico">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="MinWidth" Value="100"/>
+        </Style>
+        <app:BoolToVisibilityConverter x:Key="boolToVisibility"/>
+    </Window.Resources>
     <DockPanel>
         <ribbon:Ribbon Name="ribbon" DockPanel.Dock="Top">
             <ribbon:Ribbon.ApplicationMenu>
@@ -13,8 +20,8 @@
                     <ribbon:RibbonApplicationMenuItem Header="Save" ImageSource="/BimLibrary;component/Icons/FloppyDisk.ico" Command="{x:Static app:MainWindow.Save}"/>
                     <ribbon:RibbonApplicationMenuItem Header="Save as" ImageSource="/BimLibrary;component/Icons/FloppyDisk.ico" Command="{x:Static app:MainWindow.SaveAs}"/>
                     <ribbon:RibbonApplicationMenuItem Header="Export to">
-                        <ribbon:RibbonApplicationMenuItem Header="IFC" ImageSource="/BimLibrary;component/Icons/ifc.png" Command="{x:Static app:MainWindow.ExportIFC}"/>
-                        <ribbon:RibbonApplicationMenuItem Header="IFCzip" ImageSource="/BimLibrary;component/Icons/ifczip.png"  Command="{x:Static app:MainWindow.ExportIFCzip}"/>
+                        <ribbon:RibbonApplicationMenuItem Header="IFC" ImageSource="/BimLibrary;component/Icons/ifc.ico" Command="{x:Static app:MainWindow.ExportIFC}"/>
+                        <ribbon:RibbonApplicationMenuItem Header="IFCzip" ImageSource="/BimLibrary;component/Icons/ifczip.ico"  Command="{x:Static app:MainWindow.ExportIFCzip}"/>
                         <ribbon:RibbonApplicationMenuItem Header="gbXML" ImageSource="/BimLibrary;component/Icons/gbXML.png" />
                     </ribbon:RibbonApplicationMenuItem>
                     <ribbon:RibbonApplicationMenuItem Header="Close" ImageSource="/BimLibrary;component/Icons/delete.ico" Command="{x:Static app:MainWindow.CloseApplication}"/>
@@ -30,20 +37,40 @@
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Header="Properties">
-
-            </ribbon:RibbonTab>
-            <ribbon:RibbonTab Header="Classifications">
-                <ribbon:RibbonGroup>
-                    <ribbon:RibbonButton Label="New classification system" Click="ribNewClassificationSystem_Click" Name="ribNewClassificationSystem"/>
-                    <ribbon:RibbonButton Label="New classification item"/>
+                <ribbon:RibbonGroup Header="Property sets">
+                    <ribbon:RibbonButton Label="New"/>
+                    <ribbon:RibbonButton Label="Edit"/>
+                </ribbon:RibbonGroup>
+                <ribbon:RibbonGroup Header="Property">
+                    <ribbon:RibbonButton Label="New"/>
+                    <ribbon:RibbonButton Label="Edit"/>
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
-            <ribbon:RibbonTab Header="Materials">
+            <ribbon:RibbonTab Header="Classifications" Name="rbClassificationTab">
+                <ribbon:RibbonGroup Header="Classification systems">
+                    <ribbon:RibbonButton Label="New system" Click="ribNewClassificationSystem_Click" Name="ribNewClassificationSystem"/>
+                    <ribbon:RibbonButton Label="Edit system" Name="ribEditClassificationSystem"/>
+                </ribbon:RibbonGroup>
+                <ribbon:RibbonGroup Header="Classification items">
+                    <ribbon:RibbonButton Label="New item" Name="ribNewClassItem" Click="ribNewClassItem_Click"/>
+                    <ribbon:RibbonButton Label="Edit" Name="ribEditClassItem"/>
+                </ribbon:RibbonGroup>
+            </ribbon:RibbonTab>
+            <ribbon:RibbonTab Header="Materials" Name="rbMaterialTab">
                 <ribbon:RibbonGroup>
-                    <ribbon:RibbonButton Label="New Material" Name="ribNewMaterial" Click="ribNewMaterial_Click"/>
+                    <ribbon:RibbonButton Label="New" Name="ribNewMaterial" Click="ribNewMaterial_Click"/>
                     <ribbon:RibbonButton Label="Edit" LargeImageSource="/BimLibrary;component/Icons/edit.ico" />
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
         </ribbon:Ribbon>
+        <Grid>
+            <Grid Visibility="{Binding ElementName=rbClassificationTab, Path=IsSelected, Converter={StaticResource boolToVisibility}}">
+                <ctrls:ClassView Model="{Binding Model}" x:Name="classView"/>
+
+            </Grid>
+            <Grid Visibility="{Binding ElementName=rbMaterialTab, Path=IsSelected, Converter={StaticResource boolToVisibility}}">
+                <ctrls:MaterialsView Model="{Binding Model}" x:Name="materialsView"/>
+            </Grid>
+        </Grid>
     </DockPanel>
-</Window>
+</ribbon:RibbonWindow>
