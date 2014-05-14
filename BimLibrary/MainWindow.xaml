@@ -48,6 +48,7 @@
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Header="Classifications" Name="rbClassificationTab">
                 <ribbon:RibbonGroup Header="Classification systems">
+                    <ribbon:RibbonComboBox/>
                     <ribbon:RibbonButton Label="New system" Click="ribNewClassificationSystem_Click" Name="ribNewClassificationSystem"/>
                     <ribbon:RibbonButton Label="Edit system" Name="ribEditClassificationSystem"/>
                 </ribbon:RibbonGroup>
