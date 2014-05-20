@@ -27,7 +27,7 @@ namespace BimLibrary
     /// </summary>
     public partial class MainWindow : RibbonWindow
     {
-        private LibraryModel _library;
+        private LibraryModel _library { get { return App.Library; } }
         private XbimModel _model { get { return _library.Model; } }
 
 
@@ -47,9 +47,6 @@ namespace BimLibrary
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            if (_library == null)
-                _library = LibraryModel.Create();
-
             //command bindings
             AddCommand(OpenLibrary, ExecutedOpenLibraryCommand, CanExecuteOpenLibraryCommand);
             AddCommand(CloseApplication, ExecutedCloseApplicationCommand, CanExecuteCloseApplicationCommand);
@@ -59,6 +56,7 @@ namespace BimLibrary
             AddCommand(ExportIFCzip, ExecutedExportIFCzipCommand, CanExecuteExportIFCzipCommand);
 
             SetDataContext();
+            LoadClassifications();
         }
 
         #region Commands
@@ -74,12 +72,7 @@ namespace BimLibrary
             dlg.Title = "Select librarty file please...";
             if (dlg.ShowDialog() == true)
             {
-                if (_library == null)
-                    _library = new LibraryModel();
-                else
-                    _library.Close(true);
                 _library.Open(dlg.FileName);
-
                 SetDataContext();
             }
             
@@ -127,7 +120,7 @@ namespace BimLibrary
             if (_library.HasPath)
                 _library.Save();
             else
-                SaveWithDialog();
+                _library.LibraryPath = SaveWithDialog();
         }
 
         private void CanExecuteSaveCommand(object sender, CanExecuteRoutedEventArgs e)
@@ -185,13 +178,56 @@ namespace BimLibrary
         }
         #endregion
 
-        private void SaveWithDialog()
+
+        #region Classifications
+        public ObservableCollection<ClassificationViewModel> Classifications
+        {
+            get { return (ObservableCollection<ClassificationViewModel>)GetValue(ClassificationsProperty); }
+            set { SetValue(ClassificationsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Classifications.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ClassificationsProperty =
+            DependencyProperty.Register("Classifications", typeof(ObservableCollection<ClassificationViewModel>), typeof(MainWindow), new UIPropertyMetadata(new ObservableCollection<ClassificationViewModel>()));
+        #endregion
+
+
+        #region Active Classification
+        public ClassificationViewModel ActiveClassification
+        {
+            get { return (ClassificationViewModel)GetValue(ActiveClassificationProperty); }
+            set { SetValue(ActiveClassificationProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ActiveClassification.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ActiveClassificationProperty =
+            DependencyProperty.Register("ActiveClassification", typeof(ClassificationViewModel), typeof(MainWindow), new UIPropertyMetadata(null));
+        #endregion
+
+
+        private void LoadClassifications()
+        {
+            if (_model != null)
+            {
+                var cls = _model.Instances.OfType<IfcClassification>();
+                foreach (var item in cls)
+                {
+                    Classifications.Add(new ClassificationViewModel(item));
+                }
+            }
+        }
+
+        private string SaveWithDialog()
         {
             var dlg = new SaveFileDialog();
             dlg.DefaultExt = _library.DefaultExtension;
             dlg.OverwritePrompt = true;
             if (dlg.ShowDialog() == true)
+            {
                 _library.SaveAs(dlg.FileName);
+                return dlg.FileName;
+            }
+            return null;
         }
 
         private void ribNewMaterial_Click(object sender, RoutedEventArgs e)
@@ -227,7 +263,7 @@ namespace BimLibrary
                 if (res == true)
                 {
                     txn.Commit();
-                    classView.Classifications.Add(win.Classification);
+                    Classifications.Add(win.Classification);
                 }
             }
         }
@@ -237,24 +273,25 @@ namespace BimLibrary
             var provider = new ObjectDataProvider();
             provider.ObjectInstance = _library;
             DataContext = provider;
+            LoadClassifications();
         }
 
         private void ribNewClassItem_Click(object sender, RoutedEventArgs e)
         {
-            if (classView.SelectedClassification == null)
+            if (ActiveClassification == null)
             {
                 MessageBox.Show("You have to select active classification system first or create one.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
             using (var txn = _model.BeginTransaction("Classification system creation"))
             {
-                var item = _model.Instances.New<IfcClassificationItem>(ci => { 
-                    ci.ItemOf = classView.SelectedClassification.IfcClassification;
+                var item = _model.Instances.New<IfcClassificationItem>(ci => {
+                    ci.ItemOf = ActiveClassification.IfcClassification;
                     
                 });
-                if (classView.SelectedClassification.SelectedItem != null)
+                if (ActiveClassification.SelectedItem != null)
                 {
-                    var parent = classView.SelectedClassification.SelectedItem.IfcClassificationItem;
+                    var parent = ActiveClassification.SelectedItem.IfcClassificationItem;
                     if (parent != null)
                     {
                         var relation = parent.IsClassifyingItemIn.FirstOrDefault();
@@ -269,16 +306,76 @@ namespace BimLibrary
                 win.ClassificationItem = new ClassificationItemViewModel(item);
                 var res = win.ShowDialog();
 
-                //commit only is the result is true
+                //commit only if the result is true
                 if (res == true)
                 {
                     txn.Commit();
-                    if (classView.SelectedClassification.SelectedItem == null)
-                        classView.SelectedClassification.RootClassificationItems.Add(win.ClassificationItem);
-                    else if (classView.SelectedClassification.SelectedItem.Children != null)
-                        classView.SelectedClassification.SelectedItem.Children.Add(win.ClassificationItem);
+                    if (ActiveClassification.SelectedItem == null)
+                        ActiveClassification.RootClassificationItems.Add(win.ClassificationItem);
+                    else
+                        ActiveClassification.SelectedItem.Children.Add(win.ClassificationItem);
                 }
             }
+        }
+
+        private void ribNewRootClassItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (!CheckActiveClassification())
+                return;
+            using (var txn = _model.BeginTransaction("Classification system creation"))
+            {
+                var item = _model.Instances.New<IfcClassificationItem>(ci =>
+                {
+                    ci.ItemOf = ActiveClassification.IfcClassification;
+
+                });
+
+                var win = new ClassificationItemWindow();
+                win.ClassificationItem = new ClassificationItemViewModel(item);
+                var res = win.ShowDialog();
+
+                //commit only if the result is true
+                if (res == true)
+                {
+                    txn.Commit();
+                    ActiveClassification.RootClassificationItems.Add(win.ClassificationItem);
+                }
+            }
+        }
+
+        private void ribNewPset_Click(object sender, RoutedEventArgs e)
+        {
+            if (!CheckActiveClassificationItem())
+                return;
+            var pset = new MetadataModel.MetaPropertySet();
+            var win = new PSetWindow();
+            win.PropertySet = pset;
+            if (win.ShowDialog() ?? false)
+            {
+                ActiveClassification.SelectedItem.PropertyMapping.PropertySets.Add(pset);
+            }
+        }
+
+        private bool CheckActiveClassification()
+        {
+            if (ActiveClassification == null)
+            {
+                MessageBox.Show("You have to select active classification system first or create one.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                return false;
+            }
+            return true;
+        }
+
+        private bool CheckActiveClassificationItem()
+        {
+            if (!CheckActiveClassification())
+                return false;
+            if (ActiveClassification.SelectedItem == null)
+            {
+                MessageBox.Show("You have to select classification item first.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                return false;
+            }
+            return true;
         }
 
     }

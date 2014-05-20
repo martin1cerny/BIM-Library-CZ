@@ -7,7 +7,7 @@
             <Button Content="OK" IsDefault="True" Name="OK" Click="OK_Click"/>
             <Button Content="Cancel" Name="Cancel" Click="Cancel_Click"/>
         </StackPanel>
-        <Grid>
+        <Grid FocusManager.FocusedElement="{Binding ElementName=txtClassificationName}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>

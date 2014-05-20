@@ -110,10 +110,14 @@
     <Compile Include="UserControls\MaterialsView.xaml.cs">
       <DependentUpon>MaterialsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\MetaPropertiesView.xaml.cs">
+      <DependentUpon>MetaPropertiesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\ClassificationItemViewModel.cs" />
     <Compile Include="ViewModel\ClassificationViewModel.cs" />
     <Compile Include="ViewModel\MaterialViewModel.cs" />
-    <Compile Include="ViewModel\PropertiesViewModel.cs" />
+    <Compile Include="ViewModel\PropertySetViewModel.cs" />
+    <Compile Include="ViewModel\PropertyViewModel.cs" />
     <Compile Include="Windows\ClassificationItemWindow.xaml.cs">
       <DependentUpon>ClassificationItemWindow.xaml</DependentUpon>
     </Compile>
@@ -122,6 +126,9 @@
     </Compile>
     <Compile Include="Windows\ClassificationWindow.xaml.cs">
       <DependentUpon>ClassificationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\PSetWindow.xaml.cs">
+      <DependentUpon>PSetWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -140,6 +147,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\MetaPropertiesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\ClassificationItemWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -153,6 +164,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\ClassificationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\PSetWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

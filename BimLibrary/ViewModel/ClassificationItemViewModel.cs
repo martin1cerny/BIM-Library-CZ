@@ -7,6 +7,7 @@ using Xbim.Ifc2x3.ExternalReferenceResource;
 using Xbim.IO;
 using Xbim.XbimExtensions.Interfaces;
 using System.ComponentModel;
+using BimLibrary.MetadataModel;
 
 namespace BimLibrary.ViewModel
 {
@@ -17,9 +18,20 @@ namespace BimLibrary.ViewModel
 
         private IModel _model { get { return _item.ModelOf; } }
 
+        private MetaPropertyMapping _pMap;
+        public MetaPropertyMapping PropertyMapping { get { return _pMap; } }
+
         public ClassificationItemViewModel(IfcClassificationItem item)
         {
             _item = item;
+
+            var lib = App.Library;
+            _pMap = lib.PropertyMappings.Where(pm => pm.IfcEntityLabel == item.EntityLabel).FirstOrDefault();
+            if (_pMap == null)
+            {
+                _pMap = new MetadataModel.MetaPropertyMapping() { IfcEntityLabel = item.EntityLabel };
+                lib.PropertyMappings.Add(_pMap);
+            }
         }
 
         public ClassificationItemViewModel(XbimModel model)

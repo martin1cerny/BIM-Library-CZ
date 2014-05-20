@@ -12,5 +12,6 @@ namespace BimLibrary
     /// </summary>
     public partial class App : Application
     {
+        internal static LibraryModel Library = LibraryModel.Create();
     }
 }

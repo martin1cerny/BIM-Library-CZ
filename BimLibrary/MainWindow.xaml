@@ -1,4 +1,5 @@
 ﻿<ribbon:RibbonWindow x:Class="BimLibrary.MainWindow"
+                     Name="This"
         xmlns:ctrls="clr-namespace:BimLibrary.UserControls"  
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -36,24 +37,32 @@
                     
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
-            <ribbon:RibbonTab Header="Properties">
+            <ribbon:RibbonTab Header="Properties" Name="rbPropertiesTab">
                 <ribbon:RibbonGroup Header="Property sets">
-                    <ribbon:RibbonButton Label="New"/>
-                    <ribbon:RibbonButton Label="Edit"/>
+                    <ribbon:RibbonButton Label="New" Name="ribNewPset" Click="ribNewPset_Click"/>
+                    <ribbon:RibbonButton Label="Edit" Name="ribEditPset"/>
                 </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Header="Property">
-                    <ribbon:RibbonButton Label="New"/>
-                    <ribbon:RibbonButton Label="Edit"/>
+                    <ribbon:RibbonButton Label="New" Name="ribNewProperty"/>
+                    <ribbon:RibbonButton Label="Edit" Name="ribEditProperty"/>
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Header="Classifications" Name="rbClassificationTab">
                 <ribbon:RibbonGroup Header="Classification systems">
-                    <ribbon:RibbonComboBox/>
+                    <!--<ComboBox ItemsSource="{Binding ElementName=This, Path=Classifications}" DisplayMemberPath="Name" SelectedItem="{Binding ElementName=This, Path=ActiveClassification}" MinWidth="90"/>-->
+                    <ribbon:RibbonComboBox IsEditable="False" Label="Classification systems">
+                        <ribbon:RibbonGallery SelectedItem="{Binding ElementName=This, Path=ActiveClassification}">
+                            <ribbon:RibbonGalleryCategory ItemsSource="{Binding ElementName=This, Path=Classifications}" DisplayMemberPath="Name"/>
+                        </ribbon:RibbonGallery>
+                    </ribbon:RibbonComboBox>
                     <ribbon:RibbonButton Label="New system" Click="ribNewClassificationSystem_Click" Name="ribNewClassificationSystem"/>
                     <ribbon:RibbonButton Label="Edit system" Name="ribEditClassificationSystem"/>
+                    <ribbon:RibbonButton Label="Import CSV"/>
+                    <ribbon:RibbonButton Label="Export CSV"/>
                 </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Header="Classification items">
                     <ribbon:RibbonButton Label="New item" Name="ribNewClassItem" Click="ribNewClassItem_Click"/>
+                    <ribbon:RibbonButton Label="New root item" Name="ribNewRootClassItem" Click="ribNewRootClassItem_Click"/>
                     <ribbon:RibbonButton Label="Edit" Name="ribEditClassItem"/>
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
@@ -65,8 +74,13 @@
             </ribbon:RibbonTab>
         </ribbon:Ribbon>
         <Grid>
+            <DockPanel Visibility="{Binding ElementName=rbPropertiesTab, Path=IsSelected, Converter={StaticResource boolToVisibility}}">
+                <ctrls:ClassView Classification="{Binding ElementName=This, Path=ActiveClassification}" DockPanel.Dock="Left" MinWidth="60"/>
+                <ctrls:MetaPropertiesView ClassificationItem="{Binding ElementName=This, Path=ActiveClassification.SelectedItem, Mode=OneWay}"/>
+
+            </DockPanel>
             <Grid Visibility="{Binding ElementName=rbClassificationTab, Path=IsSelected, Converter={StaticResource boolToVisibility}}">
-                <ctrls:ClassView Model="{Binding Model}" x:Name="classView"/>
+                <ctrls:ClassView Classification="{Binding ElementName=This, Path=ActiveClassification}"/>
 
             </Grid>
             <Grid Visibility="{Binding ElementName=rbMaterialTab, Path=IsSelected, Converter={StaticResource boolToVisibility}}">
