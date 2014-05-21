@@ -8,8 +8,10 @@
              xmlns:lib="clr-namespace:BimLibrary"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <DataGrid AutoGenerateColumns="True" ItemsSource="{Binding ElementName=This, Path=Materials}">
-            
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding ElementName=This, Path=Materials}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Name}" Header="Material name"/>
+            </DataGrid.Columns>
         </DataGrid>
     </Grid>
 </UserControl>

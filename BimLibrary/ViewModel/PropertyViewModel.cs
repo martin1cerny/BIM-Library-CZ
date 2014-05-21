@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BimLibrary.ViewModel
 {
-    public class PropertiesViewModel
+    public class PropertyViewModel
     {
     }
 }

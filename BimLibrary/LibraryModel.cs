@@ -39,6 +39,7 @@ namespace BimLibrary
 
         public bool HasPath { get { return !String.IsNullOrEmpty(_path); } }
         public string DefaultExtension { get { return _defaultExtension; } }
+        public string LibraryPath { get { return _path; } set { _path = value; } }
 
         public XbimModel Model { get { return _model; } }
         public MetaPropertyMappings PropertyMappings { get { return _propertyMappings; } }

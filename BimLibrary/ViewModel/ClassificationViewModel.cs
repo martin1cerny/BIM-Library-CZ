@@ -15,9 +15,11 @@ namespace BimLibrary.ViewModel
         public IfcClassification IfcClassification { get { return _classification; } }
         private IModel _model { get { return _classification.ModelOf; } }
 
+      
 
         public ClassificationViewModel(IfcClassification classification)
         {
+            
             _classification = classification;
         }
 

@@ -29,70 +29,49 @@ namespace BimLibrary.UserControls
         }
 
 
-        #region Model
-        public IModel Model
+        #region Classification
+        public ClassificationViewModel Classification
         {
-            get { return (IModel)GetValue(ModelProperty); }
-            set { SetValue(ModelProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for Model.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ModelProperty =
-            DependencyProperty.Register("Model", typeof(IModel), typeof(ClassView), new UIPropertyMetadata(null, ModelChanged));
-
-        private static void ModelChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            var view = sender as ClassView;
-            if (view != null)
-            {
-                var model = e.NewValue as IModel;
-                if (model == null)
-                    view.Classifications.Clear();
-                else
-                {
-                    view.LoadClassifications();
-                }
-            }
-        }
-        #endregion
-
-
-        #region SelectedClassification
-        public ClassificationViewModel SelectedClassification
-        {
-            get { return (ClassificationViewModel)GetValue(SelectedClassificationProperty); }
+            get { return (ClassificationViewModel)GetValue(ClassificationProperty); }
+            set { SetValue(ClassificationProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for SelectedClassification.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SelectedClassificationProperty =
-            DependencyProperty.Register("SelectedClassification", typeof(ClassificationViewModel), typeof(ClassView), new UIPropertyMetadata(null));
+        public static readonly DependencyProperty ClassificationProperty =
+            DependencyProperty.Register("Classification", typeof(ClassificationViewModel), typeof(ClassView), new UIPropertyMetadata(null));
         #endregion
 
-
-        #region Classifications
-        public ObservableCollection<ClassificationViewModel> Classifications
+        private void classTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            get { return (ObservableCollection<ClassificationViewModel>)GetValue(ClassificationsProperty); }
-            set { SetValue(ClassificationsProperty, value); }
+            if (Classification != null)
+                Classification.OnPropertyChanged("SelectedItem");
         }
 
-        // Using a DependencyProperty as the backing store for Classifications.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ClassificationsProperty =
-            DependencyProperty.Register("Classifications", typeof(ObservableCollection<ClassificationViewModel>), typeof(ClassView), new UIPropertyMetadata(new ObservableCollection<ClassificationViewModel>()));
+
+        //#region Classifications
+        //public ObservableCollection<ClassificationViewModel> Classifications
+        //{
+        //    get { return (ObservableCollection<ClassificationViewModel>)GetValue(ClassificationsProperty); }
+        //    set { SetValue(ClassificationsProperty, value); }
+        //}
+
+        //// Using a DependencyProperty as the backing store for Classifications.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty ClassificationsProperty =
+        //    DependencyProperty.Register("Classifications", typeof(ObservableCollection<ClassificationViewModel>), typeof(ClassView), new UIPropertyMetadata(new ObservableCollection<ClassificationViewModel>()));
 
 
-        public void LoadClassifications()
-        {
-            if (Model == null)
-                Classifications.Clear();
-            else
-            {
-                var classifications = Model.Instances.OfType<IfcClassification>();
-                foreach (var classification in classifications)
-                    Classifications.Add(new ClassificationViewModel(classification));
-            }
-        }
-        #endregion
+        //public void LoadClassifications()
+        //{
+        //    if (Model == null)
+        //        Classifications.Clear();
+        //    else
+        //    {
+        //        var classifications = Model.Instances.OfType<IfcClassification>();
+        //        foreach (var classification in classifications)
+        //            Classifications.Add(new ClassificationViewModel(classification));
+        //    }
+        //}
+        //#endregion
 
 
     }

@@ -1,13 +1,13 @@
-﻿<Window x:Class="BimLibrary.Windows.ClassificationItemWindow"
+﻿<Window x:Class="BimLibrary.Windows.PSetWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Classification Item" SizeToContent="WidthAndHeight" MinWidth="200">
+        Title="Property set template" SizeToContent="WidthAndHeight" MinWidth="200" Icon="/BimLibrary;component/Icons/components.ico">
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
             <Button IsDefault="True" Name="btnOK" Click="btnOK_Click">OK</Button>
             <Button Name="btnCancel" Click="btnCancel_Click">Cancel</Button>
         </StackPanel>
-        <Grid FocusManager.FocusedElement="{Binding ElementName=txtNotation}">
+        <Grid FocusManager.FocusedElement="{Binding ElementName=txtName}">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -16,10 +16,10 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Grid.Row="0">Notation</Label>
-            <Label Grid.Column="0" Grid.Row="1">Title</Label>
-            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Notation}" Name="txtNotation"/>
-            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Title}"/>
+            <Label Grid.Column="0" Grid.Row="0">Name</Label>
+            <Label Grid.Column="0" Grid.Row="1">Description</Label>
+            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Name}" Name="txtName"/>
+            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Description}" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" AcceptsReturn="True" MinLines="2"/>
         </Grid>
     </DockPanel>
 </Window>
