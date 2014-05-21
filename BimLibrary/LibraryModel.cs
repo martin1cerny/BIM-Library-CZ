@@ -164,6 +164,15 @@ namespace BimLibrary
             return lib;
         }
 
+        public void Clear()
+        {
+            _model = XbimModel.CreateTemporaryModel();
+            _propertyMappings = new MetaPropertyMappings();
+
+            OnPropertyChanged("Model");
+            OnPropertyChanged("PropertyMappings");
+        }
+
         public void ExportToIFC(string path)
         {
             path = Path.ChangeExtension(path, ".ifc");

@@ -25,6 +25,9 @@ namespace BimLibrary.ViewModel
                 if (_layers == null)
                 {
                     _layers = new ObservableCollection<LayerViewModel>();
+
+                    //TODO: Fill in initial data
+
                     _layers.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(_layers_CollectionChanged);
                 }
                 return _layers; 
@@ -72,33 +75,6 @@ namespace BimLibrary.ViewModel
                 OnPropertyChanged("Layers");
             }
         }
-
-        #region ClassifiedAs
-        private ObservableCollection<ClassificationItemViewModel> _ClassifiedAs;
-
-        public ObservableCollection<ClassificationItemViewModel> ClassifiedAs
-        {
-            get {
-                if (_ClassifiedAs == null)
-                {
-                    _ClassifiedAs = new ObservableCollection<ClassificationItemViewModel>();
-                    
-                    //TODO: Fill in with initial data
-
-                    _ClassifiedAs.CollectionChanged += new NotifyCollectionChangedEventHandler(_ClassifiedAs_CollectionChanged);
-                }
-                return _ClassifiedAs; 
-            }
-            set { _ClassifiedAs = value; OnPropertyChanged("ClassifiedAs"); }
-        }
-
-        void _ClassifiedAs_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            //keep underlying objects up to date
-            throw new NotImplementedException();
-        }
-        #endregion
-        
 
         void _layers_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {

@@ -31,20 +31,13 @@ namespace BimLibrary.MetadataModel
         #endregion
 
         #region Type Type
-        private Type _Type;
+        [XmlAttribute]
+        private string _Type;
 
-        public Type Type
+        public string Type
         {
             get { return _Type; }
-            set {
-                if (typeof(IfcValue).IsAssignableFrom(value))
-                {
-                    _Type = value;
-                    OnPropertyChanged("Type");
-                }
-                else
-                    throw new Exception("Only IfcValue subtypes are supported.");
-            }
+            set { _Type = value; }
         }
         #endregion
         

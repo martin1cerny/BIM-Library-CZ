@@ -54,6 +54,7 @@ namespace BimLibrary
             AddCommand(Save, ExecutedSaveCommand, CanExecuteSaveCommand);
             AddCommand(ExportIFC, ExecutedExportIFCCommand, CanExecuteExportIFCCommand);
             AddCommand(ExportIFCzip, ExecutedExportIFCzipCommand, CanExecuteExportIFCzipCommand);
+            AddCommand(NewLibrary, ExecutedNewLibraryCommand, CanExecuteNewLibraryCommand);
 
             SetDataContext();
             LoadClassifications();
@@ -162,6 +163,22 @@ namespace BimLibrary
         }
 
         private void CanExecuteExportIFCzipCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+        #endregion
+
+        #region NewLibrary
+        public static RoutedCommand NewLibrary = new RoutedCommand();
+
+        private void ExecutedNewLibraryCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            _library.Close(true);
+            _library.Clear();
+            SetDataContext();
+        }
+
+        private void CanExecuteNewLibraryCommand(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }

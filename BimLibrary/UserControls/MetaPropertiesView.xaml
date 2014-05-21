@@ -22,7 +22,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name"/>
                 <DataGridTextColumn Binding="{Binding Description}" Header="Description"/>
-                <DataGridComboBoxColumn ItemsSource="{StaticResource ResourceKey=PropertyTypes}" DisplayMemberPath="Name" SelectedItemBinding="{Binding Type}" Header="Data type"/>
+                <DataGridComboBoxColumn ItemsSource="{StaticResource ResourceKey=PropertyTypes}" DisplayMemberPath="Name" SelectedValueBinding="{Binding Type}" SelectedValuePath="Name" Header="Data type"/>
                 <DataGridTextColumn Binding="{Binding DefaultValue}" Header="Default value"/>
             </DataGrid.Columns>
         </DataGrid>

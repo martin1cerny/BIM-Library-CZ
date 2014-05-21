@@ -6,6 +6,8 @@ using System.ComponentModel;
 using Xbim.Ifc2x3.Kernel;
 using Xbim.XbimExtensions.Interfaces;
 using Xbim.IO;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace BimLibrary.ViewModel
 {
@@ -39,8 +41,44 @@ namespace BimLibrary.ViewModel
             set { _type.Description = value; OnPropertyChanged("Description"); }
         }
         #endregion
-        
 
+        #region PropertySets
+        private ObservableCollection<PropertySetViewModel> _PropertySets;
+
+        public ObservableCollection<PropertySetViewModel> PropertySets
+        {
+            get { return _PropertySets; }
+            set { _PropertySets = value; OnPropertyChanged("PropertySets"); }
+        }
+        #endregion
+
+
+        #region ClassifiedAs
+        private ObservableCollection<ClassificationItemViewModel> _ClassifiedAs;
+
+        public ObservableCollection<ClassificationItemViewModel> ClassifiedAs
+        {
+            get
+            {
+                if (_ClassifiedAs == null)
+                {
+                    _ClassifiedAs = new ObservableCollection<ClassificationItemViewModel>();
+
+                    //TODO: Fill in with initial data
+
+                    _ClassifiedAs.CollectionChanged += new NotifyCollectionChangedEventHandler(_ClassifiedAs_CollectionChanged);
+                }
+                return _ClassifiedAs;
+            }
+            set { _ClassifiedAs = value; OnPropertyChanged("ClassifiedAs"); }
+        }
+
+        void _ClassifiedAs_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            //keep underlying objects up to date
+            throw new NotImplementedException();
+        }
+        #endregion
 
         #region PropertyChanged implementation
         public event PropertyChangedEventHandler PropertyChanged;

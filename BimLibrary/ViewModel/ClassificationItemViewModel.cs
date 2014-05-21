@@ -50,6 +50,10 @@ namespace BimLibrary.ViewModel
             }
             set
             {
+                var model = _item.ModelOf as XbimModel;
+                if (model != null && !model.IsTransacting)
+                    throw new Exception("Model has to be transacting.");
+
                 if (_item.Notation == null)
                     _item.Notation = _item.ModelOf.Instances.New<IfcClassificationNotationFacet>();
                 _item.Notation.NotationValue = value;

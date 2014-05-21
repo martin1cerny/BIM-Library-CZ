@@ -17,7 +17,7 @@
             <ribbon:Ribbon.ApplicationMenu>
                 <ribbon:RibbonApplicationMenu KeyTip="P">
                     <ribbon:RibbonApplicationMenuItem Header="Open" ImageSource="/BimLibrary;component/Icons/folder_open.ico" Command="{x:Static app:MainWindow.OpenLibrary}"/>
-                    <ribbon:RibbonApplicationMenuItem Header="Create new"/>
+                    <ribbon:RibbonApplicationMenuItem Header="Create new" Command="{x:Static app:MainWindow.NewLibrary}"/>
                     <ribbon:RibbonApplicationMenuItem Header="Save" ImageSource="/BimLibrary;component/Icons/FloppyDisk.ico" Command="{x:Static app:MainWindow.Save}"/>
                     <ribbon:RibbonApplicationMenuItem Header="Save as" ImageSource="/BimLibrary;component/Icons/FloppyDisk.ico" Command="{x:Static app:MainWindow.SaveAs}"/>
                     <ribbon:RibbonApplicationMenuItem Header="Export to">
@@ -29,6 +29,13 @@
                 </ribbon:RibbonApplicationMenu>
             </ribbon:Ribbon.ApplicationMenu>
             <ribbon:RibbonTab Header="Library elements" >
+                <ribbon:RibbonGroup Header="Classification system">
+                    <ribbon:RibbonComboBox IsEditable="False">
+                        <ribbon:RibbonGallery SelectedItem="{Binding ElementName=This, Path=ActiveClassification}" >
+                            <ribbon:RibbonGalleryCategory ItemsSource="{Binding ElementName=This, Path=Classifications}" DisplayMemberPath="Name"/>
+                        </ribbon:RibbonGallery>
+                    </ribbon:RibbonComboBox>
+                </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Header="Layered elements">
                     <ribbon:RibbonButton Label="New"  />
                     <ribbon:RibbonButton Label="Change"  />
@@ -38,6 +45,13 @@
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Header="Properties" Name="rbPropertiesTab">
+                <ribbon:RibbonGroup Header="Classification system">
+                    <ribbon:RibbonComboBox IsEditable="False">
+                        <ribbon:RibbonGallery SelectedItem="{Binding ElementName=This, Path=ActiveClassification}" >
+                            <ribbon:RibbonGalleryCategory ItemsSource="{Binding ElementName=This, Path=Classifications}" DisplayMemberPath="Name"/>
+                        </ribbon:RibbonGallery>
+                    </ribbon:RibbonComboBox>
+                </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Header="Property sets">
                     <ribbon:RibbonButton Label="New" Name="ribNewPset" Click="ribNewPset_Click"/>
                     <ribbon:RibbonButton Label="Edit" Name="ribEditPset"/>
@@ -49,9 +63,8 @@
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Header="Classifications" Name="rbClassificationTab">
                 <ribbon:RibbonGroup Header="Classification systems">
-                    <!--<ComboBox ItemsSource="{Binding ElementName=This, Path=Classifications}" DisplayMemberPath="Name" SelectedItem="{Binding ElementName=This, Path=ActiveClassification}" MinWidth="90"/>-->
                     <ribbon:RibbonComboBox IsEditable="False" Label="Classification systems">
-                        <ribbon:RibbonGallery SelectedItem="{Binding ElementName=This, Path=ActiveClassification}">
+                        <ribbon:RibbonGallery SelectedItem="{Binding ElementName=This, Path=ActiveClassification}" >
                             <ribbon:RibbonGalleryCategory ItemsSource="{Binding ElementName=This, Path=Classifications}" DisplayMemberPath="Name"/>
                         </ribbon:RibbonGallery>
                     </ribbon:RibbonComboBox>
@@ -67,6 +80,13 @@
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Header="Materials" Name="rbMaterialTab">
+                <ribbon:RibbonGroup Header="Classification system">
+                    <ribbon:RibbonComboBox IsEditable="False">
+                        <ribbon:RibbonGallery SelectedItem="{Binding ElementName=This, Path=ActiveClassification}" >
+                            <ribbon:RibbonGalleryCategory ItemsSource="{Binding ElementName=This, Path=Classifications}" DisplayMemberPath="Name"/>
+                        </ribbon:RibbonGallery>
+                    </ribbon:RibbonComboBox>
+                </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup>
                     <ribbon:RibbonButton Label="New" Name="ribNewMaterial" Click="ribNewMaterial_Click"/>
                     <ribbon:RibbonButton Label="Edit" LargeImageSource="/BimLibrary;component/Icons/edit.ico" />
@@ -84,7 +104,7 @@
 
             </Grid>
             <Grid Visibility="{Binding ElementName=rbMaterialTab, Path=IsSelected, Converter={StaticResource boolToVisibility}}">
-                <ctrls:MaterialsView Model="{Binding Model}" x:Name="materialsView"/>
+                <ctrls:MaterialsView x:Name="materialsView"/>
             </Grid>
         </Grid>
     </DockPanel>

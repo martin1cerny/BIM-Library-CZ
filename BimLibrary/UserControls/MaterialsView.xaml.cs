@@ -27,14 +27,13 @@ namespace BimLibrary.UserControls
         {
             InitializeComponent();
 
-            //TODO: Set Materials to static materials list in Library
+            SetValue(MaterialsProperty, App.Library.Materials);
         }
 
         #region Materials
         public ObservableCollection<MaterialViewModel> Materials
         {
             get { return (ObservableCollection<MaterialViewModel>)GetValue(MaterialsProperty); }
-            set { SetValue(MaterialsProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Materials.  This enables animation, styling, binding, etc...
