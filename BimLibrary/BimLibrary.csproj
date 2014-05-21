@@ -112,6 +112,9 @@
     </Compile>
     <Compile Include="ViewModel\ClassificationItemViewModel.cs" />
     <Compile Include="ViewModel\ClassificationViewModel.cs" />
+    <Compile Include="ViewModel\ElementTypeViewModel.cs" />
+    <Compile Include="ViewModel\LayeredElementViewModel.cs" />
+    <Compile Include="ViewModel\LayerViewModel.cs" />
     <Compile Include="ViewModel\MaterialViewModel.cs" />
     <Compile Include="ViewModel\PropertiesViewModel.cs" />
     <Compile Include="Windows\ClassificationItemWindow.xaml.cs">

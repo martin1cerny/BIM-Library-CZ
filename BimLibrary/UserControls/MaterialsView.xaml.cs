@@ -26,8 +26,9 @@ namespace BimLibrary.UserControls
         public MaterialsView()
         {
             InitializeComponent();
-        }
 
+            //TODO: Set Materials to static materials list in Library
+        }
 
         #region Materials
         public ObservableCollection<MaterialViewModel> Materials

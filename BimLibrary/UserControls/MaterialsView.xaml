@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              Name="This"
+             xmlns:lib="clr-namespace:BimLibrary"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <DataGrid AutoGenerateColumns="True" ItemsSource="{Binding ElementName=This, Path=Materials}">

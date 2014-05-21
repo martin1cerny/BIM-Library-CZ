@@ -8,6 +8,8 @@ using Xbim.XbimExtensions.Interfaces;
 using Ionic.Zip;
 using System.IO;
 using System.ComponentModel;
+using BimLibrary.ViewModel;
+using System.Collections.ObjectModel;
 
 namespace BimLibrary
 {
@@ -176,6 +178,21 @@ namespace BimLibrary
                 throw new ArgumentNullException();
             _model.SaveAs(path, XbimStorageType.IFCZIP);
         }
+
+        #region Materials
+        private ObservableCollection<MaterialViewModel> _Materials;
+
+        public ObservableCollection<MaterialViewModel> Materials
+        {
+            get {
+                if (_Materials == null)
+                    _Materials = new ObservableCollection<MaterialViewModel>();
+                return _Materials; 
+            }
+            set { _Materials = value; OnPropertyChanged("Materials"); }
+        }
+        #endregion
+        
 
         #region Property Changed implementation
         public event PropertyChangedEventHandler PropertyChanged;
