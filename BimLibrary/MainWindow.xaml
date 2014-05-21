@@ -82,14 +82,19 @@
             <ribbon:RibbonTab Header="Materials" Name="rbMaterialTab">
                 <ribbon:RibbonGroup Header="Classification system">
                     <ribbon:RibbonComboBox IsEditable="False">
-                        <ribbon:RibbonGallery SelectedItem="{Binding ElementName=This, Path=ActiveClassification}" >
+                        <ribbon:RibbonGallery>
                             <ribbon:RibbonGalleryCategory ItemsSource="{Binding ElementName=This, Path=Classifications}" DisplayMemberPath="Name"/>
                         </ribbon:RibbonGallery>
                     </ribbon:RibbonComboBox>
                 </ribbon:RibbonGroup>
-                <ribbon:RibbonGroup>
+                <ribbon:RibbonGroup Header="Materials">
                     <ribbon:RibbonButton Label="New" Name="ribNewMaterial" Click="ribNewMaterial_Click"/>
                     <ribbon:RibbonButton Label="Edit" LargeImageSource="/BimLibrary;component/Icons/edit.ico" />
+                </ribbon:RibbonGroup>
+                <ribbon:RibbonGroup Header="Material properties">
+                    <ribbon:RibbonButton Label="Add"/>
+                    <ribbon:RibbonButton Label="Change"/>
+                    <ribbon:RibbonButton Label="Delete"/>
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
         </ribbon:Ribbon>

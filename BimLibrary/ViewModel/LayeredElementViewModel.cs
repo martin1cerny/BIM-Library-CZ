@@ -26,54 +26,65 @@ namespace BimLibrary.ViewModel
                 {
                     _layers = new ObservableCollection<LayerViewModel>();
 
-                    //TODO: Fill in initial data
+                    var rel = Model.Instances.Where<IfcRelAssociatesMaterial>(r => r.RelatedObjects.Contains(_type)).FirstOrDefault();
+                    if (rel != null)
+                    {
+                        var matLaySet = rel.RelatingMaterial as IfcMaterialLayerSet;
+                        if (matLaySet != null)
+                        {
+                            foreach (var layer in matLaySet.MaterialLayers)
+                            {
+                                _layers.Add(new LayerViewModel(layer));
+                            }
+                        }
+                    }
 
                     _layers.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(_layers_CollectionChanged);
                 }
                 return _layers; 
             }
-            set 
-            {
-                if (!Model.IsTransacting)
-                    throw new Exception("Model has to be in transaction.");
-                if (_layers != null)
-                {
-                    //set property set for underlying IfcElementType
-                    var rel = Model.Instances.Where<IfcRelAssociatesMaterial>(r => r.RelatedObjects.Contains(_type)).FirstOrDefault();
-                    if (rel != null)
-                    {
+            //set 
+            //{
+            //    if (!Model.IsTransacting)
+            //        throw new Exception("Model has to be in transaction.");
+            //    if (_layers != null)
+            //    {
+            //        //set property set for underlying IfcElementType
+            //        var rel = Model.Instances.Where<IfcRelAssociatesMaterial>(r => r.RelatedObjects.Contains(_type)).FirstOrDefault();
+            //        if (rel != null)
+            //        {
                         
-                        rel.RelatingMaterial = Model.Instances.New<IfcMaterialLayerSet>(ls =>
-                        {
-                            foreach (var item in value)
-                            {
-                                ls.MaterialLayers.Add_Reversible(Model.Instances.New<IfcMaterialLayer>(ml =>
-                                {
-                                    ml.Material = item.Material.IfcMaterial;
-                                    ml.LayerThickness = item.Thickness;
-                                }));
-                            }
+            //            rel.RelatingMaterial = Model.Instances.New<IfcMaterialLayerSet>(ls =>
+            //            {
+            //                foreach (var item in value)
+            //                {
+            //                    ls.MaterialLayers.Add_Reversible(Model.Instances.New<IfcMaterialLayer>(ml =>
+            //                    {
+            //                        ml.Material = item.Material.IfcMaterial;
+            //                        ml.LayerThickness = item.Thickness;
+            //                    }));
+            //                }
 
-                        });
-                    }
-                    else
-                    {
-                        var mls = rel.RelatingMaterial as IfcMaterialLayerSet;
-                        mls.MaterialLayers.Clear_Reversible();
-                        foreach (var item in value)
-                        {
-                            mls.MaterialLayers.Add_Reversible(Model.Instances.New<IfcMaterialLayer>(ml =>
-                            {
-                                ml.Material = item.Material.IfcMaterial;
-                                ml.LayerThickness = item.Thickness;
-                            }));
-                        }
-                    }
-                }
-                _layers = value;
+            //            });
+            //        }
+            //        else
+            //        {
+            //            var mls = rel.RelatingMaterial as IfcMaterialLayerSet;
+            //            mls.MaterialLayers.Clear_Reversible();
+            //            foreach (var item in value)
+            //            {
+            //                mls.MaterialLayers.Add_Reversible(Model.Instances.New<IfcMaterialLayer>(ml =>
+            //                {
+            //                    ml.Material = item.Material.IfcMaterial;
+            //                    ml.LayerThickness = item.Thickness;
+            //                }));
+            //            }
+            //        }
+            //    }
+            //    _layers = value;
 
-                OnPropertyChanged("Layers");
-            }
+            //    OnPropertyChanged("Layers");
+            //}
         }
 
         void _layers_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

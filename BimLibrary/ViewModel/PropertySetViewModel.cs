@@ -5,6 +5,7 @@ using System.Text;
 using System.ComponentModel;
 using Xbim.Ifc2x3.Kernel;
 using System.Collections.ObjectModel;
+using Xbim.Ifc2x3.PropertyResource;
 
 namespace BimLibrary.ViewModel
 {
@@ -40,7 +41,29 @@ namespace BimLibrary.ViewModel
         public ObservableCollection<PropertyViewModel> _properties = new ObservableCollection<PropertyViewModel>();
         public ObservableCollection<PropertyViewModel> Properties
         {
-            get { return _properties; }
+            get 
+            {
+                if (_properties == null)
+                {
+                    _properties = new ObservableCollection<PropertyViewModel>();
+
+                    foreach (var item in _pSet.HasProperties)
+                    {
+                        var property = item as IfcPropertySingleValue;
+                        if (property != null)
+                            _properties.Add(new PropertyViewModel(property));
+                    } 
+
+                    _properties.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(_properties_CollectionChanged);
+                }
+                return _properties; 
+            }
+        }
+
+        void _properties_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            //keep underlying objects up to date
+            throw new NotImplementedException();
         }
 
         #region INotifyPropertyChanged implementation

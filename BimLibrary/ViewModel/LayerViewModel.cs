@@ -30,7 +30,17 @@ namespace BimLibrary.ViewModel
 
         public MaterialViewModel Material
         {
-            get { return _Material; }
+            get 
+            {
+                if (_Material == null)
+                {
+                    var material = App.Library.Materials.Where(m => m.Name == _layer.Material.Name).FirstOrDefault();
+                    if (material == null)
+                        throw new Exception("Material should exist in the library list");
+                    _Material = material;
+                }
+                return _Material; 
+            }
             set 
             {
                 _Material = value;
