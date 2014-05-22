@@ -43,48 +43,6 @@ namespace BimLibrary.ViewModel
                 }
                 return _layers; 
             }
-            //set 
-            //{
-            //    if (!Model.IsTransacting)
-            //        throw new Exception("Model has to be in transaction.");
-            //    if (_layers != null)
-            //    {
-            //        //set property set for underlying IfcElementType
-            //        var rel = Model.Instances.Where<IfcRelAssociatesMaterial>(r => r.RelatedObjects.Contains(_type)).FirstOrDefault();
-            //        if (rel != null)
-            //        {
-                        
-            //            rel.RelatingMaterial = Model.Instances.New<IfcMaterialLayerSet>(ls =>
-            //            {
-            //                foreach (var item in value)
-            //                {
-            //                    ls.MaterialLayers.Add_Reversible(Model.Instances.New<IfcMaterialLayer>(ml =>
-            //                    {
-            //                        ml.Material = item.Material.IfcMaterial;
-            //                        ml.LayerThickness = item.Thickness;
-            //                    }));
-            //                }
-
-            //            });
-            //        }
-            //        else
-            //        {
-            //            var mls = rel.RelatingMaterial as IfcMaterialLayerSet;
-            //            mls.MaterialLayers.Clear_Reversible();
-            //            foreach (var item in value)
-            //            {
-            //                mls.MaterialLayers.Add_Reversible(Model.Instances.New<IfcMaterialLayer>(ml =>
-            //                {
-            //                    ml.Material = item.Material.IfcMaterial;
-            //                    ml.LayerThickness = item.Thickness;
-            //                }));
-            //            }
-            //        }
-            //    }
-            //    _layers = value;
-
-            //    OnPropertyChanged("Layers");
-            //}
         }
 
         void _layers_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
