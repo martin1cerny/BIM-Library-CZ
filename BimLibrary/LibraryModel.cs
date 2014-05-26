@@ -10,6 +10,8 @@ using System.IO;
 using System.ComponentModel;
 using BimLibrary.ViewModel;
 using System.Collections.ObjectModel;
+using Xbim.Ifc2x3.ExternalReferenceResource;
+using Xbim.Ifc2x3.MaterialResource;
 
 namespace BimLibrary
 {
@@ -73,6 +75,7 @@ namespace BimLibrary
             if (!File.Exists(file))
                 throw new ArgumentException("File has to be specified");
 
+            Close(true);
             _path = file;
 
             var tempModelPath = Path.Combine(TempDataDir, _libFile);
@@ -92,6 +95,8 @@ namespace BimLibrary
                 _model.Open(tempModelPath, Xbim.XbimExtensions.XbimDBAccess.ReadWrite);
                 OnPropertyChanged("Model");
             }
+
+            Init();
         }
 
         public void Save()
@@ -148,6 +153,7 @@ namespace BimLibrary
             _model = null;
             _propertyMappings = null;
 
+            Init();
             OnPropertyChanged("Model");
             OnPropertyChanged("PropertyMappings");
         }
@@ -158,6 +164,7 @@ namespace BimLibrary
             lib._model = XbimModel.CreateTemporaryModel();
             lib._propertyMappings = new MetaPropertyMappings();
 
+            lib.Init();
             lib.OnPropertyChanged("Model");
             lib.OnPropertyChanged("PropertyMappings");
 
@@ -169,6 +176,7 @@ namespace BimLibrary
             _model = XbimModel.CreateTemporaryModel();
             _propertyMappings = new MetaPropertyMappings();
 
+            Init();
             OnPropertyChanged("Model");
             OnPropertyChanged("PropertyMappings");
         }
@@ -202,7 +210,44 @@ namespace BimLibrary
             set { _Materials = value; OnPropertyChanged("Materials"); }
         }
         #endregion
-        
+
+        #region Classifications
+        private ObservableCollection<ClassificationViewModel> _classifications;
+
+        public ObservableCollection<ClassificationViewModel> Classifications
+        {
+            get {
+                if (_classifications == null)
+                    _classifications = new ObservableCollection<ClassificationViewModel>();
+                return _classifications; }
+            set { _classifications = value; OnPropertyChanged("Classifications"); }
+        }
+        #endregion
+
+        private void Init()
+        {
+            //clear first
+            Classifications.Clear();
+            Materials.Clear();
+
+            if (_model != null)
+            {
+                //classifications
+                var cls = _model.Instances.OfType<IfcClassification>();
+                foreach (var item in cls)
+                {
+                    Classifications.Add(new ClassificationViewModel(item));
+                }
+
+                //materials
+                var mats = _model.Instances.OfType<IfcMaterial>();
+                foreach (var item in mats)
+                {
+                    Materials.Add(new MaterialViewModel(item));
+                }
+            }
+
+        }
 
         #region Property Changed implementation
         public event PropertyChangedEventHandler PropertyChanged;
@@ -212,5 +257,7 @@ namespace BimLibrary
                 PropertyChanged(this, new PropertyChangedEventArgs(property));
         }
         #endregion
+
+
     }
 }

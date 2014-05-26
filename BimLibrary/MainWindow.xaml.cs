@@ -57,7 +57,7 @@ namespace BimLibrary
             AddCommand(NewLibrary, ExecutedNewLibraryCommand, CanExecuteNewLibraryCommand);
 
             SetDataContext();
-            LoadClassifications();
+            SetValue(ClassificationsProperty, App.Library.Classifications);
         }
 
         #region Commands
@@ -200,7 +200,6 @@ namespace BimLibrary
         public ObservableCollection<ClassificationViewModel> Classifications
         {
             get { return (ObservableCollection<ClassificationViewModel>)GetValue(ClassificationsProperty); }
-            set { SetValue(ClassificationsProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Classifications.  This enables animation, styling, binding, etc...
@@ -222,17 +221,6 @@ namespace BimLibrary
         #endregion
 
 
-        private void LoadClassifications()
-        {
-            if (_model != null)
-            {
-                var cls = _model.Instances.OfType<IfcClassification>();
-                foreach (var item in cls)
-                {
-                    Classifications.Add(new ClassificationViewModel(item));
-                }
-            }
-        }
 
         private string SaveWithDialog()
         {
@@ -290,7 +278,6 @@ namespace BimLibrary
             var provider = new ObjectDataProvider();
             provider.ObjectInstance = _library;
             DataContext = provider;
-            LoadClassifications();
         }
 
         private void ribNewClassItem_Click(object sender, RoutedEventArgs e)

@@ -47,11 +47,24 @@ namespace BimLibrary.ViewModel
 
         public ObservableCollection<PropertySetViewModel> PropertySets
         {
-            get { return _PropertySets; }
+            get {
+                if (_PropertySets == null)
+                {
+                    _PropertySets = new ObservableCollection<PropertySetViewModel>();
+                    //TODO: Fill in existing values from model
+
+                    _PropertySets.CollectionChanged += new NotifyCollectionChangedEventHandler(_PropertySets_CollectionChanged);
+                }
+                return _PropertySets; 
+            }
             set { _PropertySets = value; OnPropertyChanged("PropertySets"); }
         }
-        #endregion
 
+        void _PropertySets_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
 
         #region ClassifiedAs
         private ObservableCollection<ClassificationItemViewModel> _ClassifiedAs;

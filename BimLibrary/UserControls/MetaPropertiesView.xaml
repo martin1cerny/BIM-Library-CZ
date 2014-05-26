@@ -6,19 +6,28 @@
              mc:Ignorable="d" 
              xmlns:ctrl="clr-namespace:BimLibrary.UserControls"
              Name="This"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="306" d:DesignWidth="463">
     <UserControl.Resources>
         <ctrl:PropertyTypes x:Key="PropertyTypes"/>
     </UserControl.Resources>
-    <DockPanel>
-        <ListView DockPanel.Dock="Left" MinWidth="150" Name="lvPSets" ItemsSource="{Binding ElementName=This, Path=ClassificationItem.PropertyMapping.PropertySets}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <ListView Grid.Column="0" MinWidth="150" Name="lvPSets" ItemsSource="{Binding ElementName=This, Path=ClassificationItem.PropertyMapping.PropertySets}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Label Content="{Binding Name}" ToolTip="{Binding Description}"/>
+                    <TextBlock Text="{Binding Name}" ToolTip="{Binding Description}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <DataGrid ItemsSource="{Binding ElementName=lvPSets, Path=SelectedItem.Properties}" AutoGenerateColumns="False">
+        
+        <GridSplitter Grid.Column="1" Width="2" ResizeDirection="Columns" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        
+        <DataGrid ItemsSource="{Binding ElementName=lvPSets, Path=SelectedItem.Properties}" AutoGenerateColumns="False" Grid.Column="2">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name"/>
                 <DataGridTextColumn Binding="{Binding Description}" Header="Description"/>
@@ -26,5 +35,5 @@
                 <DataGridTextColumn Binding="{Binding DefaultValue}" Header="Default value"/>
             </DataGrid.Columns>
         </DataGrid>
-    </DockPanel>
+    </Grid>
 </UserControl>

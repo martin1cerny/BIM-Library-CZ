@@ -91,6 +91,11 @@
                     <ribbon:RibbonButton Label="New" Name="ribNewMaterial" Click="ribNewMaterial_Click"/>
                     <ribbon:RibbonButton Label="Edit" LargeImageSource="/BimLibrary;component/Icons/edit.ico" />
                 </ribbon:RibbonGroup>
+                <ribbon:RibbonGroup Header="Material property sets">
+                    <ribbon:RibbonButton Label="Add"/>
+                    <ribbon:RibbonButton Label="Change"/>
+                    <ribbon:RibbonButton Label="Delete"/>
+                </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Header="Material properties">
                     <ribbon:RibbonButton Label="Add"/>
                     <ribbon:RibbonButton Label="Change"/>

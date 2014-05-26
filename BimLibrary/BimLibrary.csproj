@@ -108,6 +108,9 @@
     <Compile Include="UserControls\ClassView.xaml.cs">
       <DependentUpon>ClassView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ElementView.xaml.cs">
+      <DependentUpon>ElementView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\LayersView.xaml.cs">
       <DependentUpon>LayersView.xaml</DependentUpon>
     </Compile>
@@ -116,6 +119,9 @@
     </Compile>
     <Compile Include="UserControls\MetaPropertiesView.xaml.cs">
       <DependentUpon>MetaPropertiesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\PropertySetsView.xaml.cs">
+      <DependentUpon>PropertySetsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ClassificationItemViewModel.cs" />
     <Compile Include="ViewModel\ClassificationViewModel.cs" />
@@ -150,6 +156,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControls\ElementView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\LayersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -159,6 +169,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\MetaPropertiesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\PropertySetsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
