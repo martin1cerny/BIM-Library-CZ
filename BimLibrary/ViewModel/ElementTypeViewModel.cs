@@ -16,6 +16,7 @@ namespace BimLibrary.ViewModel
         protected XbimModel Model { get { return _type.ModelOf as XbimModel; } }
 
         protected IfcTypeProduct _type;
+        public IfcTypeProduct ElementType { get { return _type; } }
 
         public ElementTypeViewModel(IfcTypeProduct elementType)
         {

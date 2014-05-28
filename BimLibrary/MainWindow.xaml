@@ -70,7 +70,7 @@
                     </ribbon:RibbonComboBox>
                     <ribbon:RibbonButton Label="New system" Click="ribNewClassificationSystem_Click" Name="ribNewClassificationSystem"/>
                     <ribbon:RibbonButton Label="Edit system" Name="ribEditClassificationSystem"/>
-                    <ribbon:RibbonButton Label="Import CSV"/>
+                    <ribbon:RibbonButton Label="Import CSV" Command="{x:Static app:MainWindow.ImportClassification}"/>
                     <ribbon:RibbonButton Label="Export CSV"/>
                 </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Header="Classification items">

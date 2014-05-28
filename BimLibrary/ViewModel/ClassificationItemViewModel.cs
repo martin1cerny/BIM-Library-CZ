@@ -8,6 +8,9 @@ using Xbim.IO;
 using Xbim.XbimExtensions.Interfaces;
 using System.ComponentModel;
 using BimLibrary.MetadataModel;
+using Xbim.Ifc2x3.MaterialResource;
+using Xbim.XbimExtensions.SelectTypes;
+using Xbim.Ifc2x3.Kernel;
 
 namespace BimLibrary.ViewModel
 {
@@ -126,5 +129,54 @@ namespace BimLibrary.ViewModel
                 PropertyChanged(this, new PropertyChangedEventArgs(property));
         }
         #endregion
+
+        public IEnumerable<MaterialViewModel> GetMaterials()
+        {
+            var model = _item.ModelOf;
+
+            foreach (var material in App.Library.Materials)
+            {
+                var ifcMat = material.IfcMaterial;
+                var clasRel = model.Instances.Where<IfcMaterialClassificationRelationship>(r => r.ClassifiedMaterial == ifcMat && ItemIsInSelection( r.MaterialClassifications));
+                foreach (var rel in clasRel)
+                {
+                    yield return material;
+                }
+            }
+        }
+
+        public IEnumerable<ElementTypeViewModel> GetElementTypes()
+        {
+            var model = _item.ModelOf;
+
+            foreach (var type in App.Library.ElementTypes)
+            {
+                var rels = model.Instances.Where<IfcRelAssociatesClassification>(r => r.RelatedObjects.Contains(type.ElementType) && ItemIsInSelection(r.RelatingClassification));
+                if (rels.Any())
+                    yield return type;
+            }
+        }
+
+        private bool ItemIsInSelection(IfcClassificationNotationSelect notationSelect)
+        {
+            var notation = notationSelect as IfcClassificationNotation;
+            if (notation == null)
+                return false;
+            var facets = notation.NotationFacets;
+            if (facets.Contains(_item.Notation))
+                return true;
+            else
+                return false;
+        }
+
+        private bool ItemIsInSelection(IEnumerable< IfcClassificationNotationSelect> notationSelects)
+        {
+            foreach (var select in notationSelects)
+            {
+                if (ItemIsInSelection(select))
+                    return true;
+            }
+            return false;
+        }
     }
 }

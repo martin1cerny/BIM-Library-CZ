@@ -224,6 +224,21 @@ namespace BimLibrary
         }
         #endregion
 
+        #region Element Types
+        private ObservableCollection<ElementTypeViewModel> _elementTypes;
+
+        public ObservableCollection<ElementTypeViewModel> ElementTypes
+        {
+            get
+            {
+                if (_elementTypes == null)
+                    _elementTypes = new ObservableCollection<ElementTypeViewModel>();
+                return _elementTypes;
+            }
+            set { _elementTypes = value; OnPropertyChanged("ElementTypes"); }
+        }
+        #endregion
+
         private void Init()
         {
             //clear first

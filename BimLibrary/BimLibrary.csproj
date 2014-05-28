@@ -104,6 +104,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ClassificationImporter.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="UserControls\ClassView.xaml.cs">
       <DependentUpon>ClassView.xaml</DependentUpon>
@@ -131,6 +132,9 @@
     <Compile Include="ViewModel\MaterialViewModel.cs" />
     <Compile Include="ViewModel\PropertySetViewModel.cs" />
     <Compile Include="ViewModel\PropertyViewModel.cs" />
+    <Compile Include="Windows\ClassificationImportWindow.xaml.cs">
+      <DependentUpon>ClassificationImportWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ClassificationItemWindow.xaml.cs">
       <DependentUpon>ClassificationItemWindow.xaml</DependentUpon>
     </Compile>
@@ -173,6 +177,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\PropertySetsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ClassificationImportWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -220,6 +228,45 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="Classifications\NRM.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\Uniclass 1.4.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\Uniclass2-Ac.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\Uniclass2-Co.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\Uniclass2-Ee.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\Uniclass2-Ef.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\Uniclass2-En.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\Uniclass2-PP.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\Uniclass2-Pr.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\Uniclass2-Sp.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\Uniclass2-Ss.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\Uniclass2-WR.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\Uniclass2-Zz.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

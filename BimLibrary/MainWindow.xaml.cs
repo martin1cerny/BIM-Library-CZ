@@ -55,6 +55,7 @@ namespace BimLibrary
             AddCommand(ExportIFC, ExecutedExportIFCCommand, CanExecuteExportIFCCommand);
             AddCommand(ExportIFCzip, ExecutedExportIFCzipCommand, CanExecuteExportIFCzipCommand);
             AddCommand(NewLibrary, ExecutedNewLibraryCommand, CanExecuteNewLibraryCommand);
+            AddCommand(ImportClassification, ExecutedImportClassificationCommand, CanExecuteImportClassificationCommand);
 
             SetDataContext();
             SetValue(ClassificationsProperty, App.Library.Classifications);
@@ -183,6 +184,23 @@ namespace BimLibrary
             e.CanExecute = true;
         }
         #endregion
+
+        #region ImportClassification
+        public static RoutedCommand ImportClassification = new RoutedCommand();
+
+        private void ExecutedImportClassificationCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            var dlg = new ClassificationImportWindow();
+            dlg.Owner = this;
+            dlg.ShowDialog();
+        }
+
+        private void CanExecuteImportClassificationCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+        #endregion
+        
 
         private void AddCommand(ICommand command, ExecutedRoutedEventHandler executed, CanExecuteRoutedEventHandler canExecute)
         {
