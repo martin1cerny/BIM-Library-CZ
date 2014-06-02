@@ -92,7 +92,7 @@ namespace BimLibrary.ViewModel
             get { return _isExpanded; }
             set { 
                 _isExpanded = value;
-                if (value && !_children.Any())
+                if (value && _children.FirstOrDefault() == default(ClassificationItemViewModel))
                     LoadChildren();
                 OnPropertyChanged("IsExpanded"); 
             }
@@ -100,14 +100,23 @@ namespace BimLibrary.ViewModel
 
 
 
-        private ObservableCollection<ClassificationItemViewModel> _children = new ObservableCollection<ClassificationItemViewModel>();
+        private ObservableCollection<ClassificationItemViewModel> _children;
         public ObservableCollection<ClassificationItemViewModel> Children
         {
-            get { return _children;  }
+            get 
+            {
+                if (_children == null)
+                {
+                    _children = new ObservableCollection<ClassificationItemViewModel>();
+                    _children.Add(default(ClassificationItemViewModel));
+                }
+                return _children;  
+            }
         }
 
         private void LoadChildren()
         {
+            _children = new ObservableCollection<ClassificationItemViewModel>();
             if (_item.IsClassifyingItemIn.Any())
             {
                 foreach (var rel in _item.IsClassifyingItemIn)
@@ -117,8 +126,8 @@ namespace BimLibrary.ViewModel
                         _children.Add(new ClassificationItemViewModel(item));
                     }
                 }
-                OnPropertyChanged("Children");
             }
+            OnPropertyChanged("Children");
         }
 
         #region PropertyChanged implementation

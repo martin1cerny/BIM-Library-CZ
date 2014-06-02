@@ -115,8 +115,12 @@ namespace BimLibrary
 
         private string[] ParseLine(string line)
         {
-            line = line.Trim('"', ' ', '\t');
-            return line.Split(new[] { "\",\"" }, StringSplitOptions.None);
+            var results = line.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < results.Length; i++)
+            {
+                results[i] = results[i].Trim('"');
+            }
+            return results;
         }
     }
 }

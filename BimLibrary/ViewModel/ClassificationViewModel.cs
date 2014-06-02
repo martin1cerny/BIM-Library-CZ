@@ -69,6 +69,8 @@ namespace BimLibrary.ViewModel
         {
             foreach (var item in items)
             {
+                if (item == null)
+                    return null;
                 if (item.IsSelected)
                     return item;
             }
