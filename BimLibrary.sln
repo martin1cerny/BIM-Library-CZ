@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BimLibrary", "BimLibrary\Bi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gbXML", "gbXML\gbXML.csproj", "{021926E9-7F34-4681-B646-1F8FFCBE1BBF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSKP", "TSKP\TSKP.csproj", "{3F95A57F-EE62-45B2-B1B0-9FAC852A0B12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{021926E9-7F34-4681-B646-1F8FFCBE1BBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{021926E9-7F34-4681-B646-1F8FFCBE1BBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{021926E9-7F34-4681-B646-1F8FFCBE1BBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F95A57F-EE62-45B2-B1B0-9FAC852A0B12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F95A57F-EE62-45B2-B1B0-9FAC852A0B12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F95A57F-EE62-45B2-B1B0-9FAC852A0B12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F95A57F-EE62-45B2-B1B0-9FAC852A0B12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

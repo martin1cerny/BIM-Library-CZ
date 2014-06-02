@@ -231,6 +231,39 @@
     <None Include="Classifications\NRM.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Classifications\TSKP 1.4.1 - 0 - Vedlejší rozpočtové náklady.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\TSKP 1.4.1 - 1 - Zemní práce.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\TSKP 1.4.1 - 2 - Zakládání, zpevňování hornin.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\TSKP 1.4.1 - 3 - Svislé a kompletní konstrukce.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\TSKP 1.4.1 - 4 - Vodorovné konstrukce.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\TSKP 1.4.1 - 5 - Komunikace pozemní.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\TSKP 1.4.1 - 6 - Úpravy povrchů, podlahy a osazovaní výplní.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\TSKP 1.4.1 - 7 - Konstrukce a práce PSV.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\TSKP 1.4.1 - 8 - Vedení dálková a přípojná.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\TSKP 1.4.1 - 9 - Ostatní konstrukce a práce, bourání.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Classifications\TSKP 1.4.1.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Classifications\Uniclass 1.4.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
