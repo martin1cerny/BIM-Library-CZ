@@ -52,14 +52,6 @@
                         </ribbon:RibbonGallery>
                     </ribbon:RibbonComboBox>
                 </ribbon:RibbonGroup>
-                <ribbon:RibbonGroup Header="Property sets">
-                    <ribbon:RibbonButton Label="New" Name="ribNewPset" Click="ribNewPset_Click"/>
-                    <ribbon:RibbonButton Label="Edit" Name="ribEditPset"/>
-                </ribbon:RibbonGroup>
-                <ribbon:RibbonGroup Header="Property">
-                    <ribbon:RibbonButton Label="New" Name="ribNewProperty"/>
-                    <ribbon:RibbonButton Label="Edit" Name="ribEditProperty"/>
-                </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Header="Classifications" Name="rbClassificationTab">
                 <ribbon:RibbonGroup Header="Classification systems">

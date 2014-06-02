@@ -259,6 +259,7 @@ namespace BimLibrary
             {
                 var material = _model.Instances.New<IfcMaterial>();
                 MaterialWindow win = new MaterialWindow();
+                win.Owner = this;
                 win.Material = new ViewModel.MaterialViewModel(material);
                 var res = win.ShowDialog();
 
@@ -279,6 +280,7 @@ namespace BimLibrary
             {
                 var classification = _model.Instances.New<IfcClassification>();
                 var win = new ClassificationWindow();
+                win.Owner = this;
                 win.Classification = new ViewModel.ClassificationViewModel(classification);
                 var res = win.ShowDialog();
 
@@ -325,6 +327,7 @@ namespace BimLibrary
                 }
 
                 var win = new ClassificationItemWindow();
+                win.Owner = this;
                 win.ClassificationItem = new ClassificationItemViewModel(item);
                 var res = win.ShowDialog();
 
@@ -365,24 +368,11 @@ namespace BimLibrary
             }
         }
 
-        private void ribNewPset_Click(object sender, RoutedEventArgs e)
-        {
-            if (!CheckActiveClassificationItem())
-                return;
-            var pset = new MetadataModel.MetaPropertySet();
-            var win = new PSetWindow();
-            win.PropertySet = pset;
-            if (win.ShowDialog() ?? false)
-            {
-                ActiveClassification.SelectedItem.PropertyMapping.PropertySets.Add(pset);
-            }
-        }
-
         private bool CheckActiveClassification()
         {
             if (ActiveClassification == null)
             {
-                MessageBox.Show("You have to select active classification system first or create one.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(this, "You have to select active classification system first or create one.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 return false;
             }
             return true;
@@ -394,7 +384,7 @@ namespace BimLibrary
                 return false;
             if (ActiveClassification.SelectedItem == null)
             {
-                MessageBox.Show("You have to select classification item first.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(this, "You have to select classification item first.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 return false;
             }
             return true;

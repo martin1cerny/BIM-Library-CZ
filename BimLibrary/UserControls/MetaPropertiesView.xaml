@@ -17,17 +17,19 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
-        <ListView Grid.Column="0" MinWidth="150" Name="lvPSets" ItemsSource="{Binding ElementName=This, Path=ClassificationItem.PropertyMapping.PropertySets}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name}" ToolTip="{Binding Description}"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <DataGrid Grid.Column="0"
+                  ItemsSource="{Binding ElementName=This, Path=ClassificationItem.PropertyMapping.PropertySets}" 
+                  AutoGenerateColumns="False"
+                  Name="PSets">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Name}" Header="Name"/>
+                <DataGridTextColumn Binding="{Binding Description}" Header="Description"/>
+            </DataGrid.Columns>
+        </DataGrid>
         
         <GridSplitter Grid.Column="1" Width="2" ResizeDirection="Columns" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         
-        <DataGrid ItemsSource="{Binding ElementName=lvPSets, Path=SelectedItem.Properties}" AutoGenerateColumns="False" Grid.Column="2">
+        <DataGrid ItemsSource="{Binding ElementName=PSets, Path=SelectedItem.Properties}" AutoGenerateColumns="False" Grid.Column="2">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name"/>
                 <DataGridTextColumn Binding="{Binding Description}" Header="Description"/>
