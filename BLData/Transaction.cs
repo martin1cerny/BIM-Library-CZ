@@ -11,7 +11,7 @@ namespace BLData
     {
         private StateEnum _state;
         internal StateEnum State { get { return _state; } }
-        public bool IsFinished { get { return _state != StateEnum.UNFINISHED; } }
+        public bool IsFinished { get { return _state != StateEnum.OPENED; } }
         public bool IsDirty { get { return _undoActions.Count > 0; } }
 
         private List<Action> _undoActions;
@@ -26,7 +26,7 @@ namespace BLData
         internal Transaction(string name)
         {
             _name = name;
-            _state = StateEnum.UNFINISHED;
+            _state = StateEnum.OPENED;
             _undoActions = new List<Action>();
             _redoActions = new List<Action>();
         }
@@ -34,7 +34,7 @@ namespace BLData
         //action which would reverse the change
         internal void AddAction(Action undoAction, Action redoAction)
         {
-            if (_state != StateEnum.UNFINISHED)
+            if (_state != StateEnum.OPENED)
                 throw new TransactionFinishedException(_name);
 
             _undoActions.Add(undoAction);
@@ -43,7 +43,7 @@ namespace BLData
 
         public void Commit()
         {
-            if (_state != StateEnum.UNFINISHED)
+            if (_state != StateEnum.OPENED)
                 throw new TransactionFinishedException(_name);
 
             //do nothing. Changes are done by default;
@@ -52,7 +52,7 @@ namespace BLData
 
         public void RollBack()
         {
-            if (_state != StateEnum.UNFINISHED)
+            if (_state != StateEnum.OPENED)
                 throw new TransactionFinishedException(_name);
             foreach (var action in _undoActions)
             {
@@ -88,14 +88,14 @@ namespace BLData
 
         public void Dispose()
         {
-            if (_state == StateEnum.UNFINISHED)
+            if (_state == StateEnum.OPENED)
                 RollBack();
         }
 
         internal enum StateEnum
         {
             FINISHED,
-            UNFINISHED,
+            OPENED,
             UNDONE,
             REDONE
         }

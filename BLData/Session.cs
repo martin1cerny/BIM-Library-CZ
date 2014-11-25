@@ -25,7 +25,7 @@ namespace BLData
 
         internal void Add(Transaction txn)
         {
-            if (CurrentTransaction != null && CurrentTransaction.State == Transaction.StateEnum.UNFINISHED)
+            if (CurrentTransaction != null && CurrentTransaction.State == Transaction.StateEnum.OPENED)
                 throw new Exceptions.TransactionNotFinishedException(CurrentTransaction.Name);
 
             //remove all redo transactions ahead

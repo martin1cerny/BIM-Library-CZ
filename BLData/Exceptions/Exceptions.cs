@@ -50,4 +50,15 @@ namespace BLData.Exceptions
           System.Runtime.Serialization.StreamingContext context)
             : base(info, context) { }
     }
+    [Serializable]
+    public class ModelOriginException : Exception
+    {
+        public ModelOriginException() { }
+        public ModelOriginException(string message) : base(message) { }
+        public ModelOriginException(string message, Exception inner) : base(message, inner) { }
+        protected ModelOriginException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context)
+            : base(info, context) { }
+    }
 }

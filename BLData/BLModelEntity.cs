@@ -20,7 +20,8 @@ namespace BLData
         public Guid Id
         {
             get { return _id; }
-            set { Set("_id", _id, value); }
+            //set should only happen during deserialization when model is null
+            set { if (_model != null) throw new InvalidOperationException("ID can't be assigned when object is bound to model."); _id = value; }
         }
 
         public BLModelEntity()
