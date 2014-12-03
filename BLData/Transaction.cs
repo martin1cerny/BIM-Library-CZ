@@ -13,6 +13,7 @@ namespace BLData
         internal StateEnum State { get { return _state; } }
         public bool IsFinished { get { return _state != StateEnum.OPENED; } }
         public bool IsDirty { get { return _undoActions.Count > 0; } }
+        public bool IsSaved { get; set; }
 
         private List<Action> _undoActions;
         private List<Action> _redoActions;

@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 
 namespace BLData
 {
+    [XmlInclude(typeof(BLData.Classification.BLClassificationItem))]
     public abstract class BLModelEntity : IBLModelEntity
     {
         [XmlIgnore]
@@ -16,7 +17,8 @@ namespace BLData
             get { return _model; }
         }
 
-        private Guid _id;
+        private Guid _id  = Guid.NewGuid();
+        [XmlAttribute]
         public Guid Id
         {
             get { return _id; }
@@ -24,17 +26,15 @@ namespace BLData
             set { if (_model != null) throw new InvalidOperationException("ID can't be assigned when object is bound to model."); _id = value; }
         }
 
-        public BLModelEntity()
-        {
-            _id = Guid.NewGuid();
-        }
-
-        internal BLModel _model;
+        protected BLModel _model;
+        //this has to be implemented in all inherited classes
+        internal abstract void SetModel(BLModel model);
+        
         protected void Set(string fieldName, object oldValue, object newValue)
         {
             if (_model == null) //no transaction. This is for deserialization only
             {
-                var field = GetType().GetField(fieldName, System.Reflection.BindingFlags.NonPublic);
+                var field = GetType().GetField(fieldName, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 if (fieldName == null) throw new Exceptions.FieldNotFoundException(fieldName);
                 field.SetValue(this, newValue);
             }
@@ -49,5 +49,17 @@ namespace BLData
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
+
+        public override int GetHashCode()
+        {
+            return _id.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return _id.Equals(obj);
+        }
+
+        public abstract string Validate();
     }
 }

@@ -12,5 +12,6 @@ namespace BLData
         Guid Id { get; set; }
         BLModel Model { get; }
         void OnPropertyChanged(string name);
+        string Validate();
     }
 }

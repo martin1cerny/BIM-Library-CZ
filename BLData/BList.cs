@@ -13,7 +13,12 @@ namespace BLData
         private BLModel _model;
         [XmlIgnore]
         public BLModel Model { get { return _model; } }
-        
+
+        internal void SetModel(BLModel model)
+        {
+            _model = model;
+        }
+
         public BList(BLModel model)
         {
             _model = model;
@@ -31,12 +36,8 @@ namespace BLData
                 base.ClearItems();
             };
             Action undoAction = () => {
-                var index = 0;
-                foreach (var item in items)
-                {
-                    base.InsertItem(index, item);
-                    index++;
-                }
+                for(var i = 0; i < items.Count; i++)
+                    base.InsertItem(i, items[i]);
             };
             if (_model != null && _model.CurrentTransaction == null) throw new Exceptions.NoTransactionException("Transaction must be opened to be able to change this list.");
             if (_model != null) _model.CurrentTransaction.AddAction(undoAction, doAction);
@@ -49,7 +50,12 @@ namespace BLData
             Action undoAction = () => { var i = this.IndexOf(item); base.RemoveItem(i); };
 
             if (_model != null && _model.CurrentTransaction == null) throw new Exceptions.NoTransactionException("Transaction must be opened to be able to change this list.");
-            if (_model != null) _model.CurrentTransaction.AddAction(undoAction, doAction);
+            if (_model != null)
+            {
+                var entity = item as IBLModelEntity;
+                if (entity != null && entity.Model != _model) throw new Exceptions.ModelOriginException("Entity doesn't live in the same model as this list.");
+                _model.CurrentTransaction.AddAction(undoAction, doAction);
+            }
             doAction();
         }
 
@@ -60,7 +66,12 @@ namespace BLData
             Action undoAction = () => base.SetItem(index, oldItem);
 
             if (_model != null && _model.CurrentTransaction == null) throw new Exceptions.NoTransactionException("Transaction must be opened to be able to change this list.");
-            if (_model != null) _model.CurrentTransaction.AddAction(undoAction, doAction);
+            if (_model != null)
+            {
+                var entity = item as IBLModelEntity;
+                if (entity != null && entity.Model != _model) throw new Exceptions.ModelOriginException("Entity doesn't live in the same model as this list.");
+                _model.CurrentTransaction.AddAction(undoAction, doAction);
+            }
             doAction();
 
         }
