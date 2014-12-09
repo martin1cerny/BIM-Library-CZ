@@ -11,22 +11,31 @@ namespace BLData
     public class BList<T> : ObservableCollection<T>
     {
         private BLModel _model;
+        private bool _isEntityList = false;
         [XmlIgnore]
         public BLModel Model { get { return _model; } }
 
         internal void SetModel(BLModel model)
         {
             _model = model;
+            if (this.All(i => i is BLModelEntity))
+            {
+                foreach (var item in this)
+                {
+                    (item as BLModelEntity).SetModel(_model);
+                }
+            }
         }
 
         public BList(BLModel model)
         {
             _model = model;
+            _isEntityList = typeof(IBLModelEntity).IsAssignableFrom(typeof(T));
         }
 
         public BList()
         {
-
+            _isEntityList = typeof(IBLModelEntity).IsAssignableFrom(typeof(T));
         }
 
         protected override void ClearItems()
@@ -39,9 +48,10 @@ namespace BLData
                 for(var i = 0; i < items.Count; i++)
                     base.InsertItem(i, items[i]);
             };
-            if (_model != null && _model.CurrentTransaction == null) throw new Exceptions.NoTransactionException("Transaction must be opened to be able to change this list.");
-            if (_model != null) _model.CurrentTransaction.AddAction(undoAction, doAction);
-            doAction();
+            if (_model == null)
+                doAction();
+            else
+                _model.Transact<T>(this, doAction, undoAction);
         }
 
         protected override void InsertItem(int index, T item)
@@ -49,14 +59,13 @@ namespace BLData
             Action doAction = () =>  base.InsertItem(index, item);
             Action undoAction = () => { var i = this.IndexOf(item); base.RemoveItem(i); };
 
-            if (_model != null && _model.CurrentTransaction == null) throw new Exceptions.NoTransactionException("Transaction must be opened to be able to change this list.");
-            if (_model != null)
+            if (_model == null)
+                doAction();
+            else
             {
-                var entity = item as IBLModelEntity;
-                if (entity != null && entity.Model != _model) throw new Exceptions.ModelOriginException("Entity doesn't live in the same model as this list.");
-                _model.CurrentTransaction.AddAction(undoAction, doAction);
+                if (_isEntityList && (item as IBLModelEntity).Model != _model) throw new Exceptions.ModelOriginException("Entity doesn't live in the same model as this list.");
+                _model.Transact<T>(this, doAction, undoAction);
             }
-            doAction();
         }
 
         protected override void SetItem(int index, T item)
@@ -65,15 +74,13 @@ namespace BLData
             Action doAction = () => base.SetItem(index, item);
             Action undoAction = () => base.SetItem(index, oldItem);
 
-            if (_model != null && _model.CurrentTransaction == null) throw new Exceptions.NoTransactionException("Transaction must be opened to be able to change this list.");
-            if (_model != null)
+            if (_model == null)
+                doAction();
+            else
             {
-                var entity = item as IBLModelEntity;
-                if (entity != null && entity.Model != _model) throw new Exceptions.ModelOriginException("Entity doesn't live in the same model as this list.");
-                _model.CurrentTransaction.AddAction(undoAction, doAction);
+                if (_isEntityList && (item as IBLModelEntity).Model != _model) throw new Exceptions.ModelOriginException("Entity doesn't live in the same model as this list.");
+                _model.Transact<T>(this, doAction, undoAction);
             }
-            doAction();
-
         }
 
         protected override void RemoveItem(int index)
@@ -82,9 +89,10 @@ namespace BLData
             Action doAction = () => base.RemoveItem(index);
             Action undoAction = () => base.InsertItem(index, oldItem);
 
-            if (_model != null && _model.CurrentTransaction == null) throw new Exceptions.NoTransactionException("Transaction must be opened to be able to change this list.");
-            if (_model != null) _model.CurrentTransaction.AddAction(undoAction, doAction);
-            doAction();
+            if (_model == null)
+                doAction();
+            else
+                _model.Transact<T>(this, doAction, undoAction);
         }
       
     }

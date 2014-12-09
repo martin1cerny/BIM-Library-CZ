@@ -16,9 +16,9 @@ namespace BLTests
             var model = new BLModel();
             using (var txn = model.BeginTansaction("Creation of classification items"))
             {
-                var c1 = model.New<BLClassificationItem>();
-                var c2 = model.New<BLClassificationItem>();
-                var c3 = model.New<BLClassificationItem>();
+                var c1 = model.New<BLClassificationItem>(c => c.Name = "A");
+                var c2 = model.New<BLClassificationItem>(c => c.Name = "B");
+                var c3 = model.New<BLClassificationItem>(c => c.Name = "C");
 
                 c3.ParentID = c2.Id;
                 c2.ParentID = c1.Id;
@@ -45,6 +45,9 @@ namespace BLTests
 
             var clss = model.Get<BLClassificationItem>();
             Assert.AreEqual(3, clss.Count());
+
+            var cc1 = model.Get<BLClassificationItem>(c => c.Name == "A").FirstOrDefault();
+            Assert.IsNotNull(cc1);
         }
     }
 }

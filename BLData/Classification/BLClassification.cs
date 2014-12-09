@@ -9,13 +9,14 @@ namespace BLData.Classification
 {
     public class BLClassification : BLModelNamedEntity
     {
-        private BList<Guid> _rootItemIDs;
+        private BList<Guid> _rootItemIDs = new BList<Guid>();
         [XmlArray("RootItems")]
         public BList<Guid> RootItemIDs
         {
             get { return _rootItemIDs; }
             set {
-                Set("_rootItemIDs", _rootItemIDs, value); 
+                var old = _rootItemIDs;
+                Set("RootItemIDs", () => _rootItemIDs = value,() => _rootItemIDs = old); 
                 OnPropertyChanged("RootItems");
                 if (value != null)
                     value.CollectionChanged += (s, a) => {
@@ -38,7 +39,6 @@ namespace BLData.Classification
         internal override void SetModel(BLModel model)
         {
             _model = model;
-            _rootItemIDs.SetModel(model);
         }
 
         public override string Validate()

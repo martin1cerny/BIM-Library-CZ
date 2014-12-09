@@ -13,7 +13,7 @@ namespace BLData
         public string Name
         {
             get { return _name; }
-            set { Set("_name", _name, value); }
+            set { var old = _name; Set("Name", ()=> _name = value, () => _name = old); }
         }
 
         private string _description;
@@ -21,7 +21,7 @@ namespace BLData
         public string Description
         {
             get { return _description; }
-            set { Set("_description", _description, value); }
+            set { var old = _description; Set("Description", () => _description = value, () => _description = old); }
         }
         
         

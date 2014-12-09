@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -9,10 +10,12 @@ using BLData.Exceptions;
 
 namespace BLData
 {
+    [XmlRoot("Model")]
     public class BLModel
     {
         private Session _session = new Session();
-        internal Transaction CurrentTransaction { get { 
+        public Session Session { get { return _session; } }
+        private Transaction CurrentTransaction { get { 
             var txn = _session.CurrentTransaction; 
             if (txn == null || txn.State != Transaction.StateEnum.OPENED)
                 return null;
@@ -29,38 +32,25 @@ namespace BLData
             return CurrentTransaction;
         }
 
-        internal void Set(IBLModelEntity entity, string field, object oldValue, object newValue)
+        internal void Transact(IBLModelEntity entity, Action doAction, Action undoAction)
         {
             //check if entity is bound to this model
             if (entity.Model != this) throw new ModelOriginException("Entity can't use transaction of this model. It is not bound to this model.");
 
             if (CurrentTransaction == null) throw new Exceptions.NoTransactionException("Transaction must be opened to be able to change the model.");
 
-            var type = entity.GetType();
-            var info = type.GetField(field, System.Reflection.BindingFlags.NonPublic| System.Reflection.BindingFlags.IgnoreCase | System.Reflection.BindingFlags.Instance);
-            if (info == null)
-                throw new Exceptions.FieldNotFoundException(field);
-
-            //check value
-            var entVal = newValue as IBLModelEntity;
-            if (entVal != null && entVal.Model != this) throw new ModelOriginException("Entity can't be assigned. It is not bound to the same model.");
-
-            var listVal = newValue as BList<object>;
-            if (listVal != null && listVal.Model != this) throw new ModelOriginException("List can't be assigned. It is not bound to the same model.");
-
-
-            Action undoAction = () => { info.SetValue(entity, oldValue); };
-            Action doAction = () => { info.SetValue(entity, newValue); };
             CurrentTransaction.AddAction(undoAction, doAction);
             doAction();
+        }
 
-            //get property name
-            var property = field.TrimStart('_').ToCharArray();
-            property[0] = property[0].ToString().ToUpper()[0];
-            var name = new String(property);
+        internal void Transact<T>(BList<T> list, Action doAction, Action undoAction)
+        {
+            //check if entity is bound to this model
+            if (list.Model != this) throw new ModelOriginException("Entity can't use transaction of this model. It is not bound to this model.");
+            if (CurrentTransaction == null) throw new Exceptions.NoTransactionException("Transaction must be opened to be able to change the model.");
 
-            //signal property changed
-            entity.OnPropertyChanged(name);
+            CurrentTransaction.AddAction(undoAction, doAction);
+            doAction();
         }
 
         private List<BLEntityList> _entities = new List<BLEntityList>();

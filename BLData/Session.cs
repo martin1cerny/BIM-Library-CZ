@@ -15,6 +15,29 @@ namespace BLData
 
         public  bool HasUndo { get { return _current > 0; } }
         public  bool HasRedo { get { return _current < _session.Count - 1; } }
+        public bool CanUndo { get {return HasUndo && CurrentTransaction.State != Transaction.StateEnum.OPENED;}}
+
+        public IEnumerable<string> UndoTransactions
+        {
+            get
+            {
+                for (int i = 0; i < _current + 1; i++)
+                {
+                    yield return _session[i].Name;
+                }
+            }
+        }
+
+        public IEnumerable<string> RedoTransactions
+        {
+            get
+            {
+                for (int i = _current + 1; i < _session.Count; i++)
+                {
+                    yield return _session[i].Name;
+                }
+            }
+        }
 
         internal Session()
         {
@@ -39,7 +62,7 @@ namespace BLData
             _current = _session.Count - 1;
         }
 
-        internal  void Undo()
+        public  void Undo()
         {
             if (!HasUndo)
                 return;
@@ -48,7 +71,7 @@ namespace BLData
             _current--;
         }
 
-        internal  void Redo()
+        public  void Redo()
         {
             if (!HasRedo)
                 return;
@@ -59,12 +82,13 @@ namespace BLData
 
         public  void DiscardHistory()
         {
+            if (CurrentTransaction != null && CurrentTransaction.State == Transaction.StateEnum.OPENED)
+                throw new Exceptions.TransactionNotFinishedException(CurrentTransaction.Name);
+
             if (!HasUndo)
                 return;
-            var actual = CurrentTransaction;
             _session.Clear();
-            _session.Add(actual);
-            _current = 0;
+            _current = -1;
         }
 
         

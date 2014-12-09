@@ -8,7 +8,6 @@ using System.Xml.Serialization;
 
 namespace BLData
 {
-    [XmlInclude(typeof(BLData.Classification.BLClassificationItem))]
     public abstract class BLModelEntity : IBLModelEntity
     {
         [XmlIgnore]
@@ -30,18 +29,16 @@ namespace BLData
         //this has to be implemented in all inherited classes
         internal abstract void SetModel(BLModel model);
         
-        protected void Set(string fieldName, object oldValue, object newValue)
+        protected void Set(string propertyName, Action doAction, Action undoAction)
         {
             if (_model == null) //no transaction. This is for deserialization only
             {
-                var field = GetType().GetField(fieldName, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                if (fieldName == null) throw new Exceptions.FieldNotFoundException(fieldName);
-                field.SetValue(this, newValue);
+                doAction();
             }
             else
-                _model.Set(this, fieldName, oldValue, newValue);
+                _model.Transact(this, doAction, undoAction);
+            OnPropertyChanged(propertyName);
         }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string name)
@@ -57,7 +54,8 @@ namespace BLData
 
         public override bool Equals(object obj)
         {
-            return _id.Equals(obj);
+            if (GetType() != obj.GetType()) return false;
+            return _id.Equals((obj as BLModelEntity).Id);
         }
 
         public abstract string Validate();

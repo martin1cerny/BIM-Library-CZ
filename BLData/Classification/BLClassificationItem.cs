@@ -14,7 +14,7 @@ namespace BLData.Classification
         public string Code
         {
             get { return _code; }
-            set { Set("_code", _code, value); }
+            set { var old = _code; Set("Code", () => _code = value, () => _code = old); }
         }
 
         private string _selector;
@@ -22,7 +22,7 @@ namespace BLData.Classification
         public string Selector
         {
             get { return _selector; }
-            set { Set("_selector", _selector, value); }
+            set { var old = _selector; Set("Selector", () => _selector= value, () => _selector = old); }
         }
 
         private Guid? _parentID;
@@ -31,8 +31,9 @@ namespace BLData.Classification
         {
             get { return _parentID; }
             set 
-            { 
-                Set("_parentID", _parentID, value); 
+            {
+                var old = _parentID;
+                Set("ParentID", () => _parentID = value, () => _parentID = old); 
                 OnPropertyChanged("Parent"); 
                 if (value != null && Parent != null)
                     Parent.OnPropertyChanged("Children"); 
