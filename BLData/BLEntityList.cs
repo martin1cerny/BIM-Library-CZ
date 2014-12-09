@@ -36,7 +36,8 @@ namespace BLData
 
         private BList<BLModelEntity> _items;
 
-        [XmlElement("Entity")]
+        [XmlElement("Classification", typeof(BLClassification))]
+        [XmlElement("ClassificationItem", typeof(BLClassificationItem))]
         public BList<BLModelEntity> Items
         {
             get { return _items; }
