@@ -18,11 +18,11 @@ namespace BLData
         internal void SetModel(BLModel model)
         {
             _model = model;
-            if (this.All(i => i is BLModelEntity))
+            if (this.All(i => i is BLEntity))
             {
                 foreach (var item in this)
                 {
-                    (item as BLModelEntity).SetModel(_model);
+                    (item as BLEntity).SetModel(_model);
                 }
             }
         }
