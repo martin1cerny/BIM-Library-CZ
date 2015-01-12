@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actors\BLPerson.cs" />
     <Compile Include="BLModelEntity.cs" />
     <Compile Include="BLEntityList.cs" />
     <Compile Include="BLModelInformation.cs" />
@@ -47,6 +48,7 @@
     <Compile Include="BList.cs" />
     <Compile Include="BLModel.cs" />
     <Compile Include="BLModelNamedEntity.cs" />
+    <Compile Include="Comments\Comment.cs" />
     <Compile Include="Exceptions\Exceptions.cs" />
     <Compile Include="IBLModelEntity.cs" />
     <Compile Include="BLEntity.cs" />
@@ -81,9 +83,7 @@
     <Compile Include="Session.cs" />
     <Compile Include="Transaction.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Comments\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

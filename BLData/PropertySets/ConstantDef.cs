@@ -61,13 +61,22 @@ namespace BLData.PropertySets
         internal override void SetModel(BLModel model)
         {
             _model = model;
-            _nameAliases.SetModel(model);
-            _definitionAliases.SetModel(model);
+            if (_nameAliases != null) _nameAliases.SetModel(model);
+            if (_definitionAliases != null) _definitionAliases.SetModel(model);
         }
 
         public override string Validate()
         {
-            return "";
+            var result = "";
+            if (_definitionAliases != null) result += _definitionAliases.Validate();
+            if (_nameAliases != null) result += _nameAliases.Validate();
+            return result;
+        }
+
+        internal override IEnumerable<BLEntity> GetChildren()
+        {
+            if (_nameAliases != null) foreach (var item in _nameAliases) yield return item;
+            if (_definitionAliases != null) foreach (var item in _definitionAliases) yield return item;
         }
     }
 }

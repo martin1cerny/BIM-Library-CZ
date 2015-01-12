@@ -48,5 +48,10 @@ namespace BLData.PropertySets
                 msg += String.Format("Version and format have to be defined \n");
             return msg;
         }
+
+        internal override IEnumerable<BLEntity> GetChildren()
+        {
+            yield break;
+        }
     }
 }

@@ -31,8 +31,13 @@ namespace BLData
         
         protected void Set(string propertyName, Action doAction, Action undoAction)
         {
-            Action doA = () => { doAction(); OnPropertyChanged(propertyName); };
-            Action undoA = () => { undoAction(); OnPropertyChanged(propertyName); };
+            Set(new string[] { propertyName }, doAction, undoAction);
+        }
+
+        protected void Set(string[] propertyNames, Action doAction, Action undoAction)
+        {
+            Action doA = () => { doAction(); foreach(var propertyName in propertyNames) OnPropertyChanged(propertyName); };
+            Action undoA = () => { undoAction(); foreach (var propertyName in propertyNames) OnPropertyChanged(propertyName); };
             if (_model == null) //no transaction. This is for deserialization only
             {
                 doA();
@@ -60,5 +65,7 @@ namespace BLData
         }
 
         public abstract string Validate();
+
+        internal abstract IEnumerable<BLEntity> GetChildren();
     }
 }

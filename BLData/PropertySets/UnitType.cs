@@ -11,7 +11,7 @@ namespace BLData.PropertySets
     /// <summary>
     /// The element of unit type.
     /// </summary>
-    public class UnitType
+    public class UnitType : BLEntity
     {
         private UnitTypeEnum? _type;
 
@@ -28,6 +28,8 @@ namespace BLData.PropertySets
             }
             set
             {
+                if (_model != null) throw new InvalidOperationException();
+
                 UnitTypeEnum type = UnitTypeEnum.USERDEFINED;
                 if (String.IsNullOrEmpty(value))
                     _type = null;
@@ -37,20 +39,45 @@ namespace BLData.PropertySets
                 }
                 else
                     throw new ArgumentOutOfRangeException(value);
-
+        
             }
         }
-
+        
         [XmlIgnore]
-        public UnitTypeEnum? Type { get { return _type; } set { _type = value; } }
+        public UnitTypeEnum? Type { 
+            get { return _type; }
+            set { var old = _type; Set("Type", () => _type = value, () => _type = old); } 
+        }
+
+
+        private string _currencyType;
 
         [XmlAttribute("currencytype")]
         [DefaultValue("USERDEFINED")]
-        public string CurrencyType { get; set; }
+        public string CurrencyType {
+            get { return _currencyType; }
+            set { var old = _currencyType; Set("CurrencyType", () => _currencyType = value, () => _currencyType = old); }
+        }
+
+        internal override void SetModel(BLModel model)
+        {
+            _model = model;
+        }
+
+        public override string Validate()
+        {
+            return "";
+        }
+
+        internal override IEnumerable<BLEntity> GetChildren()
+        {
+            yield break;
+        }
     }
 
     public enum UnitTypeEnum
     {
+        USERDEFINED,
         ACCELERATIONUNIT,
         ANGULARVELOCITYUNIT,
         AREADENSITYUNIT,
@@ -132,7 +159,6 @@ namespace BLData.PropertySets
         THERMODYNAMICTEMPERATUREUNIT,
         TIMEUNIT,
         VOLUMEUNIT,
-        USERDEFINED,
 
         [Obsolete]
         IFCMONETARYUNIT,

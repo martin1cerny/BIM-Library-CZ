@@ -43,10 +43,18 @@ namespace BLData.PropertySets
 
         internal override void SetModel(BLModel model)
         {
-            //TODO:set model to inner properties
-            _valueDef.SetModel(model);
-            _type.SetModel(model);
+            if (_valueDef != null) _valueDef.SetModel(model);
+            if (_type != null) _type.SetModel(model);
             base.SetModel(model);
+        }
+
+        public override string Validate()
+        {
+            var result = "";
+            result += base.Validate();
+            if (_valueDef != null) result += _valueDef.Validate();
+            if (_type != null) result += _type.Validate();
+            return result;
         }
     }
 }

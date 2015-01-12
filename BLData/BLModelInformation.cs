@@ -21,5 +21,12 @@ namespace BLData
                 msg += String.Format("There should only be one model information object defined. \n");
             return msg;
         }
+
+
+
+        internal override IEnumerable<BLEntity> GetChildren()
+        {
+            yield break;
+        }
     }
 }

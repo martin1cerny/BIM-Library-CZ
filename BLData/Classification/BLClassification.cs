@@ -36,6 +36,7 @@ namespace BLData.Classification
             }
         }
 
+
         internal override void SetModel(BLModel model)
         {
             _model = model;
@@ -47,6 +48,11 @@ namespace BLData.Classification
             if (String.IsNullOrEmpty(Name))
                 msg += String.Format("Name not defined for classification '{0}' \n", Id);
             return msg;
+        }
+
+        internal override IEnumerable<BLEntity> GetChildren()
+        {
+            yield break;
         }
     }
 }

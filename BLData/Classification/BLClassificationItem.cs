@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using BLData.PropertySets;
 
 namespace BLData.Classification
 {
@@ -58,6 +59,35 @@ namespace BLData.Classification
             }
         }
 
+        private BList<Guid> _definitionSetIds = new BList<Guid>();
+
+        public BList<Guid> DefinitionSetIds
+        {
+            get { return _definitionSetIds; }
+            set
+            {
+                var old = _definitionSetIds; Set(new[] { "DefinitionSetIds", "DefinitionSets" }, () => _definitionSetIds = value, () => _definitionSetIds = old);
+                if (_definitionSetIds != null)
+                {
+                    _definitionSetIds.CollectionChanged += (s, a) => OnPropertyChanged("DefinitionSets");
+                }
+            }
+
+        }
+
+        [XmlIgnore]
+        public IEnumerable<QuantityPropertySetDef> DefinitionSets
+        {
+            get
+            {
+                if (_definitionSetIds != null)
+                    foreach (var id in _definitionSetIds)
+                    {
+                        yield return _model.Get<QuantityPropertySetDef>(id);
+                    }
+            }
+        }
+
 
         internal override void SetModel(BLModel model)
         {
@@ -67,6 +97,11 @@ namespace BLData.Classification
         public override string Validate()
         {
             return "";
+        }
+
+        internal override IEnumerable<BLEntity> GetChildren()
+        {
+            yield break;
         }
     }
 }

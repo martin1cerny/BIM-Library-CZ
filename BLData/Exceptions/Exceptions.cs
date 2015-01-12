@@ -61,4 +61,16 @@ namespace BLData.Exceptions
           System.Runtime.Serialization.StreamingContext context)
             : base(info, context) { }
     }
+
+    [Serializable]
+    public class InvalidFieldOperationException : Exception
+    {
+        public InvalidFieldOperationException() { }
+        public InvalidFieldOperationException(string message) : base(message) { }
+        public InvalidFieldOperationException(string message, Exception inner) : base(message, inner) { }
+        protected InvalidFieldOperationException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context)
+            : base(info, context) { }
+    }
 }

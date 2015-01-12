@@ -24,6 +24,9 @@ namespace BLData
             get { return _name; }
         }
 
+        private Guid _id = Guid.NewGuid();
+        public Guid ID { get { return _id; } }
+
         internal Transaction(string name)
         {
             _name = name;

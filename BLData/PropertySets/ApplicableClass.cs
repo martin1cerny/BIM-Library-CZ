@@ -43,5 +43,10 @@ namespace BLData.PropertySets
                 msg += String.Format("Applicable class doesn't have a name defined. \n");
             return msg;
         }
+
+        internal override IEnumerable<BLEntity> GetChildren()
+        {
+            yield break;
+        }
     }
 }

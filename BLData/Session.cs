@@ -9,13 +9,37 @@ namespace BLData
 {
     public class Session
     {
-        private  List<Transaction> _session;
-        private  int _current;
+        private  List<Transaction> _session = new List<Transaction>();
+        private  int _current = -1;
         internal  Transaction CurrentTransaction { get { return _current > -1 ? _session[_current] : null; } }
 
-        public  bool HasUndo { get { return _current > 0; } }
+        public  bool HasUndo { get { return _current >= 0; } }
         public  bool HasRedo { get { return _current < _session.Count - 1; } }
         public bool CanUndo { get {return HasUndo && CurrentTransaction.State != Transaction.StateEnum.OPENED;}}
+        public bool IsDirty { get { return CurrentTransaction != null && !CurrentTransaction.IsSaved; } }
+
+        public Guid GetRestorePoint()
+        {
+            if (CurrentTransaction == null) return Guid.Empty;
+
+            var lastClosed = _session.LastOrDefault(t => t.IsFinished);
+            if (lastClosed != null) return lastClosed.ID;
+
+            return Guid.Empty;
+        }
+
+        public void RestoreToPoint(Guid id)
+        {
+            Transaction target = null;
+            if (id != Guid.Empty)
+            {
+                target = _session.FirstOrDefault(t => t.ID == id);
+                if (target != null)
+                    throw new Exception("This restore point doesn't exist.");
+            }
+            while (CurrentTransaction != target)
+                Undo();
+        }
 
         public IEnumerable<string> UndoTransactions
         {
@@ -41,8 +65,6 @@ namespace BLData
 
         internal Session()
         {
-            _session = new List<Transaction>();
-            _current = -1;
         }
 
 

@@ -42,7 +42,15 @@ namespace BLData.PropertySets
 
         public override string Validate()
         {
-            return "";
+            var result = "";
+            if (PropertyValueType != null)
+                result += (PropertyValueType as BLEntity).Validate();
+            return result;
+        }
+
+        internal override IEnumerable<BLEntity> GetChildren()
+        {
+            if (PropertyValueType != null) yield return PropertyValueType as BLEntity;
         }
     }
 }

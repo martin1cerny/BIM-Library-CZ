@@ -7,8 +7,6 @@ using System.Xml.Serialization;
 
 namespace BLData.PropertySets
 {
-    [XmlInclude(typeof(PropertySetDef))]
-    [XmlInclude(typeof(QtoSetDef))]
     public abstract class QuantityPropertySetDef : BLModelNamedEntity
     {
         private IfcVersion _version;
@@ -29,7 +27,7 @@ namespace BLData.PropertySets
         [XmlIgnore]
         public BList<NameAlias> DefinitionAliases {
             get { return _definitionAliases; }
-            set { var old = _definitionAliases; Set("DefinitionAliases", () => _definitionAliases = value, () => _definitionAliases = old); }
+            set { var old = _definitionAliases; Set( new[] { "DefinitionAliases", "_QtoDefinitionAliases" }, () => _definitionAliases = value, () => _definitionAliases = old); }
         }
 
         /// <summary>
@@ -109,17 +107,27 @@ namespace BLData.PropertySets
         internal override void SetModel(BLModel model)
         {
             _model = model;
-            _version.SetModel(model);
-            _definitionAliases.SetModel(model);
-            _applicableClasses.SetModel(model);
+            if (_version != null) _version.SetModel(model);
+            if (_definitionAliases != null) _definitionAliases.SetModel(model);
+            if (_applicableClasses != null) _applicableClasses.SetModel(model);
         }
 
         public override string Validate()
         {
             var msg = "";
+            if (_version != null) msg += _version.Validate();
+            if (_definitionAliases != null) msg += _definitionAliases.Validate();
+            if (_applicableClasses != null) msg += _applicableClasses.Validate();
+
             if (String.IsNullOrEmpty(Name))
                 msg += "Property or quantity set should have a name. \n";
             return msg;
+        }
+
+        internal override IEnumerable<BLEntity> GetChildren()
+        {
+            if (_version != null) yield return _version;
+            if (_definitionAliases != null) foreach(var item in _definitionAliases) yield return item;
         }
     }
 }

@@ -39,8 +39,13 @@ namespace BLData.PropertySets
         {
             var msg = "";
             if (String.IsNullOrEmpty(_lang))
-                msg += "Language code should be defined for maned alias \n";
+                msg += "Language code should be defined for named alias \n";
             return msg;
+        }
+
+        internal override IEnumerable<BLEntity> GetChildren()
+        {
+            yield break;
         }
     }
 }

@@ -9,8 +9,13 @@ namespace BLData.PropertySets
 {
     public class QtoDef : QuantityPropertyDef
     {
+        private QtoTypeEnum _quantityType;
+
         [XmlElement("QtoType")]
-        public QtoTypeEnum QuantityType { get; set; }
+        public QtoTypeEnum QuantityType {
+            get { return _quantityType; }
+            set { var old = _quantityType; Set("QuantityType", () => _quantityType = value, () => _quantityType = old); }
+        }
     }
 
     public enum QtoTypeEnum

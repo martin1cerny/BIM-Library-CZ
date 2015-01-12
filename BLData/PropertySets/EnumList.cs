@@ -30,12 +30,19 @@ namespace BLData.PropertySets
         internal override void SetModel(BLModel model)
         {
             _model = model;
-            _items.SetModel(model);
+            if (_items != null) _items.SetModel(model);
         }
 
         public override string Validate()
         {
-            return "";
+            var result = "";
+            if (_items != null) result += _items.Validate();
+            return result;
+        }
+
+        internal override IEnumerable<BLEntity> GetChildren()
+        {
+            yield break;
         }
     }
 }

@@ -61,33 +61,46 @@ namespace BLData
             set { _entities = value; }
         }
 
-        public IEnumerable<T> Get<T>() where T : BLModelEntity, new()
+        public IEnumerable<T> Get<T>() where T : BLEntity
         {
-            var resource = _entities.FirstOrDefault(r => r.Type == typeof(T).Name);
-            if (resource != null)
-                foreach (var item in resource.Items)
-                    yield return (T)item; ;
-        }
-
-        public IEnumerable<T> Get<T>(Func<T, bool> selector) where T : BLModelEntity, new()
-        {
-            var resource = _entities.FirstOrDefault(r => r.Type == typeof(T).Name);
-            if (resource != null) 
-                foreach (var item in resource.Items)
+            if (typeof(BLModelEntity).IsAssignableFrom(typeof(T)))
+            {
+                var resources = _entities.Where(r => typeof(T).IsAssignableFrom(Type.GetType(r.Type)));
+                foreach (var resource in resources)
                 {
-                    var entity = (T)item;
-                    if (selector(entity)) yield return entity;
+                    if (resource != null)
+                        foreach (var item in resource.Items)
+                            yield return item as T;    
                 }
+            }
+            else
+            {
+                foreach (var res in _entities)
+                {
+                    foreach (var item in res.Items)
+                    {
+                        foreach (var entity in item.GetChildren())
+                        {
+                            if (typeof(T).IsAssignableFrom(entity.GetType()))
+                                yield return entity as T;
+                        }
+                    }
+                }
+            }
         }
 
-        public T Get<T>(Guid id) where T : BLModelEntity, new()
+        public IEnumerable<T> Get<T>(Func<T, bool> selector) where T : BLEntity
         {
-            var resource = _entities.FirstOrDefault(r => r.Type == typeof(T).Name);
-            if (resource == null) return null;
-            return resource.Items.FirstOrDefault(e => e.Id == id) as T;
+            foreach (var item in Get<T>())
+                if (selector(item)) yield return item;
         }
 
-        public T New<T>(Action<T> init = null) where T : BLModelEntity, new()
+        public T Get<T>(Guid id) where T : BLEntity
+        {
+            return Get<T>().FirstOrDefault(e => e.Id == id);
+        }
+
+        public T New<T>(Action<T> init = null) where T : BLEntity, new()
         {
             //check for transaction
             if (CurrentTransaction == null) throw new Exceptions.NoTransactionException("Transaction must be opened to be able to change the model.");
@@ -96,14 +109,16 @@ namespace BLData
             entity.SetModel(this);
 
             //add to resources of the model in transaction
-            var resource = _entities.FirstOrDefault(r => r.Type == typeof(T).Name);
-            if (resource == null)
+            if (entity is BLModelEntity)
             {
-                resource = new BLEntityList(this) { Type = typeof(T).Name};
-                _entities.Add(resource);
+                var resource = _entities.FirstOrDefault(r => r.Type == typeof(T).FullName);
+                if (resource == null)
+                {
+                    resource = new BLEntityList(this) { Type = typeof(T).FullName};
+                    _entities.Add(resource);
+                }
+                resource.Items.Add(entity as BLModelEntity);
             }
-            resource.Items.Add(entity);
-
             //init if defined
             if (init != null)
                 init(entity);
@@ -112,7 +127,7 @@ namespace BLData
         }
 
         /// <summary>
-        /// This will remove object from resources but it won'd to anything with related and relating objects
+        /// This will remove object from resources but it won't to anything with related and relating objects. It will delete any nested objects.
         /// </summary>
         /// <typeparam name="T">Type of instance to be removed</typeparam>
         /// <param name="instance">Instance to be deleted</param>
@@ -143,6 +158,10 @@ namespace BLData
             return model;
         }
 
+        /// <summary>
+        /// This will serialize model to the stream as an XML
+        /// </summary>
+        /// <param name="stream">target stream</param>
         public void Save(Stream stream)
         {
             if (CurrentTransaction != null && !CurrentTransaction.IsFinished)
@@ -150,8 +169,9 @@ namespace BLData
                 throw new Exceptions.TransactionNotFinishedException(CurrentTransaction.Name);
             }
 
-            //set session transactions as saved - this is to be used to indocate weather model has been changed 
-            _session.CurrentTransaction.IsSaved = true;
+            //set session transactions as saved - this is to be used to indicate if model has been changed 
+            if (_session.CurrentTransaction != null)
+                _session.CurrentTransaction.IsSaved = true;
 
             var serializer = new XmlSerializer(GetType());
             serializer.Serialize(stream, this);

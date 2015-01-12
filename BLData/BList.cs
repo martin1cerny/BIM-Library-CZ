@@ -27,6 +27,15 @@ namespace BLData
             }
         }
 
+        internal string Validate()
+        {
+            var result = "";
+            if (this.All(e => e is BLEntity))
+                foreach (var e in this)
+                    result += (e as BLEntity).Validate();
+            return result;
+        }
+
         public BList(BLModel model)
         {
             _model = model;

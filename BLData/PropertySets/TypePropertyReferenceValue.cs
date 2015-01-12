@@ -11,6 +11,24 @@ namespace BLData.PropertySets
     /// </summary>
     public class TypePropertyReferenceValue : ReferenceSelect, IPropertyValueType
     {
-        public DataType DataType { get; set; }
+        private DataType _type;
+        public DataType DataType {
+            get { return _type; }
+            set { var old = _type; Set("DataType", () => _type = value, () => _type = old); }
+        }
+
+        internal override void SetModel(BLModel model)
+        {
+            base.SetModel(model);
+            if (DataType != null) DataType.SetModel(model);
+        }
+
+        public override string Validate()
+        {
+            var result = "";
+            result += base.Validate();
+            if (DataType != null) result += DataType.Validate();
+            return result;
+        }
     }
 }

@@ -61,6 +61,11 @@ namespace BLData.PropertySets
         {
             return "";
         }
+
+        internal override IEnumerable<BLEntity> GetChildren()
+        {
+            yield break;
+        }
     }
 
     public enum DataTypeEnum

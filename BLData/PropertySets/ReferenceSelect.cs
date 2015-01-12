@@ -10,7 +10,7 @@ namespace BLData.PropertySets
     /// <summary>
     /// The element of reference select.
     /// </summary>
-    public class ReferenceSelect
+    public class ReferenceSelect: BLEntity
     {
         #region RefType
         private RefTypeEnum? _reftype;
@@ -27,6 +27,9 @@ namespace BLData.PropertySets
             }
             set
             {
+                if (_model != null)
+                    throw new InvalidOperationException();
+
                 RefTypeEnum type = RefTypeEnum.IfcExternalReference;
                 if (String.IsNullOrEmpty(value))
                 {
@@ -41,37 +44,71 @@ namespace BLData.PropertySets
 
             }
         }
-
+        
+        [XmlIgnore]
         public RefTypeEnum? ReferenceType
         {
             get { return _reftype; }
-            set { _reftype = value; }
+            set {
+                var old = _reftype; Set("ReferenceType", () => _reftype = value, () => _reftype = old);
+            }
         }
         #endregion
 
+        private string _guid;
         /// <summary>
         /// The GUID for reference.
         /// </summary>
         [XmlAttribute("guid")]
-        public string Guid { get; set; }
+        public string Guid {
+            get { return _guid; }
+            set { var old = _guid; Set("Guid", () => _guid = value, () => _guid = old); }
+        }
 
+        private string _url;
         /// <summary>
         /// The URL for reference.
         /// </summary>
         [XmlAttribute("URL")]
-        public string URL { get; set; }
+        public string URL {
+            get { return _url; }
+            set { var old = _url; Set("URL", () => _url = value, () => _url = old); }
+        }
 
+        private string _libName;
         /// <summary>
         /// The library name for reference.
         /// </summary>
         [XmlAttribute("libraryname")]
-        public string LibraryName { get; set; }
+        public string LibraryName {
+            get { return _libName; }
+            set { var old = _libName; Set("LibraryName", () => _libName = value, () => _libName = old); }
+        }
 
+        private string _secRef;
         /// <summary>
         /// The section information of reference.
         /// </summary>
         [XmlAttribute("sectionref")]
-        public string SectionReference { get; set; }
+        public string SectionReference {
+            get { return _secRef; }
+            set { var old = _secRef; Set("SectionReference", () => _secRef = value, () => _secRef = old); }
+        }
+
+        internal override void SetModel(BLModel model)
+        {
+            _model = model;
+        }
+
+        public override string Validate()
+        {
+            return "";
+        }
+
+        internal override IEnumerable<BLEntity> GetChildren()
+        {
+            yield break;
+        }
     }
 
     public enum RefTypeEnum

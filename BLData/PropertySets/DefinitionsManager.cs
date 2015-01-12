@@ -6,6 +6,7 @@ using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using BLData.Exceptions;
 
 namespace BLData.PropertySets
 {
@@ -17,7 +18,7 @@ namespace BLData.PropertySets
     /// for IFC4 are part of the library so it is independent. It can also be used to define new
     /// property sets and to save them in the format compliant with buildingSMART data specification.
     /// </summary>
-    public class DefinitionsManager<T> where T : QuantityPropertySetDef
+    public class DefinitionsManager<T> where T : QuantityPropertySetDef, new()
     {
         private List<T> _definitions;
         private XmlSerializer _serializer;
@@ -42,6 +43,26 @@ namespace BLData.PropertySets
                     break;
                 default:
                     break;
+            }
+        }
+
+        public void SetModel(BLModel model)
+        {
+            if (!_definitions.Any()) return;
+
+            //add item to entity dictonary
+            var resource = model.EntityDictionary.FirstOrDefault(r => r.Type == typeof(T).FullName);
+            if (resource == null)
+            {
+                resource = new BLEntityList(model) { Type = typeof(T).FullName };
+                model.EntityDictionary.Add(resource);
+            }
+
+            foreach (var item in this._definitions)
+            {
+                if (item.Model != null) throw new ModelOriginException("Property sets has a model defined already");
+                item.SetModel(model);
+                resource.Items.Add(item);
             }
         }
 
@@ -179,7 +200,7 @@ namespace BLData.PropertySets
                     var cType = pDef.PropertyType.PropertyValueType as TypeComplexProperty;
                     if (cType != null)
                     {
-                        foreach (var nestedDef in cType)
+                        foreach (var nestedDef in cType.Properties)
                         {
                             //check predicate
                             var nDef = nestedDef as TP;
