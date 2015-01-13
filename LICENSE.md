@@ -3,6 +3,7 @@ OPEN SOURCE LICENCE VUT V BRNE
 
 Verze 1.
 Copyright (c) 2010, Vysoké ucení technické v Brne, Antonínská 548/1, PSC 601 90
+
 -------------------------------------------------------------------------------
 INSTALACÍ, KOPÍROVÁNÍM NEBO JINÝM POUŽITÍM SOFTWARE POTVRZUJETE,
 ŽE SOUHLASÍTE S PODMÍNKAMI TÉTO LICENCNÍ SMLOUVY. POKUD S TEMITO
@@ -142,6 +143,7 @@ BUT OPEN SOURCE LICENCE
 
 Version 1.
 Copyright (c) 2010, Brno University of Technology, Antonínská 548/1, 601 90, Czech Republic
+
 --------------------------------------------------------------------------
 BY INSTALLING, COPYING OR OTHER USES OF SOFTWARE YOU ARE DECLARING
 THAT YOU AGREE WITH THE TERMS AND CONDITIONS OF THIS LICENCE
