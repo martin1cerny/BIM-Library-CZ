@@ -1,0 +1,12 @@
+﻿<Window x:Class="BLSpec.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="O programu" Height="344" Width="557" Icon="img/TACR.ico" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" >
+    <Grid>
+        <Image Source="img\CK_logotyp.tif" Height="80" Margin="-114,171,114,21"/>
+        <Image Source="img\tacr_logo_cz.tif" Height="80" Margin="-82,10,82,182"/>
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Padding="10">
+            Tento program vznikl za finanční podpory Technologické agentury ČR (TAČR) v rámci programu Centra kompetence, projekt TE02000077.
+        </TextBlock>
+    </Grid>
+</Window>

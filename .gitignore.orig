@@ -1,0 +1,7 @@
+<<<<<<< HEAD
+obj/
+bin/
+=======
+*/bin/*
+*/obj/*
+>>>>>>> develop

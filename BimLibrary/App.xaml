@@ -1,0 +1,14 @@
+﻿<Application x:Class="BimLibrary.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <Style TargetType="Control" x:Key="control">
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Padding" Value="2"/>
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource ResourceKey=control}">
+            <Setter Property="MinWidth" Value="100"/>
+        </Style>
+    </Application.Resources>
+</Application>

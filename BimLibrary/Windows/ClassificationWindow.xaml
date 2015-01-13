@@ -1,0 +1,25 @@
+﻿<Window x:Class="BimLibrary.Windows.ClassificationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Classification" SizeToContent="WidthAndHeight" MinWidth="250">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+            <Button Content="OK" IsDefault="True" Name="OK" Click="OK_Click"/>
+            <Button Content="Cancel" Name="Cancel" Click="Cancel_Click"/>
+        </StackPanel>
+        <Grid FocusManager.FocusedElement="{Binding ElementName=txtClassificationName}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="Classification name: " Grid.Row="0" Grid.Column="0"/>
+            <TextBox Text="{Binding Name}" Grid.Row="0" Grid.Column="1" Name="txtClassificationName"/>
+        </Grid>
+    </DockPanel>
+    
+</Window>

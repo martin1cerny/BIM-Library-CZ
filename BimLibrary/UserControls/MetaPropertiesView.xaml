@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="BimLibrary.UserControls.MetaPropertiesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             xmlns:ctrl="clr-namespace:BimLibrary.UserControls"
+             Name="This"
+             d:DesignHeight="306" d:DesignWidth="463">
+    <UserControl.Resources>
+        <ctrl:PropertyTypes x:Key="PropertyTypes"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <DataGrid Grid.Column="0"
+                  ItemsSource="{Binding ElementName=This, Path=ClassificationItem.PropertyMapping.PropertySets}" 
+                  AutoGenerateColumns="False"
+                  Name="PSets">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Name}" Header="Name"/>
+                <DataGridTextColumn Binding="{Binding Description}" Header="Description"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <GridSplitter Grid.Column="1" Width="2" ResizeDirection="Columns" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        
+        <DataGrid ItemsSource="{Binding ElementName=PSets, Path=SelectedItem.Properties}" AutoGenerateColumns="False" Grid.Column="2">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Name}" Header="Name"/>
+                <DataGridTextColumn Binding="{Binding Description}" Header="Description"/>
+                <DataGridComboBoxColumn ItemsSource="{StaticResource ResourceKey=PropertyTypes}" DisplayMemberPath="Name" SelectedValueBinding="{Binding Type}" SelectedValuePath="Name" Header="Data type"/>
+                <DataGridTextColumn Binding="{Binding DefaultValue}" Header="Default value"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

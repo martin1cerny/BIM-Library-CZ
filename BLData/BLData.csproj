@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5DD61871-891F-46A6-B98C-F0D15398CC20}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BLData</RootNamespace>
+    <AssemblyName>BLData</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actors\BLPerson.cs" />
+    <Compile Include="BLModelEntity.cs" />
+    <Compile Include="BLEntityList.cs" />
+    <Compile Include="BLModelInformation.cs" />
+    <Compile Include="Classification\BLClassification.cs" />
+    <Compile Include="Classification\BLClassificationItem.cs" />
+    <Compile Include="BList.cs" />
+    <Compile Include="BLModel.cs" />
+    <Compile Include="BLModelNamedEntity.cs" />
+    <Compile Include="Comments\Comment.cs" />
+    <Compile Include="Exceptions\Exceptions.cs" />
+    <Compile Include="IBLModelEntity.cs" />
+    <Compile Include="BLEntity.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertySets\ApplicableClass.cs" />
+    <Compile Include="PropertySets\ConstantDef.cs" />
+    <Compile Include="PropertySets\DataType.cs" />
+    <Compile Include="PropertySets\DefinitionsManager.cs" />
+    <Compile Include="PropertySets\EnumList.cs" />
+    <Compile Include="PropertySets\IfcVersion.cs" />
+    <Compile Include="PropertySets\IPropertyValueType.cs" />
+    <Compile Include="PropertySets\NameAlias.cs" />
+    <Compile Include="PropertySets\PropertyDef.cs" />
+    <Compile Include="PropertySets\PropertySetDef.cs" />
+    <Compile Include="PropertySets\PropertyType.cs" />
+    <Compile Include="PropertySets\QtoDef.cs" />
+    <Compile Include="PropertySets\QtoSetDef.cs" />
+    <Compile Include="PropertySets\QuantityPropertyDef.cs" />
+    <Compile Include="PropertySets\QuantityPropertySetDef.cs" />
+    <Compile Include="PropertySets\ReferenceSelect.cs" />
+    <Compile Include="PropertySets\TypeComplexProperty.cs" />
+    <Compile Include="PropertySets\TypePropertyBoundedValue.cs" />
+    <Compile Include="PropertySets\TypePropertyEnumeratedValue.cs" />
+    <Compile Include="PropertySets\TypePropertyListValue.cs" />
+    <Compile Include="PropertySets\TypePropertyReferenceValue.cs" />
+    <Compile Include="PropertySets\TypePropertySingleValue.cs" />
+    <Compile Include="PropertySets\TypePropertyTableValue.cs" />
+    <Compile Include="PropertySets\UnitType.cs" />
+    <Compile Include="PropertySets\Value.cs" />
+    <Compile Include="PropertySets\ValueDef.cs" />
+    <Compile Include="PropertySets\ValueRangeDef.cs" />
+    <Compile Include="Session.cs" />
+    <Compile Include="Transaction.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
