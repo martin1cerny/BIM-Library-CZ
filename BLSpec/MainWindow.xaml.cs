@@ -35,6 +35,19 @@ namespace BLSpec
             DependencyProperty.Register("Model", typeof(BLModel), typeof(MainWindow), new PropertyMetadata(new BLModel()));
 
 
+
+        public string Lang
+        {
+            get { return (string)GetValue(LangProperty); }
+            set { SetValue(LangProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Lang.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty LangProperty =
+            DependencyProperty.Register("Lang", typeof(string), typeof(MainWindow), new PropertyMetadata("cs-cz"));
+
+        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -75,6 +88,8 @@ namespace BLSpec
         private void RegisterPlugin(IExternalCommand command)
         {
             var name = command.Name;
+            var firstLevel = false;
+            if (name.StartsWith("..")) firstLevel = true;
             var path = name.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
             if (!path.Any())
             {
@@ -90,7 +105,7 @@ namespace BLSpec
 
             _externalCommands.Add(command.ID, command);
 
-            MenuItem menuItem = Plugins;
+            var menuItem = firstLevel ? menu as ItemsControl : Plugins as ItemsControl;
             foreach (var part in path)
             {
                 var item = menuItem.Items.OfType<MenuItem>().FirstOrDefault(mi => (mi.Header as String) == part);
@@ -101,10 +116,11 @@ namespace BLSpec
                 }
                 menuItem = item;
             }
-            menuItem.Click += (s, a) =>
-            {
-                ExecutePlugin(command.ID);
-            };
+            if (menuItem is MenuItem)
+                (menuItem as MenuItem).Click += (s, a) =>
+                {
+                    ExecutePlugin(command.ID);
+                };
         }
 
         private void ExecutePlugin(Guid id)
@@ -113,7 +129,7 @@ namespace BLSpec
             var restorePoint = Model.Session.GetRestorePoint();
             try
             {
-                command.Execute(Model, this);
+                command.Execute(Model, new UIHelper(this));
             }
             catch (Exception e)
             {

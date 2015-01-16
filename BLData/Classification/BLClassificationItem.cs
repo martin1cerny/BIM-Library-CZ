@@ -51,7 +51,7 @@ namespace BLData.Classification
         }
 
         [XmlIgnore]
-        IEnumerable<BLClassificationItem> Children
+        public IEnumerable<BLClassificationItem> Children
         {
             get
             {
@@ -75,6 +75,21 @@ namespace BLData.Classification
 
         }
 
+        private BList<NameAlias> _nameAliases = new BList<NameAlias>();
+        public BList<NameAlias> NameAliases 
+        {
+            get { return _nameAliases; }
+            set { var old = _nameAliases; Set("NameAliases", () => _nameAliases = value, () => _nameAliases = old); }
+        }
+
+        private BList<NameAlias> _definitionAliases = new BList<NameAlias>();
+        [XmlArrayItem("DefinitionAlias")]
+        public BList<NameAlias> DefinitionAliases
+        {
+            get { return _definitionAliases; }
+            set { var old = _definitionAliases; Set("DefinitionAliases", () => _definitionAliases = value, () => _definitionAliases = old); }
+        }
+
         [XmlIgnore]
         public IEnumerable<QuantityPropertySetDef> DefinitionSets
         {
@@ -88,20 +103,51 @@ namespace BLData.Classification
             }
         }
 
+        [XmlIgnore]
+        public IEnumerable<QuantityPropertySetDef> DefinitionSetsUp
+        {
+            get
+            {
+                if (_definitionSetIds != null)
+                    foreach (var id in _definitionSetIds)
+                    {
+                        yield return _model.Get<QuantityPropertySetDef>(id);
+                    }
+                if (ParentID != null)
+                    foreach (var item in Parent.DefinitionSetsUp)
+                    {
+                        yield return item;
+                    }
+            }
+        }
 
         internal override void SetModel(BLModel model)
         {
             _model = model;
+            if (NameAliases != null) NameAliases.SetModel(model);
+            if (DefinitionAliases != null) DefinitionAliases.SetModel(model);
         }
 
         public override string Validate()
         {
-            return "";
+            var result = "";
+            if (NameAliases != null) result += NameAliases.Validate();
+            if (DefinitionAliases != null) result += DefinitionAliases.Validate();
+            return result;
         }
 
         internal override IEnumerable<BLEntity> GetChildren()
         {
-            yield break;
+            if (NameAliases != null)
+                foreach (var item in NameAliases)
+                {
+                    yield return item;
+                }
+            if (DefinitionAliases != null)
+                foreach (var item in DefinitionAliases)
+                {
+                    yield return item;
+                }
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace BLData.PropertySets
+namespace BLData
 {
     /// <summary>
     /// The name alias in local language.

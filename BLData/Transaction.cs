@@ -66,6 +66,7 @@ namespace BLData
             //remove all actions
             _undoActions = new List<Action>();
             _redoActions = new List<Action>();
+            IsSaved = true;
         }
 
         internal void Undo()

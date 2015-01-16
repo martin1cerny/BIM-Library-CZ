@@ -16,7 +16,7 @@ namespace BLSpec.Plugins
     public class LoadIFC4Psets : IExternalCommand
     {
         private BLModel _model;
-        public void Execute(BLData.BLModel model, Window win)
+        public void Execute(BLData.BLModel model, UIHelper ui)
         {
             _model = model;
             //create classification strcture based on the inheritance of products
@@ -57,18 +57,27 @@ namespace BLSpec.Plugins
                         ShowReadOnly = false,
                     };
 
-                    if (dlg.ShowDialog(win) == true)
+                    if (ui.ShowDialog(dlg) == true)
+                    {
                         foreach (var file in dlg.FileNames)
                             mgr.Load(file);
 
-                    if (mgr.DefinitionSets.Any())
-                    {
-                        mgr.SetModel(model);
+                        if (mgr.DefinitionSets.Any())
+                        {
+                            mgr.SetModel(model);
+                        }
+
+                        //assign property sets to classification items
+
+                        txn.Commit();
+                        return;
                     }
-
-                    //assign property sets to classification items
-
-                    txn.Commit();
+                    else
+                    {
+                        txn.Commit();
+                        //txn.RollBack();
+                        return;
+                    }
                 }
                 catch (Exception)
                 {
@@ -93,7 +102,7 @@ namespace BLSpec.Plugins
 
         public string Name
         {
-            get { return "Import.IFC4 Property Sets"; }
+            get { return "..Import.IFC4 Property Sets"; }
         }
 
 

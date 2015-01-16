@@ -60,7 +60,7 @@
     <Compile Include="PropertySets\EnumList.cs" />
     <Compile Include="PropertySets\IfcVersion.cs" />
     <Compile Include="PropertySets\IPropertyValueType.cs" />
-    <Compile Include="PropertySets\NameAlias.cs" />
+    <Compile Include="NameAlias.cs" />
     <Compile Include="PropertySets\PropertyDef.cs" />
     <Compile Include="PropertySets\PropertySetDef.cs" />
     <Compile Include="PropertySets\PropertyType.cs" />
