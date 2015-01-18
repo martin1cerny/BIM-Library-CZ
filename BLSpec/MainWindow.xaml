@@ -1,13 +1,14 @@
-﻿<Window x:Class="BLSpec.MainWindow"
+﻿<Window xmlns:Controls="clr-namespace:BLSpec.Controls"  x:Class="BLSpec.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="BIM Specifikace" Height="500" Width="700" Icon="img/TACR.ico" WindowStartupLocation="CenterScreen" >
+        Name="self"
+        Title="BIM Specifikace" Height="500" Width="800" Icon="img/TACR.ico" WindowStartupLocation="CenterScreen" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Menu Grid.Row="0">
+        <Menu Grid.Row="0" Name="menu">
             <MenuItem Name="File" Header="Soubor">
                 <MenuItem Name="miOpen" Header="Otevřít" Click="miOpen_Click"/>
                 <MenuItem Name="miSave" Header="Uložit" Click="miSave_Click"/>
@@ -18,5 +19,42 @@
             <MenuItem Name="Plugins" Header="Plug-ins"/>
             <MenuItem Name="miAbout" Header="O programu" Click="miAbout_Click"/>
         </Menu>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="150"/>
+            </Grid.RowDefinitions>
+            <GridSplitter Grid.Column="1" Grid.RowSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="3"/>
+            <GridSplitter Grid.Column="3"  Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="3"/>
+            <GridSplitter Grid.Column="5"  Grid.RowSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="3"/>
+            <GridSplitter Grid.Row="1"  Grid.ColumnSpan="6" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="3"/>
+            <DockPanel Grid.Column="0">
+                <Controls:ClassificationSelectionControl x:Name="clsSelection" DockPanel.Dock="Top" Model="{Binding ElementName=self, Path=Model}"/>
+                <Controls:ClassificationControl x:Name="clsControl" Classification="{Binding ElementName=clsSelection, Path=SelectedClassification}"/>
+            </DockPanel>
+            <Controls:CommentsControl Grid.Column="6" Grid.RowSpan="3" />
+            <Controls:PropertySetsControl Grid.Column="2" ClassificationItem="{Binding ElementName=clsControl, Path=SelectedItem}" x:Name="psetsControl"/>
+            <Controls:PropertiesControl Grid.Column="4"/>
+            <Controls:NameAliasesControl Grid.Column="0" Grid.Row="2"
+                                         Lang="{Binding ElementName=self, Path=Lang}"
+                                         NameAliases="{Binding ElementName=clsControl, Path=SelectedItem.NameAliases}"
+                                         DefinitionAliases="{Binding ElementName=clsControl, Path=SelectedItem.DefinitionAliases}"
+                                         />
+            <Controls:NameAliasesControl Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="3"
+                                         Lang="{Binding ElementName=self, Path=Lang}"
+                                         DefinitionAliases="{Binding ElementName=psetsControl, Path=SelectedPropertySet.DefinitionAliases}"
+                                         />
+        </Grid>
+        
     </Grid>
 </Window>

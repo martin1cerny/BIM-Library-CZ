@@ -109,7 +109,8 @@ namespace BLData
             entity.SetModel(this);
 
             //add to resources of the model in transaction
-            if (entity is BLModelEntity)
+            var modelEntity = entity as BLModelEntity;
+            if (modelEntity != null)
             {
                 var resource = _entities.FirstOrDefault(r => r.Type == typeof(T).FullName);
                 if (resource == null)
@@ -117,32 +118,33 @@ namespace BLData
                     resource = new BLEntityList(this) { Type = typeof(T).FullName};
                     _entities.Add(resource);
                 }
-                resource.Items.Add(entity as BLModelEntity);
+                resource.Items.Add(modelEntity);
+                OnModelEntitiesCollectionChanged(modelEntity, ChangeType.NEW);
             }
             //init if defined
             if (init != null)
                 init(entity);
-
             return entity;
         }
 
         /// <summary>
         /// This will remove object from resources but it won't to anything with related and relating objects. It will delete any nested objects.
         /// </summary>
-        /// <typeparam name="T">Type of instance to be removed</typeparam>
         /// <param name="instance">Instance to be deleted</param>
         /// <returns>TRUE if deletion was successfull, FALSE otherwise.</returns>
-        public bool Delete<T>(T instance) where T : BLModelEntity
+        public bool Delete(BLModelEntity instance)
         {
             //check for transaction
             if (CurrentTransaction == null) throw new Exceptions.NoTransactionException("Transaction must be opened to be able to change the model.");
 
             //remove from resources in transaction
-            var resource = _entities.FirstOrDefault(r => r.Type == typeof(T).Name);
+            var resource = _entities.FirstOrDefault(r => r.Type == instance.GetType().FullName);
             if (resource == null) return false;
             var entity = resource.Items.FirstOrDefault(e => e.Id == instance.Id);
             if (entity == null) return false;
-            return resource.Items.Remove(entity);
+            var result = resource.Items.Remove(entity);
+            OnModelEntitiesCollectionChanged(entity, ChangeType.DELETED);
+            return result;
         }
 
         public static BLModel Open(Stream stream)
@@ -207,5 +209,35 @@ namespace BLData
                 return result;
             }
         }
+
+        public event ModelEntitiesCollectionChangedHandler ModelEntitiesCollectionChanged;
+        private void OnModelEntitiesCollectionChanged(BLModelEntity entity, ChangeType type)
+        {
+            if (ModelEntitiesCollectionChanged != null)
+                ModelEntitiesCollectionChanged(new ModelEntitiesCollectionChangedEventArgs(entity, type));
+        }
+
+    }
+
+    public delegate void ModelEntitiesCollectionChangedHandler (ModelEntitiesCollectionChangedEventArgs args);
+
+    public class ModelEntitiesCollectionChangedEventArgs
+    {
+        public BLModelEntity Entity { get; internal set; }
+        public ChangeType ChangeType { get; internal set; }
+
+        public Type EntityType { get { return Entity.GetType(); } }
+
+        public ModelEntitiesCollectionChangedEventArgs(BLModelEntity entity, ChangeType type)
+        {
+            Entity = entity;
+        }
+    }
+
+    public enum ChangeType
+    {
+        UNDEFINED,
+        NEW,
+        DELETED
     }
 }
