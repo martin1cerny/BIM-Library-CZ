@@ -34,11 +34,20 @@ namespace BLData
             if (id != Guid.Empty)
             {
                 target = _session.FirstOrDefault(t => t.ID == id);
-                if (target != null)
+                if (target == null)
                     throw new Exception("This restore point doesn't exist.");
             }
             while (CurrentTransaction != target)
-                Undo();
+            {
+                if (CurrentTransaction.IsDirty)
+                {
+                    CurrentTransaction.RollBack();
+                    _session.Remove(CurrentTransaction);
+                    _current--;
+                }
+                else
+                    Undo(); 
+            }
         }
 
         public IEnumerable<string> UndoTransactions

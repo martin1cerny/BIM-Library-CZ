@@ -98,7 +98,9 @@ namespace BLData.Classification
                 if (_definitionSetIds != null)
                     foreach (var id in _definitionSetIds)
                     {
-                        yield return _model.Get<QuantityPropertySetDef>(id);
+                        var def = _model.Get<QuantityPropertySetDef>(id);
+                        //if (def != null)
+                            yield return def;
                     }
             }
         }
@@ -108,11 +110,8 @@ namespace BLData.Classification
         {
             get
             {
-                if (_definitionSetIds != null)
-                    foreach (var id in _definitionSetIds)
-                    {
-                        yield return _model.Get<QuantityPropertySetDef>(id);
-                    }
+                foreach (var def in DefinitionSets)
+                    yield return def;
                 if (ParentID != null)
                     foreach (var item in Parent.DefinitionSetsUp)
                     {

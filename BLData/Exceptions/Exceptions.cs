@@ -73,4 +73,16 @@ namespace BLData.Exceptions
           System.Runtime.Serialization.StreamingContext context)
             : base(info, context) { }
     }
+
+    [Serializable]
+    public class InvalidModelOperationException : Exception
+    {
+        public InvalidModelOperationException() { }
+        public InvalidModelOperationException(string message) : base(message) { }
+        public InvalidModelOperationException(string message, Exception inner) : base(message, inner) { }
+        protected InvalidModelOperationException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context)
+            : base(info, context) { }
+    }
 }

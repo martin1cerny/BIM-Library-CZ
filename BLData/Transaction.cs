@@ -57,26 +57,36 @@ namespace BLData
         public void RollBack()
         {
             if (_state != StateEnum.OPENED)
-                throw new TransactionFinishedException(_name);
-            foreach (var action in _undoActions)
+                return;
+
+            try
             {
-                action();
+                //play back all actions
+                for (var i = _undoActions.Count - 1; i >= 0; i--)
+                    _undoActions[i]();
             }
-            _state = StateEnum.FINISHED;
-            //remove all actions
-            _undoActions = new List<Action>();
-            _redoActions = new List<Action>();
-            IsSaved = true;
+            catch (Exception e)
+            {
+                throw new Exceptions.TransactionNotFinishedException("Transaction " + Name + " wasn't rolled back successfully.", e);
+            }
+            finally
+            {
+                _state = StateEnum.FINISHED;
+                //remove all actions
+                _undoActions = new List<Action>();
+                _redoActions = new List<Action>();
+                IsSaved = true;
+            }
+            
+
         }
 
         internal void Undo()
         {
             if (_state != StateEnum.FINISHED && _state != StateEnum.REDONE) 
                 throw new TransactionNotFinishedException(_name);
-            foreach (var action in _undoActions)
-            {
-                action();
-            }
+            for (var i = _undoActions.Count - 1; i >= 0; i--)
+                _undoActions[i]();
             _state = StateEnum.UNDONE;
         }
 

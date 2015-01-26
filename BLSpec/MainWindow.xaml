@@ -1,6 +1,7 @@
-﻿<Window xmlns:Controls="clr-namespace:BLSpec.Controls"  x:Class="BLSpec.MainWindow"
+﻿<Window x:Class="BLSpec.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:BLSpec.Controls"
         Name="self"
         Title="BIM Specifikace" Height="500" Width="800" Icon="img/TACR.ico" WindowStartupLocation="CenterScreen" >
     <Grid>
@@ -44,7 +45,7 @@
             </DockPanel>
             <Controls:CommentsControl Grid.Column="6" Grid.RowSpan="3" />
             <Controls:PropertySetsControl Grid.Column="2" ClassificationItem="{Binding ElementName=clsControl, Path=SelectedItem}" x:Name="psetsControl"/>
-            <Controls:PropertiesControl Grid.Column="4"/>
+            <Controls:PropertiesControl Grid.Column="4" PropertySet="{Binding ElementName=psetsControl,  Path=SelectedPropertySet}"/>
             <Controls:NameAliasesControl Grid.Column="0" Grid.Row="2"
                                          Lang="{Binding ElementName=self, Path=Lang}"
                                          NameAliases="{Binding ElementName=clsControl, Path=SelectedItem.NameAliases}"

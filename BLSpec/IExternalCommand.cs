@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace BLSpec
 {
-    interface IExternalCommand
+    public interface IExternalCommand
     {
         void Execute(BLData.BLModel model, UIHelper ui);
         string Name { get; }
@@ -31,6 +31,11 @@ namespace BLSpec
         public bool? ShowDialog(FileDialog dialog)
         {
             return dialog.ShowDialog(_mainWin);
+        }
+
+        public void ShowMessage(string caption, string message)
+        {
+            MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

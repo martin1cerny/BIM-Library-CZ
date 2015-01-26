@@ -28,25 +28,17 @@ namespace BLSpec.Controls
 
 
         private void SetLanguage() { 
-        var code = String.IsNullOrEmpty(Lang) ? "en-us" : Lang;
+        var code = String.IsNullOrEmpty(Lang) ? "en-US" : Lang;
             if (NameAliases != null)
-                foreach (var alias in NameAliases)
-                {
-                    if (alias.Lang == code)
-                    {
-                        SetValue(ActiveNameAliasProperty, alias);
-                        break;
-                    }
-                }
+            {
+                var alias = NameAliases.FirstOrDefault(a => a.Lang == code);
+                SetValue(ActiveNameAliasProperty, alias);
+            }
             if (DefinitionAliases != null)
-                foreach (var alias in DefinitionAliases)
-                {
-                    if (alias.Lang == code)
-                    {
-                        SetValue(ActiveDefinitionAliasProperty, alias);
-                        break;
-                    }
-                }
+            {
+                var alias = DefinitionAliases.FirstOrDefault(a => a.Lang == code);
+                SetValue(ActiveDefinitionAliasProperty, alias);
+            }
         }
 
         public string Lang

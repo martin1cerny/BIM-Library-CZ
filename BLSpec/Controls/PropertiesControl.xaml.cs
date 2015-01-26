@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BLData.PropertySets;
 
 namespace BLSpec.Controls
 {
@@ -24,5 +25,33 @@ namespace BLSpec.Controls
         {
             InitializeComponent();
         }
+
+
+
+        public QuantityPropertyDef SelectedProperty
+        {
+            get { return (QuantityPropertyDef)GetValue(SelectedPropertyProperty); }
+            set { SetValue(SelectedPropertyProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectedProperty.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedPropertyProperty =
+            DependencyProperty.Register("SelectedProperty", typeof(QuantityPropertyDef), typeof(PropertiesControl), new PropertyMetadata(null));
+
+
+
+
+        public QuantityPropertySetDef PropertySet
+        {
+            get { return (QuantityPropertySetDef)GetValue(PropertySetProperty); }
+            set { SetValue(PropertySetProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for PropertySet.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PropertySetProperty =
+            DependencyProperty.Register("PropertySet", typeof(QuantityPropertySetDef), typeof(PropertiesControl), new PropertyMetadata(null));
+
+        
+        
     }
 }

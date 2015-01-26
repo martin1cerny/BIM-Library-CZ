@@ -26,7 +26,7 @@ namespace BLSpec.Plugins
             //build type tree
             foreach (var type in productTypes)
             {
-                tree.AddNode(new Node() { type = type}, typeof(IfcProduct));
+                tree.AddNode(new Node(type), typeof(IfcProduct));
             }
             var roots = tree.Roots;
 
@@ -50,7 +50,7 @@ namespace BLSpec.Plugins
                         AddExtension = true,
                         DefaultExt = ".xml",
                         Filter = "PSet definitions|*.xml",
-                        Title = "Uložit BIM specifikaci...",
+                        Title = "Otevřít definice sad paametrů...",
                         CheckFileExists = true,
                         CheckPathExists = true,
                         Multiselect = true,
@@ -59,23 +59,50 @@ namespace BLSpec.Plugins
 
                     if (ui.ShowDialog(dlg) == true)
                     {
+                        var msg = "";
                         foreach (var file in dlg.FileNames)
                             mgr.Load(file);
 
                         if (mgr.DefinitionSets.Any())
                         {
                             mgr.SetModel(model);
+
+                            //assign property sets to classification items
+                            foreach (var definitionSet in mgr.DefinitionSets)
+                            {
+                                foreach (var appCls in definitionSet.ApplicableClasses)
+                                {
+                                    var cName = appCls.ClassName;
+                                    var cPredefType = appCls.PredefinedType;
+
+                                    var cItems = _model.Get<BLClassificationItem>();
+                                    var item = _model.Get<BLClassificationItem>(ci => ci.Name == cName).FirstOrDefault();
+                                    if (!String.IsNullOrEmpty(cPredefType) && item != null)
+                                        item = item.Children.FirstOrDefault(ci => ci.Name == cPredefType);
+                                    if (item != null)
+                                    {
+                                        item.DefinitionSetIds.Add(definitionSet.Id);
+                                    }
+                                    else
+                                    {
+                                        //there is either problem with IFC2x3 and IFC4 type mismatch or it is not product related PSet
+                                        msg += String.Format("Class {0} {1} was not found. \n", cName, cPredefType);
+                                        //_model.Delete(definitionSet);
+                                    }
+                                } 
+                            }
                         }
 
-                        //assign property sets to classification items
+                        if (!String.IsNullOrEmpty(msg))
+                            MessageBox.Show(msg, "Varovani", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
 
                         txn.Commit();
                         return;
                     }
                     else
                     {
-                        txn.Commit();
-                        //txn.RollBack();
+                        //Roll back if the dialog is closed or canceled.
+                        txn.RollBack();
                         return;
                     }
                 }
@@ -89,10 +116,21 @@ namespace BLSpec.Plugins
 
         private BLClassificationItem AddClassificationItem(Node node, BLClassificationItem parent)
         {
-            var name = node.type.Name.Substring(3); //strip off 'Ifc'
-            name = Regex.Replace(name, @"([a-z])([A-Z])", "$1 $2").Trim();
+            var name = node.name != null ? node.name : node.type.Name;
+            
 
             var item = _model.New<BLClassificationItem>(ci => { ci.Name = name; if (parent != null) ci.ParentID = parent.Id; });
+            item.NameAliases.Add(_model.New<NameAlias>(na => {
+                na.Lang = "en-US";
+
+                var alias = name;
+                if (name.StartsWith("Ifc"))
+                {
+                    alias = alias.Substring(3); //strip off 'Ifc'
+                    alias = Regex.Replace(alias, @"([a-z])([A-Z])", "$1 $2").Trim();
+                }
+                na.Value = alias;
+            }));
             foreach (var child in node.children)
             {
                 AddClassificationItem(child, item);
@@ -112,9 +150,50 @@ namespace BLSpec.Plugins
         }
 
         private class Node {
+            public string name;
             public Type type;
             public Node parent;
             public List<Node> children = new List<Node>();
+            private static IEnumerable<Type> elementTypes = typeof(Xbim.Ifc2x3.SharedBldgElements.IfcWall).Assembly.GetTypes().Where(t => typeof(IfcTypeProduct).IsAssignableFrom(t));
+
+
+            public Node(Type type)
+            {
+                this.type = type;
+
+                //use reflection to add predefined type children
+                var info = type.GetProperty("PredefinedType");
+                if (info == null)
+                {
+                    var elementType = elementTypes.FirstOrDefault(t => t.Name == type.Name + "Type");
+                    if (elementType != null)
+                    {
+                        info = elementType.GetProperty("PredefinedType");
+                    }
+                }
+                if (info != null)
+                {
+                    var enumType = info.PropertyType;
+                    if (enumType.IsEnum)
+                    {
+                        var names = Enum.GetNames(enumType);
+                        foreach (var name in names)
+                            children.Add(new Node(enumType) { name = name });
+                    }
+                    //nullable type
+                    else if (enumType.IsGenericType && enumType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                    {
+                        enumType = Nullable.GetUnderlyingType(enumType);
+                        var names = Enum.GetNames(enumType);
+                        foreach (var name in names)
+                            children.Add(new Node(enumType) { name = name });
+                    }
+                    //this shouldn't happen
+                    else
+                        throw new Exception("Unexpected predefined type object type.");
+                    
+                }
+            }
         }
 
         private class Tree : List<Node>{
@@ -128,7 +207,7 @@ namespace BLSpec.Plugins
                 var parent = this.FirstOrDefault(n => n.type == node.type.BaseType);
                 if (parent == null && node.type.BaseType != null && node.type.BaseType != rootType.BaseType)
                 {
-                    parent = new Node() { type = node.type.BaseType };
+                    parent = new Node(node.type.BaseType) { };
                     this.AddNode(parent, rootType);
                 }
                 if (parent != null)
