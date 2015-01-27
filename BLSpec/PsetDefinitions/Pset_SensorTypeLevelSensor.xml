@@ -4,9 +4,9 @@
 	<Definition>A device that senses or detects fill level.  HISTORY: Added in IFC4.</Definition>
 	<IfcVersion version="2x4" />
 	<ApplicableClasses>
-		<ClassName>IfcSensor/LEVEL</ClassName>
+		<ClassName>IfcSensor/LEVELSENSOR</ClassName>
 	</ApplicableClasses>
-	<ApplicableTypeValue>IfcSensor/LEVEL</ApplicableTypeValue>
+	<ApplicableTypeValue>IfcSensor/LEVELSENSOR</ApplicableTypeValue>
 	<PropertyDefs>
 		<PropertyDef ifdguid="c9cab500d20511e1800000215ad4efdf">
 			<Name>SetPointLevel</Name>

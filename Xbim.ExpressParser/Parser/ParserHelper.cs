@@ -23,6 +23,7 @@ namespace Xbim.ExpressParser
         private IfcVersionEnum _version;
         private BLModel _model;
         private Tree _tree = new Tree();
+        public Tree Tree { get { return _tree; } }
 
         internal Parser(Scanner lex, IfcVersionEnum version, BLModel model): base(lex)
         {
@@ -58,12 +59,15 @@ namespace Xbim.ExpressParser
                 parent = inheritance.SubtypeOf != null ? inheritance.SubtypeOf.FirstOrDefault() : null;
 
             var props = sections.OfType<PropertySection>().FirstOrDefault();
-            IEnumerable<string> predefinedTypes = null;
+            List<string> predefinedTypes = new List<string>();
             if (props != null)
             {
                 var prop = props.FirstOrDefault(p => p.Name == "PredefinedType");
+                var sys = props.FirstOrDefault(p => p.Name == "SystemType");
                 if (prop != null)
-                    predefinedTypes = _enumerations[prop.Type];
+                    predefinedTypes.AddRange(_enumerations[prop.Type]);
+                if (sys != null)
+                    predefinedTypes.AddRange(_enumerations[sys.Type]);
             }
 
             var node = _tree.GetOrCreate(name);
@@ -72,7 +76,7 @@ namespace Xbim.ExpressParser
                 var parentNode = _tree.GetOrCreate(parent);
                 node.Parent = parentNode;
             }
-            if (predefinedTypes != null)
+            if (predefinedTypes.Any())
                 node.PredefinedTypes = predefinedTypes;
         }
 
@@ -84,47 +88,44 @@ namespace Xbim.ExpressParser
 
             //create classification nodes from the tree
         }
+}
 
-        private class Node
-        {
-            public Node Parent { get; set; }
-            public string Name { get; set; }
-            public IEnumerable<string> PredefinedTypes { get; set; }
-            public IEnumerable<Node> Children { get; set; }
-        }
-
-        private class Tree : List<Node>
-        {
-            public void SetAllChildren()
-            {
-                foreach (var node in this)
-                {
-                    node.Children = this.Where(n => n.Parent == node);
-                }
-            }
-
-            public Node GetOrCreate(string name)
-            {
-                var node = this.FirstOrDefault(n => n.Name == name);
-                if (node != null)
-                    return node;
-                node = new Node() { Name = name };
-                this.Add(node);
-                return node;
-            }
-
-            public IEnumerable<Node> Roots 
-            {
-                get
-                {
-                    return this.Where(n => n.Parent == null);
-                }
-            }
-        }
-
-
+    public class Node
+    {
+        public Node Parent { get; set; }
+        public string Name { get; set; }
+        public IEnumerable<string> PredefinedTypes { get; set; }
+        public IEnumerable<Node> Children { get; set; }
     }
 
+    public class Tree : List<Node>
+    {
+        public void SetAllChildren()
+        {
+            foreach (var node in this)
+            {
+                node.Children = this.Where(n => n.Parent == node);
+            }
+        }
+
+        public Node GetOrCreate(string name)
+        {
+            var node = this.FirstOrDefault(n => n.Name == name);
+            if (node != null)
+                return node;
+            node = new Node() { Name = name };
+            this.Add(node);
+            return node;
+        }
+
+        public IEnumerable<Node> Roots
+        {
+            get
+            {
+                return this.Where(n => n.Parent == null);
+            }
+        }
+    }
     public enum IfcVersionEnum
     {
         IFC2x3,

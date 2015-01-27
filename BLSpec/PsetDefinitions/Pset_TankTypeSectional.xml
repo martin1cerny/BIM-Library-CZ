@@ -9,9 +9,9 @@ Note (2): Generally, it is not expected that sectional construction tanks will b
 Pset renamed from Pset_TankTypeSectionalTank to Pset_TankTypeSectional in IFC2x2 Pset Addendum.</Definition>
 	<IfcVersion version="2x4" />
 	<ApplicableClasses>
-		<ClassName>IfcTank/SECTIONAL</ClassName>
+		<ClassName>IfcTank/Sectional</ClassName>
 	</ApplicableClasses>
-	<ApplicableTypeValue>IfcTank/SECTIONAL</ApplicableTypeValue>
+	<ApplicableTypeValue>IfcTank/Sectional</ApplicableTypeValue>
 	<PropertyDefs>
 		<PropertyDef ifdguid="bd982500d21011e1800000215ad4efdf">
 			<Name>NumberOfSections</Name>

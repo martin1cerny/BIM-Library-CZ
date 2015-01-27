@@ -4,7 +4,10 @@
 	<Definition>Centrifugal fan occurrence attributes attached to an instance of IfcFan.</Definition>
 	<IfcVersion version="2x4" />
 	<ApplicableClasses>
-		<ClassName>IfcFan/CENTRIFUGAL</ClassName>
+    <ClassName>IfcFan/CENTRIFUGALFORWARDCURVED</ClassName>
+    <ClassName>IfcFan/CENTRIFUGALRADIAL</ClassName>
+    <ClassName>IfcFan/CENTRIFUGALBACKWARDINCLINEDCURVED</ClassName>
+    <ClassName>IfcFan/CENTRIFUGALAIRFOIL</ClassName>
 	</ApplicableClasses>
 	<ApplicableTypeValue>IfcFan/CENTRIFUGAL</ApplicableTypeValue>
 	<PropertyDefs>
