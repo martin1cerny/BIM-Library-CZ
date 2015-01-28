@@ -7,10 +7,22 @@
              Name="self"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <DataGrid  ItemsSource="{Binding ElementName=self, Path=PropertySet}" AutoGenerateColumns="False" SelectedItem="{Binding ElementName=self, Path=SelectedProperty}">
+        <DataGrid  ItemsSource="{Binding ElementName=self, Path=PropertySet.Definitions}" AutoGenerateColumns="False" SelectedItem="{Binding ElementName=self, Path=SelectedProperty}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Název" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="Definice" Binding="{Binding Definition}"/>
+                <DataGridTextColumn Header="Název" Binding="{Binding Name}" >
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Definice" Binding="{Binding Definition}" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

@@ -9,7 +9,20 @@
     <Grid>
         <DataGrid ItemsSource="{Binding ElementName=self, Path=ClassificationItem.DefinitionSetsUp}" AutoGenerateColumns="False" SelectedItem="{Binding ElementName=self, Path=SelectedPropertySet}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Název" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Název" Binding="{Binding Name}" >
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Definice" Binding="{Binding Definition}" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

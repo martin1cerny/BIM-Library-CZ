@@ -17,10 +17,10 @@ namespace BLSpec.Plugins
             {
                 try
                 {
-                    var cls = model.New<BLClassification>(c => { c.Name = "Classification A"; c.Description = "Sample classification"; });
+                    var cls = model.New<BLClassification>(c => { c.Name = "Classification A"; c.Definition = "Sample classification"; });
                     var item = model.New<BLClassificationItem>(i => {
                         i.Name = "Item A";
-                        i.Description = "Item A description";
+                        i.Definition = "Item A description";
                         i.NameAliases.Add(model.New<NameAlias>(a => {
                             a.Lang = "cs-cz";
                             a.Value = "Položka A";

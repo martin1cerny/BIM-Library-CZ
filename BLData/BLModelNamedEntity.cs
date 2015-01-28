@@ -16,12 +16,12 @@ namespace BLData
             set { var old = _name; Set("Name", ()=> _name = value, () => _name = old); }
         }
 
-        private string _description;
+        private string _definition;
 
-        public string Description
+        public string Definition
         {
-            get { return _description; }
-            set { var old = _description; Set("Description", () => _description = value, () => _description = old); }
+            get { return _definition; }
+            set { var old = _definition; Set("Definition", () => _definition = value, () => _definition = old); }
         }
         
         

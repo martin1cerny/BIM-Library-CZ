@@ -44,7 +44,7 @@ namespace BLSpec
 
         // Using a DependencyProperty as the backing store for Lang.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty LangProperty =
-            DependencyProperty.Register("Lang", typeof(string), typeof(MainWindow), new PropertyMetadata("ja-JP"));
+            DependencyProperty.Register("Lang", typeof(string), typeof(MainWindow), new PropertyMetadata("en-US"));
 
         
 

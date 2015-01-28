@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Controls="clr-namespace:BLSpec.Controls"
         Name="self"
-        Title="BIM Specifikace" Height="500" Width="800" Icon="img/TACR.ico" WindowStartupLocation="CenterScreen" >
+        Title="BIM Specifikace" Height="500" Width="800" Icon="img/TACR.ico" WindowStartupLocation="CenterScreen" WindowState="Maximized" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -22,7 +22,7 @@
         </Menu>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto" MinWidth="250"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
