@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BLData;
 using Microsoft.Win32;
+using BLData.Comments;
 
 namespace BLSpec
 {
@@ -268,6 +269,20 @@ namespace BLSpec
             //close model first
             miCloseModel_Click(null, null);
             base.OnClosing(e);
+        }
+
+        private void EntityActiveHandler(object sender, BLEntityActiveEventArgs args)
+        {
+            var entity = args.Entity;
+            if (entity == null)
+                return;
+
+            aliasesControl.NameAliases = args.NameAliases;
+            aliasesControl.DefinitionAliases = args.DefinitionAliases;
+
+            //set entity for comments
+            var comments = entity.Model.Get<BLComment>(c => c._forEntityId == entity.Id);
+
         }
     }
 }

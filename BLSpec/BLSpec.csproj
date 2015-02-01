@@ -139,6 +139,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BLEntityActiveHandler.cs" />
     <Compile Include="Controls\ClassificationControl.xaml.cs">
       <DependentUpon>ClassificationControl.xaml</DependentUpon>
     </Compile>

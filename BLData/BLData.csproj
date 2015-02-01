@@ -48,7 +48,7 @@
     <Compile Include="BList.cs" />
     <Compile Include="BLModel.cs" />
     <Compile Include="BLModelNamedEntity.cs" />
-    <Compile Include="Comments\Comment.cs" />
+    <Compile Include="Comments\BLComment.cs" />
     <Compile Include="Exceptions\Exceptions.cs" />
     <Compile Include="IBLModelEntity.cs" />
     <Compile Include="BLEntity.cs" />

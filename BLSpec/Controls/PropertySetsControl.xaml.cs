@@ -53,7 +53,20 @@ namespace BLSpec.Controls
         public static readonly DependencyProperty SelectedPropertySetProperty =
             DependencyProperty.Register("SelectedPropertySet", typeof(PropertySetDef), typeof(PropertySetsControl), new PropertyMetadata(null));
 
-        
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var entity = e.AddedItems.Cast<PropertySetDef>().FirstOrDefault();
+            if (entity != null)
+                OnEntityActive(entity);
+        }
+
+
+        public event BLEntityActiveHandler EntityActive;
+        private void OnEntityActive(BLEntity entity)
+        {
+            if (EntityActive != null)
+                EntityActive(this, new BLEntityActiveEventArgs(entity));
+        }
 
     }
 }

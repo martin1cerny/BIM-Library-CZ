@@ -7,7 +7,10 @@
              Name="self"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <DataGrid ItemsSource="{Binding ElementName=self, Path=ClassificationItem.DefinitionSetsUp}" AutoGenerateColumns="False" SelectedItem="{Binding ElementName=self, Path=SelectedPropertySet}">
+        <DataGrid ItemsSource="{Binding ElementName=self, Path=ClassificationItem.DefinitionSetsUp}" 
+                  AutoGenerateColumns="False" 
+                  SelectedItem="{Binding ElementName=self, Path=SelectedPropertySet}"
+                  SelectionChanged="DataGrid_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Název" Binding="{Binding Name}" >
                     <DataGridTextColumn.ElementStyle>

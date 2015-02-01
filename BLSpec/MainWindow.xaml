@@ -35,25 +35,28 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="150"/>
             </Grid.RowDefinitions>
-            <GridSplitter Grid.Column="1" Grid.RowSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="3"/>
+            <GridSplitter Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="3"/>
             <GridSplitter Grid.Column="3"  Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="3"/>
             <GridSplitter Grid.Column="5"  Grid.RowSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="3"/>
             <GridSplitter Grid.Row="1"  Grid.ColumnSpan="6" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="3"/>
             <DockPanel Grid.Column="0">
                 <Controls:ClassificationSelectionControl x:Name="clsSelection" DockPanel.Dock="Top" Model="{Binding ElementName=self, Path=Model}"/>
-                <Controls:ClassificationControl x:Name="clsControl" Classification="{Binding ElementName=clsSelection, Path=SelectedClassification}"/>
+                <Controls:ClassificationControl x:Name="clsControl" 
+                                                Classification="{Binding ElementName=clsSelection, Path=SelectedClassification}"
+                                                EntityActive="EntityActiveHandler"/>
             </DockPanel>
-            <Controls:CommentsControl Grid.Column="6" Grid.RowSpan="3" />
-            <Controls:PropertySetsControl Grid.Column="2" ClassificationItem="{Binding ElementName=clsControl, Path=SelectedItem}" x:Name="psetsControl"/>
-            <Controls:PropertiesControl Grid.Column="4" PropertySet="{Binding ElementName=psetsControl,  Path=SelectedPropertySet}"/>
-            <Controls:NameAliasesControl Grid.Column="0" Grid.Row="2"
+            <Controls:CommentsControl Grid.Column="6" Grid.RowSpan="3" 
+                                      x:Name="commentsControl"/>
+            <Controls:PropertySetsControl Grid.Column="2" 
+                                          ClassificationItem="{Binding ElementName=clsControl, Path=SelectedItem}" 
+                                          x:Name="psetsControl"
+                                          EntityActive="EntityActiveHandler"/>
+            <Controls:PropertiesControl Grid.Column="4" PropertySet="{Binding ElementName=psetsControl,  Path=SelectedPropertySet}"
+                                        x:Name="propertiesControl"
+                                        EntityActive="EntityActiveHandler"/>
+            <Controls:NameAliasesControl Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="5"
                                          Lang="{Binding ElementName=self, Path=Lang}"
-                                         NameAliases="{Binding ElementName=clsControl, Path=SelectedItem.NameAliases}"
-                                         DefinitionAliases="{Binding ElementName=clsControl, Path=SelectedItem.DefinitionAliases}"
-                                         />
-            <Controls:NameAliasesControl Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="3"
-                                         Lang="{Binding ElementName=self, Path=Lang}"
-                                         DefinitionAliases="{Binding ElementName=psetsControl, Path=SelectedPropertySet.DefinitionAliases}"
+                                         x:Name="aliasesControl"
                                          />
         </Grid>
         

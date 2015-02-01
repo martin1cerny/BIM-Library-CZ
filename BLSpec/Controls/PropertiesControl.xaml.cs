@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BLData.PropertySets;
+using BLData;
 
 namespace BLSpec.Controls
 {
@@ -51,7 +52,19 @@ namespace BLSpec.Controls
         public static readonly DependencyProperty PropertySetProperty =
             DependencyProperty.Register("PropertySet", typeof(QuantityPropertySetDef), typeof(PropertiesControl), new PropertyMetadata(null));
 
-        
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var entity = e.AddedItems.Cast<QuantityPropertyDef>().FirstOrDefault();
+            if (entity != null)
+                OnEntityActive(entity);
+        }
+
+        public event BLEntityActiveHandler EntityActive;
+        private void OnEntityActive(BLEntity entity)
+        {
+            if (EntityActive != null)
+                EntityActive(this, new BLEntityActiveEventArgs(entity));
+        }
         
     }
 }

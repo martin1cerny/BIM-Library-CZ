@@ -27,7 +27,18 @@ namespace BLData.PropertySets
         [XmlIgnore]
         public BList<NameAlias> DefinitionAliases {
             get { return _definitionAliases; }
-            set { var old = _definitionAliases; Set( new[] { "DefinitionAliases", "_QtoDefinitionAliases" }, () => _definitionAliases = value, () => _definitionAliases = old); }
+            set { var old = _definitionAliases; Set(new[] { "DefinitionAliases", "_QtoDefinitionAliases", "_PsetDefinitionAliases" }, () => _definitionAliases = value, () => _definitionAliases = old); }
+        }
+
+        
+        private BList<NameAlias> _nameAliases = new BList<NameAlias>();
+        /// <summary>
+        /// Name aliases of the property set. This is non standard property.
+        /// </summary>
+        public BList<NameAlias> NameAliases
+        {
+            get { return _nameAliases; }
+            set { var old = _nameAliases; Set("NameAliases", () => _nameAliases = value, () => _nameAliases = old); }
         }
 
         /// <summary>

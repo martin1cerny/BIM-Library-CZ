@@ -9,7 +9,7 @@ using BLData.Exceptions;
 
 namespace BLData.Comments
 {
-    public class Comment : BLModelEntity
+    public class BLComment : BLModelEntity
     {
         private Guid __forEntityId;
         [XmlAttribute("ForEntity")]

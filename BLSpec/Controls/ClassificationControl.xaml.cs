@@ -39,7 +39,8 @@ namespace BLSpec.Controls
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            SetValue(SelectedItemProperty, e.NewValue); 
+            SetValue(SelectedItemProperty, e.NewValue);
+            OnEntityActive(e.NewValue as BLClassificationItem);
         }
 
 
@@ -52,7 +53,12 @@ namespace BLSpec.Controls
         public static readonly DependencyProperty SelectedItemProperty =
             DependencyProperty.Register("SelectedItem", typeof(BLClassificationItem), typeof(ClassificationControl), new PropertyMetadata(null));
 
-        
-        
+
+        public event BLEntityActiveHandler EntityActive;
+        private void OnEntityActive(BLEntity entity)
+        {
+            if (EntityActive != null)
+                EntityActive(this, new BLEntityActiveEventArgs(entity));
+        }
     }
 }
