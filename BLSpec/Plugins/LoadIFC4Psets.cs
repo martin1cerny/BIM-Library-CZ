@@ -13,7 +13,10 @@ using Xbim.Ifc2x3.Kernel;
 
 namespace BLSpec.Plugins
 {
-    public class LoadIFC4Psets : IExternalCommand
+    public class LoadIFC4Psets 
+#if DEBUG
+        : IExternalCommand
+#endif
     {
         private BLModel _model;
         public void Execute(BLData.BLModel model, UIHelper ui)

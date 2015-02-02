@@ -15,7 +15,10 @@ using System.Text.RegularExpressions;
 
 namespace Xbim.ExpressParser
 {
-    public class CreateIFC4Classification : IExternalCommand
+    public class CreateIFC4Classification
+#if DEBUG
+        : IExternalCommand
+#endif
     {
         private BLModel _model;
 

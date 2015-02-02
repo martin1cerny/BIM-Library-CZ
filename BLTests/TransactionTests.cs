@@ -11,6 +11,38 @@ namespace BLTests
     public class TransactionTests
     {
         [TestMethod]
+        public void ListRemoval()
+        {
+            var model = new BLModel();
+            var list = new BList<string>(model);
+            using (var txn = model.BeginTansaction("Test"))
+            {
+                list.Add("A");
+                list.Add("B");
+                list.Add("C");
+                list.Add("D");
+                txn.Commit();
+            }
+
+            Assert.AreEqual(4, list.Count);
+            Assert.AreEqual("A", list[0]);
+            Assert.AreEqual("B", list[1]);
+            Assert.AreEqual("C", list[2]);
+            Assert.AreEqual("D", list[3]);
+
+            using (var txn = model.BeginTansaction("Test"))
+            {
+                list.Remove("A");
+                list.Remove("C");
+                txn.Commit();
+            }
+            Assert.AreEqual(2, list.Count);
+            Assert.AreEqual("B", list[0]);
+            Assert.AreEqual("D", list[1]);
+
+        }
+
+        [TestMethod]
         public void ListTest()
         {
             var model = new BLModel();

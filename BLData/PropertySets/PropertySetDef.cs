@@ -55,8 +55,8 @@ namespace BLData.PropertySets
         public BList<PropertyDef> PropertyDefinitions {
             get { return _propertyDefinitions; }
             set { 
-                var old = _propertyDefinitions; 
-                Set(new []{"PropertyDefinitions", "Definitions"}, () => _propertyDefinitions = value, () => _propertyDefinitions = old);
+                var old = _propertyDefinitions;
+                Set(new[] { "PropertyDefinitions", "Definitions", "AllPropertyDefinitions" }, () => _propertyDefinitions = value, () => _propertyDefinitions = old);
             }
         }
 
@@ -89,6 +89,29 @@ namespace BLData.PropertySets
         public templatetype TemplateType {
             get { return _templateType; }
             set { var old = _templateType; Set("TemplateType", () => _templateType = value, () => _templateType = old); }
+        }
+
+
+        /// <summary>
+        /// This includes nested property definitions of complex types
+        /// </summary>
+        [XmlIgnore]
+        public IEnumerable<PropertyDef> AllPropertyDefinitions
+        {
+            get
+            {
+                foreach (var property in PropertyDefinitions)
+                {
+                    yield return property;
+
+                    var complex = property.PropertyType.PropertyValueType as TypeComplexProperty;
+                    if (complex != null)
+                    {
+                        foreach (var p in complex.Properties)
+                            yield return p;
+                    }
+                }
+            }
         }
 
         [XmlIgnore]

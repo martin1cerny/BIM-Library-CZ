@@ -40,6 +40,7 @@ namespace BLData
             set { var old = _definitionAliases; Set("DefinitionAliases", () => _definitionAliases = value, () => _definitionAliases = old); }
         }
 
+        [XmlIgnore]
         public string LocalizedName
         {
             get
@@ -76,6 +77,7 @@ namespace BLData
             }
         }
 
+        [XmlIgnore]
         public string LocalizedDefinition
         {
             get

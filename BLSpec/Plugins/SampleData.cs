@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace BLSpec.Plugins
 {
-    class SampleData: IExternalCommand
+    class SampleData
+#if DEBUG
+ : IExternalCommand
+#endif
     {
         public void Execute(BLData.BLModel model, UIHelper ui)
         {

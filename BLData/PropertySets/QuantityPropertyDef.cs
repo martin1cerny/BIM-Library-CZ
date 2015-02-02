@@ -78,6 +78,7 @@ namespace BLData.PropertySets
         }
 
 
+        [XmlIgnore]
         public string LocalizedName
         {
             get
@@ -110,6 +111,7 @@ namespace BLData.PropertySets
             }
         }
 
+        [XmlIgnore]
         public string LocalizedDefinition
         {
             get
