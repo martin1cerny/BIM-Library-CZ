@@ -202,9 +202,26 @@ namespace BLData
             get
             {
                 var result = Get<BLModelInformation>().FirstOrDefault();
-                if (result == null && CurrentTransaction != null) 
+                if (result == null) 
                 {
+                    Action a = () => 
                     result = New<BLModelInformation>();
+                    if (CurrentTransaction == null)
+                        using (var txn = BeginTansaction("Creation of the model information"))
+                        {
+                            try
+                            {
+                                a();
+                                txn.Commit();
+                            }
+                            catch (Exception)
+                            {
+                                txn.RollBack();
+                                throw;
+                            }
+                        }
+                    else
+                        a();
                 }
                 return result;
             }

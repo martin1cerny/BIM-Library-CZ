@@ -275,14 +275,16 @@ namespace BLSpec
         {
             var entity = args.Entity;
             if (entity == null)
+            {
+                aliasesControl.NameAliases = null;
+                aliasesControl.DefinitionAliases = null;
+                commentsControl.Entity = null;
                 return;
+            } 
 
             aliasesControl.NameAliases = args.NameAliases;
             aliasesControl.DefinitionAliases = args.DefinitionAliases;
-
-            //set entity for comments
-            var comments = entity.Model.Get<BLComment>(c => c._forEntityId == entity.Id);
-
+            commentsControl.Entity  = entity as BLEntity;
         }
     }
 }

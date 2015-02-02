@@ -77,6 +77,13 @@ namespace BLData.Comments
             set { var old = _issue; Set("Issue", () => _issue = value, () => _issue = old); }
         }
 
+        private string _proposedSolution;
+        public string ProposedSolution
+        {
+            get { return _proposedSolution; }
+            set { var old = _proposedSolution; Set("ProposedSolution", () => _proposedSolution = value, () => _proposedSolution = old); }
+        }
+
         //resolved by person
         private Guid __resolvedById;
         public Guid _resolvedById { 

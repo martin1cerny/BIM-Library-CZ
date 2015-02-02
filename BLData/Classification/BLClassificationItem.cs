@@ -75,20 +75,7 @@ namespace BLData.Classification
 
         }
 
-        private BList<NameAlias> _nameAliases = new BList<NameAlias>();
-        public BList<NameAlias> NameAliases 
-        {
-            get { return _nameAliases; }
-            set { var old = _nameAliases; Set("NameAliases", () => _nameAliases = value, () => _nameAliases = old); }
-        }
-
-        private BList<NameAlias> _definitionAliases = new BList<NameAlias>();
-        [XmlArrayItem("DefinitionAlias")]
-        public BList<NameAlias> DefinitionAliases
-        {
-            get { return _definitionAliases; }
-            set { var old = _definitionAliases; Set("DefinitionAliases", () => _definitionAliases = value, () => _definitionAliases = old); }
-        }
+        
 
         [XmlIgnore]
         public IEnumerable<QuantityPropertySetDef> DefinitionSets

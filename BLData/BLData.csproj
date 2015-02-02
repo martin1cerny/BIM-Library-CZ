@@ -52,6 +52,7 @@
     <Compile Include="Exceptions\Exceptions.cs" />
     <Compile Include="IBLModelEntity.cs" />
     <Compile Include="BLEntity.cs" />
+    <Compile Include="INamedEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertySets\ApplicableClass.cs" />
     <Compile Include="PropertySets\ConstantDef.cs" />

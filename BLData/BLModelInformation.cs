@@ -22,6 +22,14 @@ namespace BLData
             return msg;
         }
 
+        private string _lang = "en-US";
+        /// <summary>
+        /// Language for localized names taken from name and definition aliases
+        /// </summary>
+        public string Lang {
+            get { return _lang; }
+            set { var old = _lang; Set("Lang", () => _lang = value, () => _lang = old); } 
+        }
 
 
         internal override IEnumerable<BLEntity> GetChildren()

@@ -19,29 +19,32 @@ namespace BLSpec.Plugins
         public void Execute(BLData.BLModel model, UIHelper ui)
         {
             _model = model;
-            //create classification strcture based on the inheritance of products
-            var productTypes = typeof(Xbim.Ifc2x3.SharedBldgElements.IfcWall).Assembly.GetTypes().Where(t => typeof(IfcProduct).IsAssignableFrom(t));
-            var tree = new Tree();
+            var origLang = _model.Information.Lang;
+            ////create classification strcture based on the inheritance of products
+            //var productTypes = typeof(Xbim.Ifc2x3.SharedBldgElements.IfcWall).Assembly.GetTypes().Where(t => typeof(IfcProduct).IsAssignableFrom(t));
+            //var tree = new Tree();
 
-            //build type tree
-            foreach (var type in productTypes)
-            {
-                tree.AddNode(new Node(type), typeof(IfcProduct));
-            }
-            var roots = tree.Roots;
+            ////build type tree
+            //foreach (var type in productTypes)
+            //{
+            //    tree.AddNode(new Node(type), typeof(IfcProduct));
+            //}
+            //var roots = tree.Roots;
 
             using (var txn = model.BeginTansaction("Creation of classification and import of property sets"))
             {
                 try
                 {
-                    var classification = model.New<BLClassification>(c => { c.Name = "IFC 2x3";});
+                    //var classification = model.New<BLClassification>(c => { c.Name = "IFC 2x3";});
 
-                    //create classification structure from type tree
-                    foreach (var root in roots)
-                    {
-                        var item = AddClassificationItem(root, null);
-                        classification.RootItemIDs.Add(item.Id);
-                    }
+                    ////create classification structure from type tree
+                    //foreach (var root in roots)
+                    //{
+                    //    var item = AddClassificationItem(root, null);
+                    //    classification.RootItemIDs.Add(item.Id);
+                    //}
+
+                    _model.Information.Lang = "en-US";
 
                     //load property sets, add them to the model
                     var mgr = new DefinitionsManager<PropertySetDef>(BLData.PropertySets.Version.IFC4);
@@ -49,8 +52,8 @@ namespace BLSpec.Plugins
                     {
                         AddExtension = true,
                         DefaultExt = ".xml",
-                        Filter = "PSet definitions|*.xml",
-                        Title = "Otevřít definice sad paametrů...",
+                        Filter = "Property Set definitions|*.xml",
+                        Title = "Otevřít definice sad parametrů...",
                         CheckFileExists = true,
                         CheckPathExists = true,
                         Multiselect = true,
@@ -70,6 +73,12 @@ namespace BLSpec.Plugins
                             //assign property sets to classification items
                             foreach (var definitionSet in mgr.DefinitionSets)
                             {
+                                //set en-US language aliases
+                                definitionSet.LocalizedDefinition = definitionSet.Definition;
+                                definitionSet.LocalizedName = GetHumanName(definitionSet.Name);
+                                SetPropertyAliases(definitionSet.PropertyDefinitions);
+
+                                //assign to classification items
                                 foreach (var appCls in definitionSet.ApplicableClasses)
                                 {
                                     var cName = appCls.ClassName;
@@ -96,6 +105,7 @@ namespace BLSpec.Plugins
                         if (!String.IsNullOrEmpty(msg))
                             MessageBox.Show(msg, "Varovani", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
 
+                        _model.Information.Lang = origLang;
                         txn.Commit();
                         return;
                     }
@@ -111,6 +121,34 @@ namespace BLSpec.Plugins
                     txn.RollBack();   
                     throw;
                 }
+            }
+        }
+
+        private string GetHumanName(string name)
+        {
+            var result = name;
+            //trim starting Pset_
+            if (name.IndexOf("Pset_") == 0)
+            {
+                result = result.Substring(5);
+            }
+
+            //split camel case
+            result = Regex.Replace(result, "(?<=[a-z])([A-Z])", " $1", RegexOptions.Compiled).Trim();
+            return result;
+        }
+
+        private void SetPropertyAliases(IEnumerable< PropertyDef> set)
+        {
+            foreach (var prop in set)
+            {
+                prop.LocalizedDefinition = prop.Definition;
+                prop.LocalizedName = GetHumanName(prop.Name);
+
+                //set complex properties
+                var complex = prop.PropertyType.PropertyValueType as TypeComplexProperty;
+                if (complex != null)
+                    SetPropertyAliases(complex.Properties);
             }
         }
 
@@ -140,7 +178,7 @@ namespace BLSpec.Plugins
 
         public string Name
         {
-            get { return "..Import.IFC4 Property Sets"; }
+            get { return "Import IFC4 Property Sets"; }
         }
 
 

@@ -10,7 +10,7 @@
         <TreeView ItemsSource="{Binding ElementName=self, Path=Classification.RootItems}" SelectedItemChanged="TreeView_SelectedItemChanged">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
-                    <TextBlock Text="{Binding Name}" ToolTip="{Binding Description}"/>
+                    <TextBlock Text="{Binding LocalizedName}" ToolTip="{Binding Description}"/>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>

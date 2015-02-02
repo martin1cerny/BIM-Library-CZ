@@ -13,8 +13,8 @@ namespace BLSpec
 
     public class BLEntityActiveEventArgs
     {
-        private BLEntity _entity;
-        public BLEntity Entity { get { return _entity; } }
+        private INamedEntity _entity;
+        public INamedEntity Entity { get { return _entity; } }
 
         public BList<NameAlias> NameAliases
         {
@@ -22,16 +22,8 @@ namespace BLSpec
             {
                 if (_entity == null)
                     return null;
-                var clsi = _entity as BLClassificationItem;
-                if (clsi != null)
-                    return clsi.NameAliases;
-                var pset = _entity as QuantityPropertySetDef;
-                if (pset != null)
-                    return pset.NameAliases;
-                var prop = _entity as QuantityPropertyDef;
-                if (prop != null)
-                    return prop.NameAliases;
-                return null;
+                else
+                    return _entity.NameAliases;
             }
         }
 
@@ -41,20 +33,12 @@ namespace BLSpec
             {
                 if (_entity == null)
                     return null;
-                var clsi = _entity as BLClassificationItem;
-                if (clsi != null)
-                    return clsi.DefinitionAliases;
-                var pset = _entity as QuantityPropertySetDef;
-                if (pset != null)
-                    return pset.DefinitionAliases;
-                var prop = _entity as QuantityPropertyDef;
-                if (prop != null)
-                    return prop.DefinitionAliases;
-                return null;
+                else
+                    return _entity.DefinitionAliases;
             }
         }
 
-        public BLEntityActiveEventArgs(BLEntity entity)
+        public BLEntityActiveEventArgs(INamedEntity entity)
         {
             _entity = entity;
         }

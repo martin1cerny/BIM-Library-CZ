@@ -42,6 +42,7 @@ namespace BLData
         [XmlElement("QuantitySetDefinition", typeof(PropertySets.QtoSetDef))]
         [XmlElement("Person", typeof(Actors.BLPerson))]
         [XmlElement("Comment", typeof(Comments.BLComment))]
+        [XmlElement("ModelInformation", typeof(BLModelInformation))]
         public BList<BLModelEntity> Items
         {
             get { return _items; }

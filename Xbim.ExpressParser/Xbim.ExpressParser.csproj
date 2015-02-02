@@ -52,7 +52,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateClassificationFromSchema.cs" />
+    <Compile Include="CreateIFC4Classification.cs" />
     <Compile Include="Inheritance.cs" />
     <Compile Include="Parser\Parser.cs" />
     <Compile Include="Parser\ParserHelper.cs" />

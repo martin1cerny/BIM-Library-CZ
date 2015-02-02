@@ -55,7 +55,7 @@ namespace BLSpec.Controls
 
 
         public event BLEntityActiveHandler EntityActive;
-        private void OnEntityActive(BLEntity entity)
+        private void OnEntityActive(INamedEntity entity)
         {
             if (EntityActive != null)
                 EntityActive(this, new BLEntityActiveEventArgs(entity));

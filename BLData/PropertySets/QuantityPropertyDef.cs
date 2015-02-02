@@ -9,7 +9,7 @@ namespace BLData.PropertySets
 {
     [XmlInclude(typeof(QtoDef))]
     [XmlInclude(typeof(PropertyDef))]
-    public class QuantityPropertyDef : BLEntity
+    public class QuantityPropertyDef : BLEntity, INamedEntity
     {
         private string _name;
         /// <summary>
@@ -75,6 +75,71 @@ namespace BLData.PropertySets
         {
             if (_definitionAliases != null) foreach (var item in _definitionAliases) yield return item;
             if (_nameAliases != null) foreach (var item in _nameAliases) yield return item;
+        }
+
+
+        public string LocalizedName
+        {
+            get
+            {
+                var lang = _model.Information.Lang ?? "en-US";
+                if (NameAliases != null)
+                {
+                    var na = NameAliases.FirstOrDefault(a => a.Lang == lang);
+                    if (na != null)
+                        return na.Value;
+                }
+                return Name;
+            }
+            set
+            {
+                var lang = _model.Information.Lang ?? "en-US";
+                if (NameAliases != null)
+                {
+                    var na = NameAliases.FirstOrDefault(a => a.Lang == lang);
+                    if (na != null)
+                    {
+                        na.Value = value;
+                        return;
+                    }
+                }
+                else
+                    NameAliases = new BList<NameAlias>(_model);
+                var alias = _model.New<NameAlias>(a => { a.Value = value; a.Lang = lang; });
+                NameAliases.Add(alias);
+            }
+        }
+
+        public string LocalizedDefinition
+        {
+            get
+            {
+                var lang = _model.Information.Lang ?? "en-US";
+                if (DefinitionAliases != null)
+                {
+                    var na = DefinitionAliases.FirstOrDefault(a => a.Lang == lang);
+                    if (na != null)
+                        return na.Value;
+                }
+                return Definition;
+            }
+            set
+            {
+                var lang = _model.Information.Lang ?? "en-US";
+                if (DefinitionAliases != null)
+                {
+                    var na = DefinitionAliases.FirstOrDefault(a => a.Lang == lang);
+                    if (na != null)
+                    {
+                        na.Value = value;
+                        return;
+                    }
+                }
+                else
+                    DefinitionAliases = new BList<NameAlias>(_model);
+                var alias = _model.New<NameAlias>(a => { a.Value = value; a.Lang = lang; });
+                DefinitionAliases.Add(alias);
+            }
         }
     }
 }
