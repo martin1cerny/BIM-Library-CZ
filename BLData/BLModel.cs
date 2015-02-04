@@ -14,6 +14,7 @@ namespace BLData
     public class BLModel
     {
         private Session _session = new Session();
+        [XmlIgnore]
         public Session Session { get { return _session; } }
         private Transaction CurrentTransaction { get { 
             var txn = _session.CurrentTransaction; 
@@ -21,6 +22,9 @@ namespace BLData
                 return null;
             return txn;
         } }
+
+        [XmlIgnore]
+        public bool IsTransacting { get { return CurrentTransaction != null; } }
 
         public Transaction BeginTansaction(string name)
         {

@@ -10,5 +10,9 @@
             <Setter Property="Padding" Value="3"/>
             <Setter Property="Margin" Value="5"/>
         </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
     </Application.Resources>
 </Application>

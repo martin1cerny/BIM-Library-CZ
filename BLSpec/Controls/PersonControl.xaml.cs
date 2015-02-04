@@ -36,7 +36,13 @@ namespace BLSpec.Controls
 
         // Using a DependencyProperty as the backing store for Person.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PersonProperty =
-            DependencyProperty.Register("Person", typeof(BLPerson), typeof(PersonControl), new PropertyMetadata(null));
+            DependencyProperty.Register("Person", typeof(BLPerson), typeof(PersonControl), new PropertyMetadata(null, (s, a) => {
+                var ctrl = s as PersonControl;
+                var val = a.NewValue as BLPerson;
+
+                if (ctrl != null)
+                    ctrl.DataContext = new ObjectDataProvider() { ObjectInstance = val };
+            }));
 
         
     }

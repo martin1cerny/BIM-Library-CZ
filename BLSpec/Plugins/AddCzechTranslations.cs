@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Win32;
 
 namespace BLSpec.Plugins
 {
@@ -19,7 +20,22 @@ namespace BLSpec.Plugins
         public void Execute(BLData.BLModel model, UIHelper ui)
         {
             HSSFWorkbook workbook;
-            using (FileStream file = new FileStream(@"c:\CODE\BIM-Library\BLSpec\Data\Terms_and_definitions.xls", FileMode.Open, FileAccess.Read))
+            var dlg = new OpenFileDialog()
+                    {
+                        AddExtension = true,
+                        DefaultExt = ".xls",
+                        Filter = "Translations |*.xls",
+                        Title = "Otevřít překladový slovník...",
+                        CheckFileExists = true,
+                        CheckPathExists = true,
+                        Multiselect = false,
+                        ShowReadOnly = false,
+                    };
+
+            if (ui.ShowDialog(dlg) != true)
+                return;
+
+            using (FileStream file = new FileStream(dlg.FileName, FileMode.Open, FileAccess.Read))
             {
                 workbook = new HSSFWorkbook(file);
             }

@@ -148,6 +148,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dialogs\PersonDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -180,6 +184,9 @@
     </Compile>
     <Compile Include="Controls\PropertySetsControl.xaml.cs">
       <DependentUpon>PropertySetsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\PersonDialog.xaml.cs">
+      <DependentUpon>PersonDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="IExternalCommand.cs" />
     <Compile Include="MainWindow.xaml.cs">

@@ -5,14 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              Name="self"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="500">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ComboBox Grid.Row="0"/>
+        <DockPanel Grid.Row="0">
+            <Button DockPanel.Dock="Right" Name="btnAddPerson" Click="btnAddPerson_Click">Přidat osobu</Button>
+            <Button DockPanel.Dock="Right" Name="btnEditPerson" Click="btnEditPerson_Click">Upravit osobu</Button>
+            <ComboBox  Name="cbPersons" DisplayMemberPath="FullName"/>
+        </DockPanel>
         <ListBox ItemsSource="{Binding ElementName=self, Path=Comments}" Grid.Row="1">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -29,8 +33,9 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button>Nový komentář</Button>
-            <Button>Smazat komentář</Button>
+            <Button>Nový</Button>
+            <Button>Smazat</Button>
+            <Button>Upravit</Button>
             <Button>Řešit</Button>
         </StackPanel>
     </Grid>

@@ -7,29 +7,59 @@
              Name="self"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <DataGrid ItemsSource="{Binding ElementName=self, Path=ClassificationItem.DefinitionSetsUp}" 
+        <TabControl>
+            <TabItem Header="Všechny sady parametrů">
+                <DataGrid ItemsSource="{Binding ElementName=self, Path=ClassificationItem.DefinitionSetsUp}" 
                   AutoGenerateColumns="False" 
                   SelectedItem="{Binding ElementName=self, Path=SelectedPropertySet}"
                   SelectionChanged="DataGrid_SelectionChanged">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Název" 
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Název" 
                                     Binding="{Binding LocalizedName}" 
                                     IsReadOnly="True">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style>
-                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Definice" Binding="{Binding LocalizedDefinition}" Width="*"
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Definice" Binding="{Binding LocalizedDefinition}" Width="*"
                                     IsReadOnly="True">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style>
-                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Pouze vlastní sady">
+                <DataGrid ItemsSource="{Binding ElementName=self, Path=ClassificationItem.DefinitionSets}" 
+                  AutoGenerateColumns="False" 
+                  SelectedItem="{Binding ElementName=self, Path=SelectedPropertySet}"
+                  SelectionChanged="DataGrid_SelectionChanged">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Název" 
+                                    Binding="{Binding LocalizedName}" 
+                                    IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Definice" Binding="{Binding LocalizedDefinition}" Width="*"
+                                    IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>                
+            </TabItem>
+        </TabControl>
     </Grid>
 </UserControl>

@@ -46,7 +46,7 @@
                                                 EntityActive="EntityActiveHandler"/>
             </DockPanel>
             <Controls:CommentsControl Grid.Column="6" Grid.RowSpan="3" 
-                                      x:Name="commentsControl"/>
+                                      x:Name="commentsControl" Model="{Binding ElementName=self, Path=Model}"/>
             <Controls:PropertySetsControl Grid.Column="2" 
                                           ClassificationItem="{Binding ElementName=clsControl, Path=SelectedItem}" 
                                           x:Name="psetsControl"

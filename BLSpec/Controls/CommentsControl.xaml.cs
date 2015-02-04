@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BLData.Actors;
+using BLSpec.Dialogs;
 
 namespace BLSpec.Controls
 {
@@ -28,6 +30,35 @@ namespace BLSpec.Controls
         }
 
 
+
+        public BLModel Model
+        {
+            get { return (BLModel)GetValue(ModelProperty); }
+            set { SetValue(ModelProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Model.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ModelProperty =
+            DependencyProperty.Register("Model", typeof(BLModel), typeof(CommentsControl), new PropertyMetadata(null, (s, a) => {
+                var ctrl = s as CommentsControl;
+                var val = a.NewValue as BLModel;
+
+                if (val != null)
+                {
+                    var dict = val.EntityDictionary.Where(e => e.Type == typeof(BLPerson).FullName);
+                    if (dict == null)
+                        val.EntityDictionary.Add(new BLEntityList(val) { Type = typeof(BLPerson).FullName, Items = new BList<BLModelEntity>()});
+                }
+
+                if (ctrl != null && val != null)
+                    ctrl.cbPersons.ItemsSource = val.Get<BLPerson>();
+                if (ctrl != null && val == null)
+                    ctrl.cbPersons.ItemsSource = null;
+
+
+            }));
+
+        
 
         public BLEntity Entity
         {
@@ -60,6 +91,50 @@ namespace BLSpec.Controls
         // Using a DependencyProperty as the backing store for Comments.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty CommentsProperty =
             DependencyProperty.Register("Comments", typeof(IEnumerable<BLComment>), typeof(CommentsControl), new PropertyMetadata(null));
+
+        private void btnAddPerson_Click(object sender, RoutedEventArgs e)
+        {
+            if (Model == null) 
+            {
+                MessageBox.Show("Model not set to comments control.");
+                return;
+            }
+            using (var txn = Model.BeginTansaction("New person"))
+            {
+                var person = Model.New<BLPerson>();
+                var dlg = new PersonDialog(person);
+                if (dlg.ShowDialog() == true)
+                    txn.Commit();
+                else
+                    txn.RollBack();
+            }
+        }
+
+        private void btnEditPerson_Click(object sender, RoutedEventArgs e)
+        {
+            if (Model == null)
+            {
+                MessageBox.Show("Model not set to comments control.");
+                return;
+            }
+
+            var person = cbPersons.SelectedItem as BLPerson;
+            if (person == null)
+            {
+                MessageBox.Show("No user selected");
+                return;
+            }
+
+            using (var txn = Model.BeginTansaction("New person"))
+            {
+                var dlg = new PersonDialog(person);
+                if (dlg.ShowDialog() == true)
+                    txn.Commit();
+                else
+                    txn.RollBack();
+            }
+
+        }
 
         
     }

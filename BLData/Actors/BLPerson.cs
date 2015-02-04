@@ -23,6 +23,14 @@ namespace BLData.Actors
             set { var old = _email; Set("Email", () => _email = value, () => _email = old); }
         }
 
+        private string _companyName;
+        public string CompanyName
+        {
+            get { return _companyName; }
+            set { var old = _companyName; Set("CompanyName", () => _companyName = value, () => _companyName = old); }
+        }
+
+
         [XmlIgnore]
         public string FullName
         {

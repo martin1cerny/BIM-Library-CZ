@@ -155,8 +155,13 @@ namespace BLSpec
             var dlg = new OpenFileDialog()
             {
                 AddExtension = true,
+#if DEBUG
                 DefaultExt = ".bls",
                 Filter = "BIM specification|*.bls|Compressed BIM specification|*.blsx",
+#else
+                DefaultExt = ".blsx",
+                Filter = "BIM specification|*.blsx",
+#endif
                 Title = "Otevřít BIM specifikaci...",
                 CheckFileExists = true,
                 CheckPathExists = true,
@@ -181,8 +186,13 @@ namespace BLSpec
             var dlg = new SaveFileDialog()
             {
                 AddExtension = true,
+#if DEBUG
                 DefaultExt = ".bls",
                 Filter = "BIM specification|*.bls|Compressed BIM specification|*.blsx",
+#else
+                DefaultExt = ".blsx",
+                Filter = "BIM specification|*.blsx",
+#endif
                 OverwritePrompt = true,
                 Title = "Uložit BIM specifikaci..."
             };

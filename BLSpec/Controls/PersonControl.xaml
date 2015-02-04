@@ -5,18 +5,26 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              Name="self"
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+             d:DesignWidth="300">
+    <Grid Name="grPerson">
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        
+        <Label Grid.Row="0">Jméno</Label>
+        <Label Grid.Row="1">Příjmení</Label>
+        <Label Grid.Row="2">E-mail</Label>
+        <Label Grid.Row="3">Firma</Label>
+
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Name}"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Surname}"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Email}"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding CompanyName}"/>
     </Grid>
 </UserControl>
