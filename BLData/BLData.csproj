@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,6 +50,7 @@
     <Compile Include="BLModel.cs" />
     <Compile Include="BLModelNamedEntity.cs" />
     <Compile Include="Comments\BLComment.cs" />
+    <Compile Include="Comments\CommentsExchangeModel.cs" />
     <Compile Include="Exceptions\Exceptions.cs" />
     <Compile Include="IBLModelEntity.cs" />
     <Compile Include="BLEntity.cs" />

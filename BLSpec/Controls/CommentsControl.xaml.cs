@@ -43,19 +43,10 @@ namespace BLSpec.Controls
                 var ctrl = s as CommentsControl;
                 var val = a.NewValue as BLModel;
 
-                if (val != null)
-                {
-                    var dict = val.EntityDictionary.Where(e => e.Type == typeof(BLPerson).FullName);
-                    if (dict == null)
-                        val.EntityDictionary.Add(new BLEntityList(val) { Type = typeof(BLPerson).FullName, Items = new BList<BLModelEntity>()});
-                }
-
                 if (ctrl != null && val != null)
                     ctrl.cbPersons.ItemsSource = val.Get<BLPerson>();
                 if (ctrl != null && val == null)
                     ctrl.cbPersons.ItemsSource = null;
-
-
             }));
 
         
@@ -70,17 +61,17 @@ namespace BLSpec.Controls
         public static readonly DependencyProperty EntityProperty =
             DependencyProperty.Register("Entity", typeof(BLEntity), typeof(CommentsControl), new PropertyMetadata(null, (s, a) => {
                 var ctrl = s as CommentsControl;
-                var value = a.NewValue as BLEntity;
-                if (value == null)
-                    ctrl.SetValue(CommentsProperty, null);
-                else
-                {
-                    var comments = value.Model.Get<BLComment>(c => c._forEntityId == value.Id);
-                    ctrl.SetValue(CommentsProperty, comments);
-                }
+                if (ctrl != null)
+                    ctrl.SetComments();
             }));
 
-        
+        private void SetComments()
+        {
+            if (Person != null && Entity != null)
+                SetValue(CommentsProperty, Model.Get<BLComment>(c => c._forEntityId == Entity.Id && c._issuePersonId == Person.Id).OrderBy(c => c.IssueDate));
+            else
+                SetValue(CommentsProperty, null);
+        }
 
         public IEnumerable<BLComment> Comments
         {
@@ -91,6 +82,26 @@ namespace BLSpec.Controls
         // Using a DependencyProperty as the backing store for Comments.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty CommentsProperty =
             DependencyProperty.Register("Comments", typeof(IEnumerable<BLComment>), typeof(CommentsControl), new PropertyMetadata(null));
+
+
+
+        public BLPerson Person
+        {
+            get { return (BLPerson)GetValue(PersonProperty); }
+            set { SetValue(PersonProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Person.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PersonProperty =
+            DependencyProperty.Register("Person", typeof(BLPerson), typeof(CommentsControl), new PropertyMetadata(null, (s, a) => {
+                var ctrl = s as CommentsControl;
+                var person = a.NewValue as BLPerson;
+                if (ctrl != null)
+                    ctrl.SetComments();
+
+            }));
+
+
 
         private void btnAddPerson_Click(object sender, RoutedEventArgs e)
         {
@@ -104,7 +115,11 @@ namespace BLSpec.Controls
                 var person = Model.New<BLPerson>();
                 var dlg = new PersonDialog(person);
                 if (dlg.ShowDialog() == true)
+                {
                     txn.Commit();
+                    cbPersons.ItemsSource = Model.Get<BLPerson>();
+                    Person = person;
+                }
                 else
                     txn.RollBack();
             }
@@ -125,7 +140,7 @@ namespace BLSpec.Controls
                 return;
             }
 
-            using (var txn = Model.BeginTansaction("New person"))
+            using (var txn = Model.BeginTansaction("Edit person"))
             {
                 var dlg = new PersonDialog(person);
                 if (dlg.ShowDialog() == true)
@@ -133,6 +148,109 @@ namespace BLSpec.Controls
                 else
                     txn.RollBack();
             }
+
+        }
+
+        private void btnNewComment_Click(object sender, RoutedEventArgs e)
+        {
+            var person = cbPersons.SelectedItem as BLPerson;
+            if (person == null)
+            {
+                MessageBox.Show("Musíte vybrat autora připomínky");
+                return;
+            }
+            using (var txn = Model.BeginTansaction("New comment"))
+            {
+                try
+                {
+                    var comment = Model.New<BLComment>();
+                    comment.IssuedBy = person;
+                    comment.IssueDate = DateTime.Now;
+                    comment.State = CommentStateEnum.ISSUE;
+                    comment.ForEntity = Entity;
+
+                    var dlg = new CommentNewDialog(comment);
+                    if (dlg.ShowDialog() == true)
+                    {
+                        SetComments();
+                        txn.Commit();
+                    }
+                    else
+                        txn.RollBack();
+                }
+                catch (Exception ex)
+                {
+                    txn.RollBack();
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void btnDeleteComment_Click(object sender, RoutedEventArgs e)
+        {
+            var comment = lbComments.SelectedItem as BLComment;
+            if (comment == null)
+            {
+                MessageBox.Show("Musíte vybrat komentář.");
+                return;
+            }
+
+            var result = MessageBox.Show("Opravdu chcete tento komentář smazat?", "Ujištění", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+            if (result == MessageBoxResult.No)
+                return;
+
+            using (var txn = Model.BeginTansaction("Delete comment"))
+            {
+                try
+                {
+                    Model.Delete(comment as BLModelEntity);
+                    txn.Commit();
+                    SetComments();
+                }
+                catch (Exception ex)
+                {
+                    txn.RollBack();
+                    MessageBox.Show("Error: " + ex.Message);
+                    throw;
+                }
+                
+            }
+
+        }
+
+        private void btnEditComment_Click(object sender, RoutedEventArgs e)
+        {
+            var comment = lbComments.SelectedItem as BLComment;
+            if (comment == null)
+            {
+                MessageBox.Show("Musíte vybrat komentář.");
+                return;
+            }
+            using (var txn = Model.BeginTansaction("New comment"))
+            {
+                try
+                {
+                    comment.IssueDate = DateTime.Now;
+
+                    var dlg = new CommentNewDialog(comment);
+                    if (dlg.ShowDialog() == true)
+                    {
+                        SetComments();
+                        txn.Commit();
+                    }
+                    else
+                        txn.RollBack();
+                }
+                catch (Exception ex)
+                {
+                    txn.RollBack();
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void btnResolveComment_Click(object sender, RoutedEventArgs e)
+        {
 
         }
 

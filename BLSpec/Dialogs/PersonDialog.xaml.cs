@@ -40,6 +40,13 @@ namespace BLSpec.Dialogs
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
+            //check if email is defined
+            if (String.IsNullOrEmpty(_person.Email))
+            {
+                MessageBox.Show(this, "Email musí být vyplněný.");
+                return;
+            }
+
             DialogResult = true;
             Close();
         }

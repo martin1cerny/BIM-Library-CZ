@@ -47,8 +47,8 @@ namespace BLData
         }
 
 
-        private Dictionary<string, BList<Guid>> _entityIds;
-        private Dictionary<string, BList<BLEntity>> _entityLists;
+        private Dictionary<string, BList<Guid>> _entityIds = new Dictionary<string,BList<Guid>>();
+        private Dictionary<string, BList<BLEntity>> _entityLists = new Dictionary<string,BList<BLEntity>>();
         protected BList<T> GetBLEntityList<T>(string name) where T: BLEntity
         {
             //try to get existing one

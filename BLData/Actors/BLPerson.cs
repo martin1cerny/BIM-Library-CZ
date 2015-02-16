@@ -9,11 +9,34 @@ namespace BLData.Actors
 {
     public class BLPerson : BLModelNamedEntity
     {
+
+        private string _titleBefore;
+
+        public string TitleBefore
+        {
+            get { return _titleBefore; }
+            set { var old = _titleBefore; Set(new string[] { "TitleBefore", "FullName" }, () => _titleBefore = value, () => _titleBefore = old); }
+        }
+
+        private string _titleAfter;
+
+        public string TitleAfter
+        {
+            get { return _titleAfter; }
+            set { var old = _titleAfter; Set(new string[] { "TitleAfter", "FullName" }, () => _titleAfter = value, () => _titleAfter = old); }
+        }
+
+        public override string Name
+        {
+            get { return _name; }
+            set { var old = _name; Set(new string[] { "Name" , "FullName"}, () => _name = value, () => _name = old); }
+        }
+
         private string _surname;
         public string Surname
         {
             get { return _surname; }
-            set { var old = _surname; Set("Surname", () => _surname = value, () => _surname = old); }
+            set { var old = _surname; Set(new[] { "Surname" , "FullName"}, () => _surname = value, () => _surname = old); }
         }
 
         private string _email;
@@ -34,7 +57,15 @@ namespace BLData.Actors
         [XmlIgnore]
         public string FullName
         {
-            get { return String.Format("{0}{1}{2}", Name, !String.IsNullOrEmpty(Surname) && !String.IsNullOrEmpty(Name) ? " " : "", Surname); }
+            get { return String.Format("{0}{1}{2}{3}{4}{5}{6}", 
+                TitleBefore,
+                !String.IsNullOrEmpty(TitleBefore) && !String.IsNullOrEmpty(Name) ? " " : "", 
+                Name, 
+                !String.IsNullOrEmpty(Surname) && !String.IsNullOrEmpty(Name) ? " " : "", 
+                Surname,
+                !String.IsNullOrEmpty(Surname) && !String.IsNullOrEmpty(TitleAfter) ? ", " : "", 
+                TitleAfter
+                ); }
         }
 
         internal override void SetModel(BLModel model)

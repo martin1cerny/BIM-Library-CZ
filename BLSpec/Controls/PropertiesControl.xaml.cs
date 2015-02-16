@@ -65,6 +65,11 @@ namespace BLSpec.Controls
             if (EntityActive != null)
                 EntityActive(this, new BLEntityActiveEventArgs(entity));
         }
+
+        private void dgProperties_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            OnEntityActive(dgProperties.SelectedItem as INamedEntity);
+        }
         
     }
 }

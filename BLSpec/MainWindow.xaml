@@ -17,6 +17,11 @@
                 <MenuItem Name="miCloseModel" Header="Zavřít" Click="miCloseModel_Click"/>
                 <MenuItem Name="miExit" Header="Ukončit" Click="miExit_Click"/>
             </MenuItem>
+            <MenuItem Name="miComments" Header="Komentáře">
+                <MenuItem Header="Exportovat vše..." Name="miExportAllComments" Click="miExportAllComments_Click"/>
+                <MenuItem Header="Exportovat aktuálního uživatele..." Name="miExportUsersComments" Click="miExportUsersComments_Click"/>
+                <MenuItem Header="Import..." Name="miImportComments" Click="miImportComments_Click"/>
+            </MenuItem>
             <MenuItem Name="Plugins" Header="Plug-ins"/>
             <MenuItem Name="miAbout" Header="O programu" Click="miAbout_Click"/>
         </Menu>
@@ -28,7 +33,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="380"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition/>

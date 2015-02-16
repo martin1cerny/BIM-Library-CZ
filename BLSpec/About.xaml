@@ -1,7 +1,9 @@
 ﻿<Window x:Class="BLSpec.About"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        WindowStyle="SingleBorderWindow"
+        WindowStyle="None"
+        BorderThickness="1"
+        BorderBrush="Black"
         Title="O programu" Height="407.2" Width="557" Icon="img/TACR.ico" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" >
     <Grid>
         <Image Source="img\CK_logotyp.tif" Height="80" Margin="-137,245,136.4,54.2"/>
@@ -14,5 +16,6 @@
             <LineBreak></LineBreak>
             <Hyperlink NavigateUri="mailto:cerny.m@fce.vutbr.cz">cerny.m@fce.vutbr.cz</Hyperlink> 
         </TextBlock>
+        <Button HorizontalAlignment="Left" Margin="441,360,0,0" VerticalAlignment="Top" Click="Button_Click">Zavřít</Button>
     </Grid>
 </Window>

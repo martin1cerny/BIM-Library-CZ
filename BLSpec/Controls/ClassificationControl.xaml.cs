@@ -60,5 +60,10 @@ namespace BLSpec.Controls
             if (EntityActive != null)
                 EntityActive(this, new BLEntityActiveEventArgs(entity));
         }
+
+        private void TreeView_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            OnEntityActive(twClassification.SelectedItem as INamedEntity);
+        }
     }
 }

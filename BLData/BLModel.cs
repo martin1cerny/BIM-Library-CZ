@@ -131,6 +131,19 @@ namespace BLData
             return entity;
         }
 
+        internal BLEntityList GetResource<T>() where T : BLModelEntity
+        {
+            var result = EntityDictionary.FirstOrDefault(res => res.Type == typeof(T).FullName);
+            if (result == null)
+            {
+                result = new BLEntityList(this) { Type = typeof(T).FullName };
+                EntityDictionary.Add(result);
+            }
+            if (result.Items == null)
+                result.Items = new BList<BLModelEntity>();
+            return result;
+        }
+
         /// <summary>
         /// This will remove object from resources but it won't to anything with related and relating objects. It will delete any nested objects.
         /// </summary>
@@ -252,6 +265,7 @@ namespace BLData
         public ModelEntitiesCollectionChangedEventArgs(BLModelEntity entity, ChangeType type)
         {
             Entity = entity;
+            ChangeType = type;
         }
     }
 

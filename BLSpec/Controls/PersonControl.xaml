@@ -12,19 +12,26 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0">Jméno</Label>
-        <Label Grid.Row="1">Příjmení</Label>
-        <Label Grid.Row="2">E-mail</Label>
-        <Label Grid.Row="3">Firma</Label>
+        
+        <Label Grid.Row="0">E-mail</Label>
+        <Label Grid.Row="1">Jméno</Label>
+        <Label Grid.Row="2">Příjmení</Label>
+        <Label Grid.Row="3">Titul před</Label>
+        <Label Grid.Row="4">Titul za</Label>
+        <Label Grid.Row="5">Firma</Label>
 
-        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Name}"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Surname}"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Email}"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding CompanyName}"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Email}"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Name}"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Surname}"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding TitleBefore}"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding TitleAfter}"/>
+        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding CompanyName}"/>
     </Grid>
 </UserControl>

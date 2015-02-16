@@ -128,6 +128,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\CommentNewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\CommentsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -145,6 +149,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\PropertySetsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\CommentNewDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -170,6 +178,9 @@
     <Compile Include="Controls\ClassificationSelectionControl.xaml.cs">
       <DependentUpon>ClassificationSelectionControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CommentNewControl.xaml.cs">
+      <DependentUpon>CommentNewControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CommentsControl.xaml.cs">
       <DependentUpon>CommentsControl.xaml</DependentUpon>
     </Compile>
@@ -184,6 +195,9 @@
     </Compile>
     <Compile Include="Controls\PropertySetsControl.xaml.cs">
       <DependentUpon>PropertySetsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\CommentNewDialog.xaml.cs">
+      <DependentUpon>CommentNewDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\PersonDialog.xaml.cs">
       <DependentUpon>PersonDialog.xaml</DependentUpon>

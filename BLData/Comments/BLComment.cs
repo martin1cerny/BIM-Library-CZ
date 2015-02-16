@@ -16,13 +16,13 @@ namespace BLData.Comments
         public Guid _forEntityId
         {
             get { return __forEntityId; }
-            set { if (_model != null) __forEntityId = value; else throw new InvalidFieldOperationException(); }
+            set { if (_model == null) __forEntityId = value; else throw new InvalidFieldOperationException(); }
         }
         [XmlIgnore]
         public BLEntity ForEntity
         {
-            get { return _model.Get<BLEntity>(_forEntityId); }
-            set { var old = _forEntityId; Set("ForEntity", () => _forEntityId = value != null? value.Id : Guid.Empty, () => _forEntityId = old); }
+            get { return _model.Get<BLEntity>(__forEntityId); }
+            set { var old = __forEntityId; Set("ForEntity", () => __forEntityId = value != null? value.Id : Guid.Empty, () => __forEntityId = old); }
         }
 
         //issue date (DateTime)
@@ -43,7 +43,7 @@ namespace BLData.Comments
 
         //issue person
         private Guid __issuePersonId;
-        [XmlElement("IssuePersonId")]
+        [XmlElement("IssuedByPersonId")]
         public Guid _issuePersonId { 
             get { return __issuePersonId; } 
             set { if (_model == null) __issuePersonId = value; else throw new InvalidFieldOperationException(); }
@@ -56,7 +56,7 @@ namespace BLData.Comments
         }
 
         //solution date
-        private DateTime _solutionDate = DateTime.Now;
+        private DateTime _solutionDate;
         public DateTime SolutionDate
         {
             get { return _solutionDate; }
@@ -67,8 +67,11 @@ namespace BLData.Comments
         private string _solution;
         public string Solution {
             get { return _solution; }
-            set { var old = _solution; Set("Solution", () => _solution = value, () => _solution = old); }
+            set { var old = _solution; Set(new[] { "IsSolved", "Solution" }, () => _solution = value, () => _solution = old); }
         }
+
+        [XmlIgnore]
+        public bool IsSolved { get { return !String.IsNullOrEmpty(_solution); } }
 
         //issue (string)
         private string _issue;
@@ -86,7 +89,9 @@ namespace BLData.Comments
 
         //resolved by person
         private Guid __resolvedById;
-        public Guid _resolvedById { 
+        [XmlElement("ResolvedByPersonId")]
+        public Guid _resolvedById
+        { 
             get { return __resolvedById; }
             set { if (_model == null) __resolvedById = value; else throw new InvalidFieldOperationException(); }
         }

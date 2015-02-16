@@ -68,5 +68,10 @@ namespace BLSpec.Controls
                 EntityActive(this, new BLEntityActiveEventArgs(entity));
         }
 
+        private void dgPsets_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            OnEntityActive(dgPsets.SelectedItem as INamedEntity);
+        }
+
     }
 }

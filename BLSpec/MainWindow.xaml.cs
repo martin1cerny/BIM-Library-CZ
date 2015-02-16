@@ -296,5 +296,94 @@ namespace BLSpec
             aliasesControl.DefinitionAliases = args.DefinitionAliases;
             commentsControl.Entity  = entity as BLEntity;
         }
+
+        private void miExportAllComments_Click(object sender, RoutedEventArgs e)
+        {
+            var exchange = new CommentsExchangeModel();
+            exchange.LoadFromModel(Model);
+            var dlg = new SaveFileDialog()
+            {
+                AddExtension = true,
+                DefaultExt = ".blcx",
+                Filter = "Komentáře|*.blcx",
+                OverwritePrompt = true,
+                Title = "Uložit komentáře..."
+            };
+
+            if (dlg.ShowDialog(this) == true)
+                exchange.SaveAs(dlg.FileName);
+
+        }
+
+        private void miExportUsersComments_Click(object sender, RoutedEventArgs e)
+        {
+            var person = commentsControl.Person;
+            if (person == null)
+            {
+                MessageBox.Show(this, "Není vybrán uživatel.");
+                return;
+            }
+
+            var exchange = new CommentsExchangeModel();
+            exchange.LoadFromModel(Model, person);
+            var dlg = new SaveFileDialog()
+            {
+                AddExtension = true,
+                DefaultExt = ".blcx",
+                Filter = "Komentáře|*.blcx",
+                OverwritePrompt = true,
+                Title = "Uložit komentáře..."
+            };
+
+            if (dlg.ShowDialog(this) == true)
+                exchange.SaveAs(dlg.FileName);
+
+        }
+
+        private void miImportComments_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new OpenFileDialog()
+            {
+                AddExtension = true,
+                DefaultExt = ".blcx",
+                Filter = "Komentáře|*.blcx",
+                Title = "Importovat komentáře...",
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Multiselect = false,
+                ShowReadOnly = false,
+            };
+
+            if (dlg.ShowDialog(this) == true)
+            {
+                using (var txn = Model.BeginTansaction("Comments import"))
+                {
+                    try
+                    {
+                        var exchange = CommentsExchangeModel.LoadFromFile(dlg.FileName);
+                        var msg = exchange.AddToModel(Model);
+                        if (!String.IsNullOrEmpty(msg))
+                        {
+                            if (MessageBox.Show(this,"Během importu se vyskytly chyby. Chcete vrátit provedené změny? \n\n" + msg,
+                                "Varovani", 
+                                MessageBoxButton.YesNo, 
+                                MessageBoxImage.Warning, 
+                                MessageBoxResult.No) == MessageBoxResult.Yes)
+                                txn.Commit();
+                            else
+                                txn.RollBack();
+                        }
+                        else
+                            txn.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        txn.RollBack();
+                        throw;
+                    }    
+                }
+                
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              Name="self"
-             d:DesignHeight="300" d:DesignWidth="500">
+             d:DesignHeight="300" d:DesignWidth="350" MinWidth="350">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -15,28 +15,88 @@
         <DockPanel Grid.Row="0">
             <Button DockPanel.Dock="Right" Name="btnAddPerson" Click="btnAddPerson_Click">Přidat osobu</Button>
             <Button DockPanel.Dock="Right" Name="btnEditPerson" Click="btnEditPerson_Click">Upravit osobu</Button>
-            <ComboBox  Name="cbPersons" DisplayMemberPath="FullName"/>
+            <ComboBox  Name="cbPersons" DisplayMemberPath="FullName" SelectedItem="{Binding ElementName=self, Path=Person}"/>
         </DockPanel>
-        <ListBox ItemsSource="{Binding ElementName=self, Path=Comments}" Grid.Row="1">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderThickness="1" Margin="10" Padding="5">
-                        <TextBlock TextWrapping="Wrap">
-                        <Run Text="{Binding Path=Issue}" FontSize="12"/>
-                        <LineBreak></LineBreak>
-                        <Run Text="{Binding Path=ProposedSolution}" FontSize="12"/>
-                        <LineBreak></LineBreak>
-                        <Run Text="{Binding Path=IssuedBy.FullName}" FontSize="10" Foreground="Gray"/>
-                        </TextBlock>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+        <ListBox ItemsSource="{Binding ElementName=self, Path=Comments}" Grid.Row="1" Name="lbComments"
+                 HorizontalContentAlignment="Stretch"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.Resources>
+                <Style TargetType="Border" x:Key="borderStyle">
+                    <Setter Property="BorderBrush" Value="Gray"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="CornerRadius" Value="5"/>
+                    <Setter Property="Margin" Value="10"/>
+                    <Setter Property="Padding" Value="5"/>
+                </Style>
+                <Style TargetType="ListBoxItem">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsSolved}" Value="False">
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <Border Background="#FFF9DDDD" Style="{StaticResource ResourceKey=borderStyle}">
+                                            <TextBlock TextWrapping="Wrap">
+                                                <Run FontWeight="Bold">Komentář:</Run> 
+                                                <Run Text="{Binding Path=Issue}"/>
+                                                <LineBreak />
+                                                <LineBreak />
+                                                <Run FontWeight="Bold">Navrhované řešení:</Run>
+                                                <Run Text="{Binding Path=ProposedSolution}"/>
+                                                <LineBreak />
+                                                <LineBreak />
+                                                <Run FontSize="10" Foreground="Gray">Komentoval:</Run> 
+                                                <Run Text="{Binding Path=IssuedBy.FullName, Mode=OneWay}" FontSize="10" Foreground="Gray"/>
+                                                <LineBreak />
+                                                <Run FontSize="10" Foreground="Gray">Datum komentáře:</Run>
+                                                <Run Text="{Binding Path=IssueDate}" FontSize="10" Foreground="Gray"/>
+                                            </TextBlock>
+                                        </Border>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsSolved}" Value="True">
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <Border Background="#FFBCFFCE" Style="{StaticResource ResourceKey=borderStyle}">
+                                            <TextBlock TextWrapping="Wrap">
+                                                <Run FontWeight="Bold">Komentář:</Run> 
+                                                <Run Text="{Binding Path=Issue}"/>
+                                                <LineBreak />
+                                                <Run FontWeight="Bold">Navrhované řešení:</Run>
+                                                <Run Text="{Binding Path=ProposedSolution}"/>
+                                                <LineBreak />
+                                                <Run FontWeight="Bold">Řešení:</Run>
+                                                <Run Text="{Binding Path=Solution}"/>
+                                                <LineBreak />
+                                                <LineBreak />
+                                                <Run FontSize="10" Foreground="Gray">Komentoval:</Run> 
+                                                <Run Text="{Binding Path=IssuedBy.FullName, Mode=OneWay}" FontSize="10" Foreground="Gray"/>
+                                                <LineBreak />
+                                                <Run FontSize="10" Foreground="Gray">Datum komentáře:</Run>
+                                                <Run Text="{Binding Path=IssueDate}" FontSize="10" Foreground="Gray"/>
+                                                <LineBreak />
+                                                <Run FontSize="10" Foreground="Gray">Vyřešil:</Run> 
+                                                <Run Text="{Binding Path=SolvedBy.FullName, Mode=OneWay}" FontSize="10" Foreground="Gray"/>
+                                                <LineBreak />
+                                                <Run FontSize="10" Foreground="Gray">Datum řešení:</Run>
+                                                <Run Text="{Binding Path=SolutionDate}" FontSize="10" Foreground="Gray"/>
+                                            </TextBlock>
+                                        </Border>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.Resources>
         </ListBox>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button>Nový</Button>
-            <Button>Smazat</Button>
-            <Button>Upravit</Button>
-            <Button>Řešit</Button>
+            <Button Name="btnNewComment" Click="btnNewComment_Click">Nový</Button>
+            <Button Name="btnDeleteComment" Click="btnDeleteComment_Click">Smazat</Button>
+            <Button Name="btnEditComment" Click="btnEditComment_Click">Upravit</Button>
+            <Button Name="btnResolveComment" Click="btnResolveComment_Click">Řešit</Button>
         </StackPanel>
     </Grid>
 </UserControl>

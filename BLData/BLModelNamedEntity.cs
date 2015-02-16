@@ -9,9 +9,9 @@ namespace BLData
 {
     public abstract class BLModelNamedEntity : BLModelEntity, INamedEntity
     {
-        private string _name;
+        protected string _name;
 
-        public string Name
+        public virtual string Name
         {
             get { return _name; }
             set { var old = _name; Set("Name", ()=> _name = value, () => _name = old); }
