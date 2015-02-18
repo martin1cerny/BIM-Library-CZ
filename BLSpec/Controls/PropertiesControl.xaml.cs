@@ -70,6 +70,5 @@ namespace BLSpec.Controls
         {
             OnEntityActive(dgProperties.SelectedItem as INamedEntity);
         }
-        
     }
 }

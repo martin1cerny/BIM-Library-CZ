@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BLData.BLModel">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>CAAAEIAAAACKISBQAAAAAIgAAAEAAAAgAAAQCAAAAAA=</HashCode>
+      <FileName>BLModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="EntityDictionary" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BLData.ModelEntitiesCollectionChangedEventArgs">
+    <Position X="0.5" Y="5.25" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAEAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BLModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLData.BLEntityList">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAACAQAAAAAAAAAABAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>BLEntityList.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Items" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BLData.BLModelEntity">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BLModelEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLData.BLModelNamedEntity" Collapsed="true">
+    <Position X="5.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAABAAACAAAAAAAIAQAAAAAECBAAAAACAAAQAA=</HashCode>
+      <FileName>BLModelNamedEntity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BLData.Comments.BLComment" Collapsed="true">
+    <Position X="7.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgEAADAACRShAAAAAGEACAIEAIAAQAAAAAAABBIACCA=</HashCode>
+      <FileName>Comments\BLComment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLData.Actors.BLPerson" Collapsed="true">
+    <Position X="3" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQBAACCDAAIAAAAIAAAQABAAEQAAAAAgAAAAEAAE=</HashCode>
+      <FileName>Actors\BLPerson.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLData.BLModelInformation" Collapsed="true">
+    <Position X="3" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACACAAAAEAAAAAAAAAAAAQAAABAAAAAAAAAA=</HashCode>
+      <FileName>BLModelInformation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLData.Classification.BLClassification">
+    <Position X="8.75" Y="3.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACACAAAAAAAAAAAAAAAAAUAAAACAAAAAABAA=</HashCode>
+      <FileName>Classification\BLClassification.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="RootItems" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BLData.Classification.BLClassificationItem" Collapsed="true">
+    <Position X="5.75" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AMAAAAAACACAAgAAAAAkQIAAABCAQAAAQAAAgAAgAAA=</HashCode>
+      <FileName>Classification\BLClassificationItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLData.PropertySets.QuantityPropertySetDef" Collapsed="true">
+    <Position X="3" Y="7.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gAAAQgAACACAIAAACAAAQAAAAAAARABAAAAACABAAAA=</HashCode>
+      <FileName>PropertySets\QuantityPropertySetDef.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLData.PropertySets.PropertySetDef">
+    <Position X="1.25" Y="8.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAkACACAAAEAhAAAAAACAAAYRAAAAIKAABAAAAA=</HashCode>
+      <FileName>PropertySets\PropertySetDef.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="PropertyDefinitions" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BLData.PropertySets.QtoSetDef">
+    <Position X="4.5" Y="8.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAgAAACACAAAEAgQAgAAAAAAAARAAAAACAAAgAAAA=</HashCode>
+      <FileName>PropertySets\QtoSetDef.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="QuantityDefinitions" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BLData.PropertySets.PropertyDef">
+    <Position X="1.25" Y="12" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAgACACAAAQABAAAAAAAAIAAAAAAAAACAEAAAAA=</HashCode>
+      <FileName>PropertySets\PropertyDef.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PropertyType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BLData.PropertySets.PropertyType">
+    <Position X="4.75" Y="12" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ABAAAAAACACAAAAAAAAAAAAAAAAAQAgAABAAAAAAAAA=</HashCode>
+      <FileName>PropertySets\PropertyType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PropertyValueType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BLData.PropertySets.QtoDef">
+    <Position X="7.25" Y="8.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertySets\QtoDef.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="QuantityType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BLData.PropertySets.TypeComplexProperty" Collapsed="true">
+    <Position X="7" Y="12" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAACACAEAAAAAAAAAQAAAAAQAAAAAAAAAACAAA=</HashCode>
+      <FileName>PropertySets\TypeComplexProperty.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BLData.PropertySets.TypePropertyBoundedValue" Collapsed="true">
+    <Position X="7" Y="13" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAACAKAAAAAAAAAAAAAAAAARAAIAAAgAABAAAA=</HashCode>
+      <FileName>PropertySets\TypePropertyBoundedValue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BLData.PropertySets.TypePropertyEnumeratedValue" Collapsed="true">
+    <Position X="7" Y="14" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAACACAAAAAAAAAIAAAAQAAQAIAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertySets\TypePropertyEnumeratedValue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BLData.PropertySets.TypePropertyListValue" Collapsed="true">
+    <Position X="9.75" Y="11" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACACAAAAAAAgAAAAAAAAAQAAAAAAAAAAAABA=</HashCode>
+      <FileName>PropertySets\TypePropertyListValue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BLData.PropertySets.TypePropertyReferenceValue" Collapsed="true">
+    <Position X="9.75" Y="12" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAKAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertySets\TypePropertyReferenceValue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BLData.PropertySets.TypePropertySingleValue" Collapsed="true">
+    <Position X="9.75" Y="13" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAKAAAQAAAAAAAAAAAAARAAAAAAAAAAAAAI=</HashCode>
+      <FileName>PropertySets\TypePropertySingleValue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BLData.PropertySets.TypePropertyTableValue" Collapsed="true">
+    <Position X="9.75" Y="14" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAACACCAAAAAAAIAAAAAAAAQAAQAAAgAAAAQAA=</HashCode>
+      <FileName>PropertySets\TypePropertyTableValue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="BLData.PropertySets.IPropertyValueType" Collapsed="true">
+    <Position X="4.25" Y="14.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertySets\IPropertyValueType.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="BLData.ChangeType" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAgAAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BLModel.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BLData.PropertySets.QtoTypeEnum" Collapsed="true">
+    <Position X="7.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAwACAAAAAAAAAAAAAAQQAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>PropertySets\QtoDef.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="BLData.ModelEntitiesCollectionChangedHandler" Collapsed="true">
+    <Position X="0.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BLModel.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
