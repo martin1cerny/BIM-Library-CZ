@@ -13,7 +13,7 @@
                   Name="twClassification">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
-                    <TextBlock Text="{Binding LocalizedName}" ToolTip="{Binding LocalizedDefinition}" MouseDown="TreeView_MouseDown"/>
+                    <TextBlock Text="{Binding LocalizedName}" MouseDown="TreeView_MouseDown"/>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>

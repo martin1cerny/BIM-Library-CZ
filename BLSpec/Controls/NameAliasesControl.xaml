@@ -7,10 +7,12 @@
              Name="self"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <TextBlock TextWrapping="Wrap">
+        <ScrollViewer>
+            <TextBlock TextWrapping="Wrap">
             <Run Text="{Binding ElementName=self, Path=ActiveNameAlias.Value}" FontSize="18" FontWeight="Bold"/>
             <LineBreak></LineBreak>
             <Run Text="{Binding ElementName=self, Path=ActiveDefinitionAlias.Value}"/>
-        </TextBlock>
+            </TextBlock>
+        </ScrollViewer>
     </Grid>
 </UserControl>

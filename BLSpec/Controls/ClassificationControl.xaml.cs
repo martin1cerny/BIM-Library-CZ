@@ -65,5 +65,10 @@ namespace BLSpec.Controls
         {
             OnEntityActive(twClassification.SelectedItem as INamedEntity);
         }
+
+        private void twItem_GotFocus(object sender, RoutedEventArgs e)
+        {
+            OnEntityActive(twClassification.SelectedItem as INamedEntity);
+        }
     }
 }
