@@ -13,5 +13,13 @@ namespace BLSpec
     /// </summary>
     public partial class App : Application
     {
+        public static string arg;
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            if (e.Args != null && e.Args.Any())
+                arg = e.Args.First();
+            base.OnStartup(e);
+        }
+
     }
 }

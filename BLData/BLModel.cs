@@ -83,6 +83,9 @@ namespace BLData
                 {
                     foreach (var item in res.Items)
                     {
+                        if (typeof(T).IsAssignableFrom(item.GetType()))
+                            yield return item as T;
+
                         foreach (var entity in item.GetChildren())
                         {
                             if (typeof(T).IsAssignableFrom(entity.GetType()))

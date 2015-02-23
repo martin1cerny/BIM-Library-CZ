@@ -58,6 +58,11 @@ namespace BLSpec
         {
             base.OnInitialized(e);
 
+#if !DEBUG
+            //Show TACR branding for a sec
+            System.Threading.Thread.Sleep(2000);
+#endif
+            //load plugins from the subfolder
             var location = GetType().Assembly.Location;
             location = System.IO.Path.GetDirectoryName(location);
             var plugLoc = System.IO.Path.Combine(location, "Plugins");
@@ -82,6 +87,23 @@ namespace BLSpec
             {
                 var command = Activator.CreateInstance(t) as IExternalCommand;
                 RegisterPlugin(command);
+            }
+
+            //load model from command line if specified
+            var allowedExtensions = new[] { ".blsx", ".bls"};
+            if (!String.IsNullOrEmpty(App.arg) && System.IO.File.Exists(App.arg))
+            {
+                var ext = System.IO.Path.GetExtension(App.arg).ToLower();
+                if (allowedExtensions.Contains(ext))
+                    try
+                    {
+                        Open(App.arg);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show(this, "Neplatný formát souboru");
+                        Model = new BLModel();
+                    }
             }
         }
 

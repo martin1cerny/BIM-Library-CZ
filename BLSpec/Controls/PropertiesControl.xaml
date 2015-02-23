@@ -10,9 +10,13 @@
         <DataGrid  ItemsSource="{Binding ElementName=self, Path=PropertySet.Definitions}" AutoGenerateColumns="False" 
                    SelectedItem="{Binding ElementName=self, Path=SelectedProperty}"
                    SelectionChanged="DataGrid_SelectionChanged"
-                   MouseDown="dgProperties_MouseDown"
                    Name="dgProperties"
                    >
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <EventSetter Event="GotFocus" Handler="dgCell_focus"/>
+                </Style>
+            </DataGrid.CellStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Název" Binding="{Binding LocalizedName}" IsReadOnly="True">
                     <DataGridTextColumn.ElementStyle>

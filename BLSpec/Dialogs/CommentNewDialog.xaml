@@ -3,13 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Controls="clr-namespace:BLSpec.Controls" x:Class="BLSpec.Dialogs.CommentNewDialog"
     Name="self"
-        Title="Komentář" Height="300" Width="300" Icon="/BIM Specification;component/img/TACR.ico">
+        Title="Komentář" Height="400" Width="300" Icon="/BIM Specification;component/img/TACR.ico" WindowStartupLocation="CenterOwner">
     <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="{Binding ElementName=self, Path=Comment.ForEntity.LocalizedName}" 
+                   Margin="10" FontSize="14" FontWeight="Bold"/>
+        <Separator DockPanel.Dock="Top" Height="2" Foreground="Gray" Margin="5,0,5,0"/>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Name="btnOK" Click="btnOK_Click">OK</Button>
             <Button Name="btnCancel" Click="btnCancel_Click">Zrušit</Button>
         </StackPanel>
-        <Controls:CommentNewControl Comment="{Binding ElementName=self, Path=Comment}"/>
+        <Controls:CommentNewControl Comment="{Binding ElementName=self, Path=Comment}" Margin="5"/>
     </DockPanel>    
 
 </Window>

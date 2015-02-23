@@ -9,7 +9,6 @@ using BLData;
 using BLData.Classification;
 using BLData.PropertySets;
 using Microsoft.Win32;
-using Xbim.Ifc2x3.Kernel;
 
 namespace BLSpec.Plugins
 {
@@ -155,30 +154,6 @@ namespace BLSpec.Plugins
             }
         }
 
-        private BLClassificationItem AddClassificationItem(Node node, BLClassificationItem parent)
-        {
-            var name = node.name != null ? node.name : node.type.Name;
-            
-
-            var item = _model.New<BLClassificationItem>(ci => { ci.Name = name; if (parent != null) ci.ParentID = parent.Id; });
-            item.NameAliases.Add(_model.New<NameAlias>(na => {
-                na.Lang = "en-US";
-
-                var alias = name;
-                if (name.StartsWith("Ifc"))
-                {
-                    alias = alias.Substring(3); //strip off 'Ifc'
-                    alias = Regex.Replace(alias, @"([a-z])([A-Z])", "$1 $2").Trim();
-                }
-                na.Value = alias;
-            }));
-            foreach (var child in node.children)
-            {
-                AddClassificationItem(child, item);
-            }
-            return item;
-        }
-
         public string Name
         {
             get { return "Import IFC4 Property Sets"; }
@@ -188,81 +163,6 @@ namespace BLSpec.Plugins
         public Guid ID
         {
             get { return new Guid("3EA15F8F-32B2-49E8-ABF8-F5F094E8FBB3"); }
-        }
-
-        private class Node {
-            public string name;
-            public Type type;
-            public Node parent;
-            public List<Node> children = new List<Node>();
-            private static IEnumerable<Type> elementTypes = typeof(Xbim.Ifc2x3.SharedBldgElements.IfcWall).Assembly.GetTypes().Where(t => typeof(IfcTypeProduct).IsAssignableFrom(t));
-
-
-            public Node(Type type)
-            {
-                this.type = type;
-
-                //use reflection to add predefined type children
-                var info = type.GetProperty("PredefinedType");
-                if (info == null)
-                {
-                    var elementType = elementTypes.FirstOrDefault(t => t.Name == type.Name + "Type");
-                    if (elementType != null)
-                    {
-                        info = elementType.GetProperty("PredefinedType");
-                    }
-                }
-                if (info != null)
-                {
-                    var enumType = info.PropertyType;
-                    if (enumType.IsEnum)
-                    {
-                        var names = Enum.GetNames(enumType);
-                        foreach (var name in names)
-                            children.Add(new Node(enumType) { name = name });
-                    }
-                    //nullable type
-                    else if (enumType.IsGenericType && enumType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                    {
-                        enumType = Nullable.GetUnderlyingType(enumType);
-                        var names = Enum.GetNames(enumType);
-                        foreach (var name in names)
-                            children.Add(new Node(enumType) { name = name });
-                    }
-                    //this shouldn't happen
-                    else
-                        throw new Exception("Unexpected predefined type object type.");
-                    
-                }
-            }
-        }
-
-        private class Tree : List<Node>{
-            public void AddNode(Node node, Type rootType) {
-                if (this.Contains(node)) return;
-                if (this.Any(n => n.type == node.type)) return;
-                if (node.type == rootType.BaseType) return;
-                
-                this.Add(node);
-
-                var parent = this.FirstOrDefault(n => n.type == node.type.BaseType);
-                if (parent == null && node.type.BaseType != null && node.type.BaseType != rootType.BaseType)
-                {
-                    parent = new Node(node.type.BaseType) { };
-                    this.AddNode(parent, rootType);
-                }
-                if (parent != null)
-                {
-                    parent.children.Add(node);
-                    node.parent = parent;
-                }
-
-            }
-
-            public IEnumerable<Node> Roots
-            {
-                get { return this.Where(n => n.parent == null); }
-            }
         }
     }
 }

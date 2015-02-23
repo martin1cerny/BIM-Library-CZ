@@ -4,7 +4,7 @@
         WindowStyle="None"
         BorderThickness="1"
         BorderBrush="Black"
-        Title="O programu" Height="407.2" Width="557" Icon="img/TACR.ico" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" >
+        Title="O programu" Height="400" Width="560" Icon="img/TACR.ico" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" >
     <Grid>
         <Image Source="img\CK_logotyp.tif" Height="80" Margin="-137,245,136.4,54.2"/>
         <Image Source="img\tacr_logo_cz.tif" Height="80" Margin="-96,30,96.4,269.2"/>

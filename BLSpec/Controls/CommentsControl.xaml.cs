@@ -44,7 +44,11 @@ namespace BLSpec.Controls
                 var val = a.NewValue as BLModel;
 
                 if (ctrl != null && val != null)
-                    ctrl.cbPersons.ItemsSource = val.Get<BLPerson>();
+                {
+                    var people = val.Get<BLPerson>();
+                    ctrl.cbPersons.ItemsSource = people;
+                    ctrl.cbPersons.SelectedItem = people.FirstOrDefault();
+                }
                 if (ctrl != null && val == null)
                     ctrl.cbPersons.ItemsSource = null;
             }));

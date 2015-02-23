@@ -66,7 +66,7 @@ namespace BLSpec.Controls
                 EntityActive(this, new BLEntityActiveEventArgs(entity));
         }
 
-        private void dgProperties_MouseDown(object sender, MouseButtonEventArgs e)
+        private void dgCell_focus(object sender, RoutedEventArgs e)
         {
             OnEntityActive(dgProperties.SelectedItem as INamedEntity);
         }

@@ -52,6 +52,9 @@ namespace BLSpec.Controls
                             ctrl.Classifications = val.Get<BLClassification>();
                         }
                     };
+
+                    //set first as visible so that user sees something has happened
+                    ctrl.cmbSelectClassification.SelectedItem = ctrl.Classifications.FirstOrDefault();
                 }
             }));
 
