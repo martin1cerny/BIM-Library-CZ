@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Markup;
 
 namespace BLSpec
 {
@@ -16,9 +18,17 @@ namespace BLSpec
         public static string arg;
         protected override void OnStartup(StartupEventArgs e)
         {
-            if (e.Args != null && e.Args.Any())
+            if (e.Args.Any())
                 arg = e.Args.First();
             base.OnStartup(e);
+        }
+
+        static App()
+        {
+            FrameworkElement.LanguageProperty.OverrideMetadata(
+                typeof(FrameworkElement),
+                new FrameworkPropertyMetadata(
+                    XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
         }
 
     }
