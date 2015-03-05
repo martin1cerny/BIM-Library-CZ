@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace BLSpec.Plugins
 {
-    class LoadIFC4ClassDescriptions
+    internal class LoadIFC4ClassDescriptions
 #if DEBUG
         : IExternalCommand
 #endif
@@ -22,16 +23,40 @@ namespace BLSpec.Plugins
                     model.Information.Lang = "en-US";
 
                     //get directory
-                    var rootDir = @"c:\IFC4\schema\";
-                    foreach (var dir in System.IO.Directory.GetDirectories(rootDir, "*", System.IO.SearchOption.TopDirectoryOnly))
+                    var dlg = new System.Windows.Forms.FolderBrowserDialog
+                    {
+                        Description = @"Vyberte složku s dokumentací IFC4",
+                        ShowNewFolderButton = false
+                    };
+                    if (dlg.ShowDialog() != DialogResult.OK)
+                    {
+                        txn.RollBack();
+                        return;
+                    }
+
+                    var rootDir = System.IO.Path.Combine(dlg.SelectedPath, "schema");
+                    if (!System.IO.Directory.Exists(rootDir))
+                    {
+                        ui.ShowMessage("Chyba","Tato složka neobsahuje dokumentaci IFC4.");
+                        txn.RollBack();
+                        return;
+                    }
+                    foreach (
+                        var dir in
+                            System.IO.Directory.GetDirectories(rootDir, "*", System.IO.SearchOption.TopDirectoryOnly))
                     {
                         var subdir = System.IO.Path.Combine(dir, "lexical");
                         if (!System.IO.Directory.Exists(subdir)) continue;
 
-                        foreach (var file in System.IO.Directory.GetFiles(subdir, "*.htm", System.IO.SearchOption.TopDirectoryOnly))
+                        foreach (
+                            var file in
+                                System.IO.Directory.GetFiles(subdir, "*.htm", System.IO.SearchOption.TopDirectoryOnly))
                         {
                             //find classification item
-                            var clsItem = model.Get<BLData.Classification.BLClassificationItem>(ci => ci.Name.ToLower() == System.IO.Path.GetFileNameWithoutExtension(file)).FirstOrDefault();
+                            var clsItem =
+                                model.Get<BLData.Classification.BLClassificationItem>(
+                                    ci => ci.Name.ToLower() == System.IO.Path.GetFileNameWithoutExtension(file))
+                                    .FirstOrDefault();
                             if (clsItem == null) continue;
 
 
@@ -48,7 +73,8 @@ namespace BLSpec.Plugins
 
                             //Insert new lines instead of block HTML elements (<ol.*?>|<ul.*?>)
                             description = (new Regex(
-                                "(<p.*?>|<div.*?>|<blockquote.*?>|<h.*?>|<dd.*?>|<dt.*?>|<hr.*?>|<pre.*?>)", RegexOptions.IgnoreCase))
+                                "(<p.*?>|<div.*?>|<blockquote.*?>|<h.*?>|<dd.*?>|<dt.*?>|<hr.*?>|<pre.*?>)",
+                                RegexOptions.IgnoreCase))
                                 .Replace(description, "\n\n");
 
                             //keep lists
@@ -60,7 +86,8 @@ namespace BLSpec.Plugins
                             description = tagExp.Replace(description, "");
 
                             //remove Figure xxx - ...
-                            description = (new Regex("Figure\\s*[0-9]+.*", RegexOptions.IgnoreCase)).Replace(description, "");
+                            description = (new Regex("Figure\\s*[0-9]+.*", RegexOptions.IgnoreCase)).Replace(
+                                description, "");
 
                             //remove HISTORY 
                             description = (new Regex("HISTORY.*", RegexOptions.IgnoreCase)).Replace(description, "");
@@ -90,7 +117,8 @@ namespace BLSpec.Plugins
                             description = entExp.Replace(description, " ");
 
                             //reduce empty space
-                            description = (new Regex("(\\s*\\n){3,10}", RegexOptions.IgnoreCase)).Replace(description, "\n\n");
+                            description = (new Regex("(\\s*\\n){3,10}", RegexOptions.IgnoreCase)).Replace(description,
+                                "\n\n");
 
                             clsItem.LocalizedDefinition = description.Trim();
                         }
@@ -112,6 +140,7 @@ namespace BLSpec.Plugins
         }
 
         private Guid _id = new Guid("8F8D6C3B-6203-43B4-9045-95D927417B90");
+
         public Guid ID
         {
             get { return _id; }

@@ -89,6 +89,8 @@ namespace BLSpec
                 RegisterPlugin(command);
             }
 
+            if (!_pluginsExist) Plugins.Visibility = Visibility.Collapsed;
+
             //load model from command line if specified
             var allowedExtensions = new[] { ".blsx", ".bls"};
             if (!String.IsNullOrEmpty(App.arg) && System.IO.File.Exists(App.arg))
@@ -108,11 +110,11 @@ namespace BLSpec
         }
 
         private Dictionary<Guid, IExternalCommand> _externalCommands = new Dictionary<Guid,IExternalCommand>();
+        private bool _pluginsExist = false;
         private void RegisterPlugin(IExternalCommand command)
         {
             var name = command.Name;
-            var firstLevel = false;
-            if (name.StartsWith("..")) firstLevel = true;
+            var firstLevel = name.StartsWith("..");
             var path = name.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
             if (!path.Any())
             {
@@ -139,11 +141,14 @@ namespace BLSpec
                 }
                 menuItem = item;
             }
-            if (menuItem is MenuItem)
-                (menuItem as MenuItem).Click += (s, a) =>
+            var mItem = menuItem as MenuItem;
+            if (mItem != null)
+            {
+                _pluginsExist = true;
+                mItem.Click += (s, a) =>
                 {
                     ExecutePlugin(command.ID);
-                };
+                };}
         }
 
         private void ExecutePlugin(Guid id)

@@ -62,7 +62,6 @@
             <Controls:NameAliasesControl Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="5"
                                          Lang="{Binding ElementName=self, Path=Lang}"
                                          x:Name="aliasesControl"
-                                         Padding="10"
                                          />
         </Grid>
         
