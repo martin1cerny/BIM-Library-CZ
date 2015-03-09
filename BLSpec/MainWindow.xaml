@@ -4,6 +4,18 @@
         xmlns:Controls="clr-namespace:BLSpec.Controls"
         Name="self"
         Title="BIM Specifikace" Height="500" Width="900" Icon="img/TACR.ico" WindowStartupLocation="CenterScreen" WindowState="Maximized" >
+    <Window.CommandBindings>
+        <CommandBinding Command="Save"  CanExecute="CommandSave_CanExecute" Executed="CommandSave_Executed" x:Name="CommandSave"/>
+        <CommandBinding Command="SaveAs"  CanExecute="CommandSave_CanExecute" Executed="CommandSaveAs_Executed" x:Name="CommandSaveAs"/>
+        <CommandBinding Command="Open"  CanExecute="CommandSave_CanExecute" Executed="CommandOpen_Executed" x:Name="CommandOpen"/>
+        <CommandBinding Command="Close"  CanExecute="CommandSave_CanExecute" Executed="CommandClose_Executed" x:Name="CommandClose"/>
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Key="O" Modifiers="Control" Command="Open"/>
+        <KeyBinding Key="S" Modifiers="Control" Command="Save"/>
+        <KeyBinding Key="S" Modifiers="Control+Shift" Command="SaveAs"/>
+        <KeyBinding Key="W" Modifiers="Control" Command="Close"/>
+    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -11,11 +23,11 @@
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" Name="menu">
             <MenuItem Name="File" Header="Soubor">
-                <MenuItem Name="miOpen" Header="Otevřít" Click="miOpen_Click"/>
-                <MenuItem Name="miSave" Header="Uložit" Click="miSave_Click"/>
-                <MenuItem Name="miSaveAs" Header="Uložit jako..." Click="miSaveAs_Click"/>
-                <MenuItem Name="miCloseModel" Header="Zavřít" Click="miCloseModel_Click"/>
-                <MenuItem Name="miExit" Header="Ukončit" Click="miExit_Click"/>
+                <MenuItem Name="miOpen" Header="Otevřít" Command="Open" InputGestureText="Ctrl+O"/>
+                <MenuItem Name="miSave" Header="Uložit" Command="Save" InputGestureText="Ctrl+S"/>
+                <MenuItem Name="miSaveAs" Header="Uložit jako..." Command="SaveAs" InputGestureText="Ctrl+Shift+S"/>
+                <MenuItem Name="miCloseModel" Header="Zavřít" Command="Close" InputGestureText="Ctrl+W"/>
+                <MenuItem Name="miExit" Header="Ukončit" Click="miExit_Click" InputGestureText="Alt+F4"/>
             </MenuItem>
             <MenuItem Name="miComments" Header="Komentáře">
                 <MenuItem Header="Exportovat vše..." Name="miExportAllComments" Click="miExportAllComments_Click"/>

@@ -412,5 +412,30 @@ namespace BLSpec
                 
             }
         }
+
+        private void CommandSave_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void CommandSave_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            miSave_Click(null, null);
+        }
+
+        private void CommandSaveAs_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            miSaveAs_Click(null, null);
+        }
+
+        private void CommandOpen_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            miOpen_Click(null, null);
+        }
+
+        private void CommandClose_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            miCloseModel_Click(null, null);
+        }
     }
 }

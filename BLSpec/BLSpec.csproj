@@ -159,6 +159,7 @@
     <Compile Include="Dialogs\PersonDialog.xaml.cs">
       <DependentUpon>PersonDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EnumerationExtension.cs" />
     <Compile Include="IExternalCommand.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

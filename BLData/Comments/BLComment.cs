@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -101,6 +102,12 @@ namespace BLData.Comments
             set { var old = __resolvedById; Set("SolvedBy", () => __resolvedById = value != null ? value.Id : Guid.Empty, () => __resolvedById = old); }
         }
 
+        private CommentCategoryEnum _category = CommentCategoryEnum.OTHER;
+        public CommentCategoryEnum Category {
+            get { return _category; }
+            set { var old = _category; Set("Category", () => _category = value, () => _category = old); }
+        }
+
         internal override void SetModel(BLModel model)
         {
             _model = model;
@@ -125,5 +132,19 @@ namespace BLData.Comments
         ISSUE,
         REVIEW,
         RESOLVED
+    }
+
+    public enum CommentCategoryEnum
+    {
+        [Description("Jiná")]
+        OTHER,
+        [Description("Přidat")]
+        ADD,
+        [Description("Odebrat")]
+        REMOVE,
+        [Description("Přejmenovat")]
+        RENAME,
+        [Description("Změnit popis")]
+        CHANGEDESCRIPTION
     }
 }

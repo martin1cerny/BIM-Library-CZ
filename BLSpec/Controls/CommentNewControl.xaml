@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:coms="clr-namespace:BLData.Comments;assembly=BLData"
+             xmlns:spec="clr-namespace:BLSpec"
              mc:Ignorable="d" 
              Name="self"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -15,15 +17,24 @@
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0">Připomínka</Label>
-        <Label Grid.Row="2">Návrh řešení</Label>
 
-        <TextBox Grid.Row="1" Text="{Binding ElementName=self, Path=Comment.Issue}"/>
-        <TextBox Grid.Row="3" Text="{Binding ElementName=self, Path=Comment.ProposedSolution}"/>
+        <DockPanel >
+            <Label>Kategorie:</Label>
+            <ComboBox ItemsSource="{Binding Source={spec:Enumeration {x:Type coms:CommentCategoryEnum}}}" DisplayMemberPath="Description"
+                  SelectedValue="{Binding ElementName=self, Path=Comment.Category}"
+                  SelectedValuePath="Value"/>
+        </DockPanel>
+
+        <Label Grid.Row="1">Připomínka:</Label>
+        <Label Grid.Row="3">Návrh řešení:</Label>
+
+        <TextBox Grid.Row="2" Text="{Binding ElementName=self, Path=Comment.Issue}"/>
+        <TextBox Grid.Row="4" Text="{Binding ElementName=self, Path=Comment.ProposedSolution}"/>
 
     </Grid>
 </UserControl>
