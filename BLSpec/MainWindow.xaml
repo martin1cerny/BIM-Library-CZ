@@ -5,10 +5,10 @@
         Name="self"
         Title="BIM Specifikace" Height="500" Width="900" Icon="img/TACR.ico" WindowStartupLocation="CenterScreen" WindowState="Maximized" >
     <Window.CommandBindings>
-        <CommandBinding Command="Save"  CanExecute="CommandSave_CanExecute" Executed="CommandSave_Executed" x:Name="CommandSave"/>
-        <CommandBinding Command="SaveAs"  CanExecute="CommandSave_CanExecute" Executed="CommandSaveAs_Executed" x:Name="CommandSaveAs"/>
-        <CommandBinding Command="Open"  CanExecute="CommandSave_CanExecute" Executed="CommandOpen_Executed" x:Name="CommandOpen"/>
-        <CommandBinding Command="Close"  CanExecute="CommandSave_CanExecute" Executed="CommandClose_Executed" x:Name="CommandClose"/>
+        <CommandBinding Command="Save"  CanExecute="CanExecuteAllways" Executed="CommandSave_Executed" x:Name="CommandSave"/>
+        <CommandBinding Command="SaveAs"  CanExecute="CanExecuteAllways" Executed="CommandSaveAs_Executed" x:Name="CommandSaveAs"/>
+        <CommandBinding Command="Open"  CanExecute="CanExecuteAllways" Executed="CommandOpen_Executed" x:Name="CommandOpen"/>
+        <CommandBinding Command="Close"  CanExecute="CanExecuteAllways" Executed="CommandClose_Executed" x:Name="CommandClose"/>
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Key="O" Modifiers="Control" Command="Open"/>

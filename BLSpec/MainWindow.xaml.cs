@@ -413,7 +413,7 @@ namespace BLSpec
             }
         }
 
-        private void CommandSave_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void CanExecuteAllways(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }

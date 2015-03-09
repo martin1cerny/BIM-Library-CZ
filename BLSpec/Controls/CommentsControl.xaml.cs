@@ -163,6 +163,12 @@ namespace BLSpec.Controls
                 MessageBox.Show("Musíte vybrat autora připomínky");
                 return;
             }
+            if (Entity == null)
+            {
+                MessageBox.Show("Musíte vybrat předmět připomínky");
+                return;
+            }
+
             using (var txn = Model.BeginTansaction("New comment"))
             {
                 try
