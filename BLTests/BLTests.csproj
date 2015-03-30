@@ -54,6 +54,7 @@
     <Compile Include="TransactionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializationTests.cs" />
+    <Compile Include="ExportClassDescriptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BLData\BLData.csproj">
