@@ -20,14 +20,13 @@ namespace Xbim.ExpressParser
         public TextWriter Output { get; set; }
 
         private Schemas.Schema _schema;
+        public Schemas.Schema Schema { get { return _schema; } }
         private IfcVersionEnum _version;
-        private BLModel _model;
         private Tree _tree = new Tree();
         public Tree Tree { get { return _tree; } }
 
-        internal Parser(Scanner lex, IfcVersionEnum version, BLModel model): base(lex)
+        internal Parser(Scanner lex, IfcVersionEnum version): base(lex)
         {
-            _model = model;
             _scanner = lex;
             _version = version;
 

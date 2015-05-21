@@ -168,7 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Plugins\AddCzechTranslations.cs" />
-    <Compile Include="Plugins\ExportClassNamesAndSedcriptions.cs" />
+    <Compile Include="Plugins\FilterOutMostOfTheData.cs" />
     <Compile Include="Plugins\LoadIFC4ClassDescriptions.cs" />
     <Compile Include="Plugins\LoadIFC4Psets.cs" />
     <Compile Include="Plugins\SampleData.cs" />

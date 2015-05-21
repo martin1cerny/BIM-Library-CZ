@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreateIFC4Classification.cs" />
+    <Compile Include="ExportClassNamesAndDescriptions.cs" />
     <Compile Include="Inheritance.cs" />
     <Compile Include="Parser\Parser.cs" />
     <Compile Include="Parser\ParserHelper.cs" />

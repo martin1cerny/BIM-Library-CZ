@@ -51,11 +51,41 @@ namespace BLData.Classification
         }
 
         [XmlIgnore]
+        public IEnumerable<BLClassificationItem> ParentDeep
+        {
+            get
+            {
+                if (Parent == null) yield break;
+                yield return Parent;
+                foreach (var item in Parent.ParentDeep)
+                {
+                    yield return item;
+                }
+            }
+        }
+
+        [XmlIgnore]
         public IEnumerable<BLClassificationItem> Children
         {
             get
             {
                 return _model.Get<BLClassificationItem>(i => i.ParentID == this.Id);
+            }
+        }
+
+        [XmlIgnore]
+        public IEnumerable<BLClassificationItem> ChildrenDeep
+        {
+            get
+            {
+                foreach (var ch in Children)
+                {
+                    yield return ch;
+                    foreach (var subchild in ch.ChildrenDeep)
+                    {
+                        yield return subchild;
+                    }
+                }
             }
         }
 

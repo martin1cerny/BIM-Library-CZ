@@ -32,7 +32,7 @@ namespace Xbim.ExpressParser
                     try
                     {
                         var scanner = new Scanner(file);
-                        var parser = new Parser(scanner, IfcVersionEnum.IFC4, model);
+                        var parser = new Parser(scanner, IfcVersionEnum.IFC4);
                         var result = parser.Parse();
 
                         if (parser.Output != null)
