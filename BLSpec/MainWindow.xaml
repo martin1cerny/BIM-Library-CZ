@@ -30,6 +30,8 @@
                 <MenuItem Name="miExit" Header="Ukončit" Click="miExit_Click" InputGestureText="Alt+F4"/>
             </MenuItem>
             <MenuItem Name="miComments" Header="Komentáře">
+                <MenuItem Header="Skrýt" Name="miHideComments" Click="miHideComments_Click"/>
+                <MenuItem Header="Ukázat" Name="miShowComments" Click="miShowComments_Click"/>
                 <MenuItem Header="Exportovat vše..." Name="miExportAllComments" Click="miExportAllComments_Click"/>
                 <MenuItem Header="Exportovat aktuálního uživatele..." Name="miExportUsersComments" Click="miExportUsersComments_Click"/>
                 <MenuItem Header="Import..." Name="miImportComments" Click="miImportComments_Click"/>
@@ -45,12 +47,12 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="380"/>
+                <ColumnDefinition Width="0" Name="cdComments"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="150"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <GridSplitter Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="3"/>
             <GridSplitter Grid.Column="3"  Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="3"/>
@@ -72,7 +74,8 @@
                                         x:Name="propertiesControl"
                                         EntityActive="EntityActiveHandler"/>
             <Controls:NameAliasesControl Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="5"
-                                         Lang="{Binding ElementName=self, Path=Lang}"
+                                         SecondaryLanguage="{Binding ElementName=self, Path=SecondaryLanguage}"
+                                         PrimaryLanguage="{Binding ElementName=self, Path=Model.Information.Lang, Mode=OneWay}"
                                          x:Name="aliasesControl"
                                          />
         </Grid>

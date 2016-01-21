@@ -74,6 +74,7 @@ Section "MainSection" SEC01
   File "..\bin\Release\NPOI.OOXML.dll"
   File "..\bin\Release\NPOI.OpenXml4Net.dll"
   File "..\bin\Release\NPOI.OpenXmlFormats.dll"
+  File "..\bin\Release\ParametryIFC4.blsx"
   SetOutPath "$INSTDIR\Plugins"
   File "..\bin\Release\Plugins\Xbim.ExpressParser.dll"
   SetOutPath "$INSTDIR"
@@ -135,7 +136,8 @@ Section Uninstall
   Delete "$INSTDIR\ICSharpCode.SharpZipLib.dll"
   Delete "$INSTDIR\BLData.dll"
   Delete "$INSTDIR\BIM Specification.exe"
-
+  Delete "$INSTDIR\ParametryIFC4.blsx"
+  
   Delete "$SMPROGRAMS\$ICONS_GROUP\Uninstall.lnk"
   Delete "$DESKTOP\BIM Library Specification.lnk"
   Delete "$SMPROGRAMS\$ICONS_GROUP\BIM Library Specification.lnk"

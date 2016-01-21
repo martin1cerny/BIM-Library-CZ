@@ -18,21 +18,21 @@
                 </Style>
             </DataGrid.CellStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Název" Binding="{Binding LocalizedName}" IsReadOnly="True">
+                <DataGridTextColumn Header="Název" Binding="{Binding LocalizedName}" IsReadOnly="True" Width="*">
                     <DataGridTextColumn.ElementStyle>
                         <Style>
                             <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Definice" Binding="{Binding LocalizedDefinition}" Width="*"
+                <!--<DataGridTextColumn Header="Definice" Binding="{Binding LocalizedDefinition}" Width="*"
                                     IsReadOnly="True">
                     <DataGridTextColumn.ElementStyle>
                         <Style>
                             <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+                </DataGridTextColumn>-->
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

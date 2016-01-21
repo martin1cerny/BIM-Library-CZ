@@ -27,29 +27,56 @@ namespace BLSpec.Controls
         }
 
 
-        private void SetLanguage() { 
-        var code = String.IsNullOrEmpty(Lang) ? "en-US" : Lang;
+        private void SetLanguage() 
+        {
+            var secondaryCode = String.IsNullOrEmpty(SecondaryLanguage) ? "en-US" : SecondaryLanguage;
+            var primaryCode = String.IsNullOrEmpty(SecondaryLanguage) ? "en-US" : PrimaryLanguage;
             if (NameAliases != null)
             {
-                var alias = NameAliases.FirstOrDefault(a => a.Lang == code);
+                var alias = NameAliases.FirstOrDefault(a => a.Lang == secondaryCode);
                 SetValue(ActiveNameAliasProperty, alias);
+
+                var name = NameAliases.FirstOrDefault(a => a.Lang == primaryCode);
+                SetValue(ActiveNameProperty, name);
             }
             if (DefinitionAliases != null)
             {
-                var alias = DefinitionAliases.FirstOrDefault(a => a.Lang == code);
+                var alias = DefinitionAliases.FirstOrDefault(a => a.Lang == secondaryCode);
                 SetValue(ActiveDefinitionAliasProperty, alias);
+
+                var definition = DefinitionAliases.FirstOrDefault(a => a.Lang == primaryCode);
+                SetValue(ActiveDefinitionProperty, definition);
             }
         }
 
-        public string Lang
+
+
+        public string PrimaryLanguage
         {
-            get { return (string)GetValue(LangProperty); }
-            set { SetValue(LangProperty, value); }
+            get { return (string)GetValue(PrimaryLanguageProperty); }
+            set { SetValue(PrimaryLanguageProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for PrimaryLanguage.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PrimaryLanguageProperty =
+            DependencyProperty.Register("PrimaryLanguage", typeof(string), typeof(NameAliasesControl), new PropertyMetadata("en-US", (s, a) =>
+                {
+                    var ctrl = s as NameAliasesControl;
+                    if (ctrl != null) ctrl.SetLanguage();
+                }));
+
+
+
+        public string SecondaryLanguage
+        {
+            get { return (string)GetValue(SecondaryLanguageProperty); }
+            set { SetValue(SecondaryLanguageProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Lang.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty LangProperty =
-            DependencyProperty.Register("Lang", typeof(string), typeof(NameAliasesControl), new PropertyMetadata("en-us", (s, a) => {
+        public static readonly DependencyProperty SecondaryLanguageProperty =
+            DependencyProperty.Register("SecondaryLanguage", typeof(string), typeof(NameAliasesControl), new PropertyMetadata("en-US", (s, a) =>
+            {
                 var ctrl = s as NameAliasesControl;
                 if (ctrl != null) ctrl.SetLanguage();
             }));
@@ -111,7 +138,32 @@ namespace BLSpec.Controls
         public static readonly DependencyProperty ActiveDefinitionAliasProperty =
             DependencyProperty.Register("ActiveDefinitionAlias", typeof(NameAlias), typeof(NameAliasesControl), new PropertyMetadata(null));
 
-        
+
+
+
+        public NameAlias ActiveName
+        {
+            get { return (NameAlias)GetValue(ActiveNameProperty); }
+            set { SetValue(ActiveNameProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ActiveName.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ActiveNameProperty =
+            DependencyProperty.Register("ActiveName", typeof(NameAlias), typeof(NameAliasesControl), new PropertyMetadata(null));
+
+
+
+
+        public NameAlias ActiveDefinition
+        {
+            get { return (NameAlias)GetValue(ActiveDefinitionProperty); }
+            set { SetValue(ActiveDefinitionProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ActiveDefinition.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ActiveDefinitionProperty =
+            DependencyProperty.Register("ActiveDefinition", typeof(NameAlias), typeof(NameAliasesControl), new PropertyMetadata(null));
+
 
 
     }

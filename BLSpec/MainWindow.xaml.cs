@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using BLData;
 using Microsoft.Win32;
 using BLData.Comments;
+using System.IO;
 
 namespace BLSpec
 {
@@ -37,15 +38,15 @@ namespace BLSpec
 
 
 
-        public string Lang
+        public string SecondaryLanguage
         {
-            get { return (string)GetValue(LangProperty); }
-            set { SetValue(LangProperty, value); }
+            get { return (string)GetValue(SecondaryLanguageProperty); }
+            set { SetValue(SecondaryLanguageProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Lang.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty LangProperty =
-            DependencyProperty.Register("Lang", typeof(string), typeof(MainWindow), new PropertyMetadata("en-US"));
+        // Using a DependencyProperty as the backing store for SecondaryLanguage.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SecondaryLanguageProperty =
+            DependencyProperty.Register("SecondaryLanguage", typeof(string), typeof(MainWindow), new PropertyMetadata("en-US"));
 
         
 
@@ -106,7 +107,21 @@ namespace BLSpec
                         MessageBox.Show(this, "Neplatný formát souboru");
                         Model = new BLModel();
                     }
+                return;
             }
+
+            //try to load default model from install dir
+            var actualPath = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
+            if (string.IsNullOrWhiteSpace(actualPath))
+                return;
+            actualPath = (new Uri(actualPath)).LocalPath;
+
+            var actualDir = System.IO.Path.GetDirectoryName(actualPath);
+            var defaultFile = Directory.EnumerateFiles(actualDir, "*.blsx", SearchOption.TopDirectoryOnly).FirstOrDefault();
+            if(defaultFile == null)
+                defaultFile = Directory.EnumerateFiles(actualDir, "*.bls", SearchOption.TopDirectoryOnly).FirstOrDefault();
+            if(defaultFile != null)
+                Open(defaultFile);
         }
 
         private Dictionary<Guid, IExternalCommand> _externalCommands = new Dictionary<Guid,IExternalCommand>();
@@ -259,7 +274,7 @@ namespace BLSpec
         private void Open(string path)
         {
             if (String.IsNullOrEmpty(path)) return;
-            using (var stream = System.IO.File.Open(path, System.IO.FileMode.Open))
+            using (var stream = System.IO.File.Open(path, System.IO.FileMode.Open, FileAccess.Read))
             {
                 if (System.IO.Path.GetExtension(path).ToLower() == ".blsx")
                 {
@@ -436,6 +451,16 @@ namespace BLSpec
         private void CommandClose_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             miCloseModel_Click(null, null);
+        }
+
+        private void miShowComments_Click(object sender, RoutedEventArgs e)
+        {
+            cdComments.Width = new GridLength(350);
+        }
+
+        private void miHideComments_Click(object sender, RoutedEventArgs e)
+        {
+            cdComments.Width = new GridLength(0);
         }
     }
 }

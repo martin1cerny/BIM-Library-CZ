@@ -55,6 +55,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -169,8 +170,10 @@
   <ItemGroup>
     <Compile Include="Plugins\AddCzechTranslations.cs" />
     <Compile Include="Plugins\FilterOutMostOfTheData.cs" />
+    <Compile Include="Plugins\LoadIFC4ClassDescriptionsCZ.cs" />
     <Compile Include="Plugins\LoadIFC4ClassDescriptions.cs" />
     <Compile Include="Plugins\LoadIFC4Psets.cs" />
+    <Compile Include="Plugins\OverloadIFC4ClassDescriptionsEN.cs" />
     <Compile Include="Plugins\SampleData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -192,6 +195,9 @@
     <None Include="Data\PsetDefinitions\test.bls" />
     <None Include="Data\PsetDefinitions\test.blsx" />
     <None Include="packages.config" />
+    <None Include="ParametryIFC4.blsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

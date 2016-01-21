@@ -8,12 +8,25 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <ScrollViewer>
-            <TextBlock TextWrapping="Wrap"
-                       Padding="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock TextWrapping="Wrap"
+                       Padding="10" Grid.Column="0">
+                <Run Text="{Binding ElementName=self, Path=ActiveName.Value}" FontSize="18" FontWeight="Bold" />
+                <LineBreak />
+                <Run Text="{Binding ElementName=self, Path=ActiveDefinition.Value}" />
+                </TextBlock>
+                <TextBlock TextWrapping="Wrap"
+                       Padding="10" Grid.Column="1">
                 <Run Text="{Binding ElementName=self, Path=ActiveNameAlias.Value}" FontSize="18" FontWeight="Bold" />
                 <LineBreak />
                 <Run Text="{Binding ElementName=self, Path=ActiveDefinitionAlias.Value}" />
-            </TextBlock>
+                </TextBlock>
+            </Grid>
+            
         </ScrollViewer>
     </Grid>
 </UserControl>
