@@ -1,29 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using BLData;
-using Microsoft.Win32;
 using BLData.Comments;
-using System.IO;
+using Microsoft.Win32;
 
 namespace BLSpec
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
 
         public BLModel Model
@@ -61,27 +56,29 @@ namespace BLSpec
 
 #if !DEBUG
             //Show TACR branding for a sec
-            System.Threading.Thread.Sleep(2000);
+            Thread.Sleep(2000);
 #endif
             //load plugins from the subfolder
             var location = GetType().Assembly.Location;
-            location = System.IO.Path.GetDirectoryName(location);
-            var plugLoc = System.IO.Path.Combine(location, "Plugins");
-            if (System.IO.Directory.Exists(plugLoc))
+            location = Path.GetDirectoryName(location);
+            if (location != null)
             {
-                var files = System.IO.Directory.EnumerateFiles(plugLoc, "*.dll", System.IO.SearchOption.AllDirectories);
-                foreach (var file in files)
+                var plugLoc = Path.Combine(location, "Plugins");
+                if (Directory.Exists(plugLoc))
                 {
-                    var assembly = System.Reflection.Assembly.LoadFrom(file);
-                    var commands = assembly.GetTypes().Where(t => typeof(IExternalCommand).IsAssignableFrom(t));
-                    foreach (var c in commands)
+                    var files = Directory.EnumerateFiles(plugLoc, "*.dll", SearchOption.AllDirectories);
+                    foreach (var file in files)
                     {
-                        var command = Activator.CreateInstance(c) as IExternalCommand;
-                        RegisterPlugin(command);
+                        var assembly = Assembly.LoadFrom(file);
+                        var commands = assembly.GetTypes().Where(t => typeof(IExternalCommand).IsAssignableFrom(t));
+                        foreach (var command in commands.Select(c => Activator.CreateInstance(c) as IExternalCommand))
+                        {
+                            RegisterPlugin(command);
+                        }
                     }
                 }
             }
-            
+
             //register built-in plugins
             var builtInComands = GetType().Assembly.GetTypes().Where(t => typeof(IExternalCommand).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
             foreach (var t in builtInComands)
@@ -94,9 +91,9 @@ namespace BLSpec
 
             //load model from command line if specified
             var allowedExtensions = new[] { ".blsx", ".bls"};
-            if (!String.IsNullOrEmpty(App.arg) && System.IO.File.Exists(App.arg))
+            if (!string.IsNullOrEmpty(App.arg) && System.IO.File.Exists(App.arg))
             {
-                var ext = System.IO.Path.GetExtension(App.arg).ToLower();
+                var ext = Path.GetExtension(App.arg).ToLower();
                 if (allowedExtensions.Contains(ext))
                     try
                     {
@@ -111,21 +108,26 @@ namespace BLSpec
             }
 
             //try to load default model from install dir
-            var actualPath = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
+            var actualPath = Assembly.GetExecutingAssembly().CodeBase;
             if (string.IsNullOrWhiteSpace(actualPath))
                 return;
             actualPath = (new Uri(actualPath)).LocalPath;
 
-            var actualDir = System.IO.Path.GetDirectoryName(actualPath);
-            var defaultFile = Directory.EnumerateFiles(actualDir, "*.blsx", SearchOption.TopDirectoryOnly).FirstOrDefault();
-            if(defaultFile == null)
-                defaultFile = Directory.EnumerateFiles(actualDir, "*.bls", SearchOption.TopDirectoryOnly).FirstOrDefault();
-            if(defaultFile != null)
+            var actualDir = Path.GetDirectoryName(actualPath);
+            if (actualDir == null) return;
+
+            var defaultFile = Directory.EnumerateFiles(actualDir, "*.blsx", SearchOption.TopDirectoryOnly).FirstOrDefault() ??
+                              Directory.EnumerateFiles(actualDir, "*.bls", SearchOption.TopDirectoryOnly).FirstOrDefault();
+            if (defaultFile != null)
+            {
                 Open(defaultFile);
+                //set path to null so that if user wants to save the data he has to choose the name and location
+                _path = null;
+            }
         }
 
-        private Dictionary<Guid, IExternalCommand> _externalCommands = new Dictionary<Guid,IExternalCommand>();
-        private bool _pluginsExist = false;
+        private readonly Dictionary<Guid, IExternalCommand> _externalCommands = new Dictionary<Guid,IExternalCommand>();
+        private bool _pluginsExist;
         private void RegisterPlugin(IExternalCommand command)
         {
             var name = command.Name;
@@ -145,13 +147,13 @@ namespace BLSpec
 
             _externalCommands.Add(command.ID, command);
 
-            var menuItem = firstLevel ? menu as ItemsControl : Plugins as ItemsControl;
+            var menuItem = firstLevel ? menu : Plugins as ItemsControl;
             foreach (var part in path)
             {
-                var item = menuItem.Items.OfType<MenuItem>().FirstOrDefault(mi => (mi.Header as String) == part);
+                var item = menuItem.Items.OfType<MenuItem>().FirstOrDefault(mi => (mi.Header as string) == part);
                 if (item == null)
                 {
-                    item = new MenuItem() { Header = part };
+                    item = new MenuItem { Header = part };
                     menuItem.Items.Add(item);
                 }
                 menuItem = item;
@@ -185,7 +187,7 @@ namespace BLSpec
 
         private void miAbout_Click(object sender, RoutedEventArgs e)
         {
-            var win = new About() { Owner = this};
+            var win = new About { Owner = this};
             win.ShowDialog();
         }
 
@@ -194,7 +196,7 @@ namespace BLSpec
         private void miOpen_Click(object sender, RoutedEventArgs e)
         {
             miCloseModel_Click(sender, e);
-            var dlg = new OpenFileDialog()
+            var dlg = new OpenFileDialog
             {
                 AddExtension = true,
 #if DEBUG
@@ -208,7 +210,7 @@ namespace BLSpec
                 CheckFileExists = true,
                 CheckPathExists = true,
                 Multiselect = false,
-                ShowReadOnly = false,
+                ShowReadOnly = false
             };
 
             if (dlg.ShowDialog(this) == true)
@@ -217,15 +219,17 @@ namespace BLSpec
 
         private void miSave_Click(object sender, RoutedEventArgs e)
         {
-            if (!String.IsNullOrEmpty(_path))
+            if (!string.IsNullOrEmpty(_path))
                 Save(_path);
             else
                 miSaveAs_Click(sender, e);
         }
 
+        // ReSharper disable UnusedParameter.Local
         private void miSaveAs_Click(object sender, RoutedEventArgs e)
+        // ReSharper restore UnusedParameter.Local
         {
-            var dlg = new SaveFileDialog()
+            var dlg = new SaveFileDialog
             {
                 AddExtension = true,
 #if DEBUG
@@ -245,10 +249,10 @@ namespace BLSpec
 
         private void Save(string path)
         {
-            if (String.IsNullOrEmpty(path)) return;
+            if (string.IsNullOrEmpty(path)) return;
             using (var stream = System.IO.File.Create(path))
             {
-                if (System.IO.Path.GetExtension(path).ToLower() == ".blsx")
+                if (Path.GetExtension(path).ToLower() == ".blsx")
                 {
                     //save as compressed zip file
                     using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
@@ -273,20 +277,21 @@ namespace BLSpec
 
         private void Open(string path)
         {
-            if (String.IsNullOrEmpty(path)) return;
-            using (var stream = System.IO.File.Open(path, System.IO.FileMode.Open, FileAccess.Read))
+            if (string.IsNullOrEmpty(path)) return;
+            using (var stream = System.IO.File.Open(path, FileMode.Open, FileAccess.Read))
             {
-                if (System.IO.Path.GetExtension(path).ToLower() == ".blsx")
+                if (Path.GetExtension(path).ToLower() == ".blsx")
                 {
                     //save as compressed zip file
                     using (var archive = new ZipArchive(stream, ZipArchiveMode.Read))
                     {
                         var entry = archive.Entries.FirstOrDefault(e => e.Name == "specification.xml");
-                        using (var entryStream = entry.Open())
-                        {
-                            Model = BLModel.Open(entryStream);
-                            entryStream.Close();
-                        }
+                        if (entry != null)
+                            using (var entryStream = entry.Open())
+                            {
+                                Model = BLModel.Open(entryStream);
+                                entryStream.Close();
+                            }
                     }
                     stream.Close();
                 }
@@ -316,7 +321,7 @@ namespace BLSpec
             Close();
         }
 
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        protected override void OnClosing(CancelEventArgs e)
         {
             //close model first
             miCloseModel_Click(null, null);
@@ -343,7 +348,7 @@ namespace BLSpec
         {
             var exchange = new CommentsExchangeModel();
             exchange.LoadFromModel(Model);
-            var dlg = new SaveFileDialog()
+            var dlg = new SaveFileDialog
             {
                 AddExtension = true,
                 DefaultExt = ".blcx",
@@ -368,7 +373,7 @@ namespace BLSpec
 
             var exchange = new CommentsExchangeModel();
             exchange.LoadFromModel(Model, person);
-            var dlg = new SaveFileDialog()
+            var dlg = new SaveFileDialog
             {
                 AddExtension = true,
                 DefaultExt = ".blcx",
@@ -384,7 +389,7 @@ namespace BLSpec
 
         private void miImportComments_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new OpenFileDialog()
+            var dlg = new OpenFileDialog
             {
                 AddExtension = true,
                 DefaultExt = ".blcx",
@@ -393,7 +398,7 @@ namespace BLSpec
                 CheckFileExists = true,
                 CheckPathExists = true,
                 Multiselect = false,
-                ShowReadOnly = false,
+                ShowReadOnly = false
             };
 
             if (dlg.ShowDialog(this) == true)
@@ -404,7 +409,7 @@ namespace BLSpec
                     {
                         var exchange = CommentsExchangeModel.LoadFromFile(dlg.FileName);
                         var msg = exchange.AddToModel(Model);
-                        if (!String.IsNullOrEmpty(msg))
+                        if (!string.IsNullOrEmpty(msg))
                         {
                             if (MessageBox.Show(this,"Během importu se vyskytly chyby. Chcete vrátit provedené změny? \n\n" + msg,
                                 "Varovani", 
