@@ -1,20 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLData", "BLData\BLData.csproj", "{5DD61871-891F-46A6-B98C-F0D15398CC20}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLTests", "BLTests\BLTests.csproj", "{C3505C8D-CCB4-4C39-B785-FE4C37DF152F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLSpec", "BLSpec\BLSpec.csproj", "{70DBCAFC-C6F0-453F-BB39-CA1E1E55ABE2}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E99D2351-C2CA-4DAA-A88C-8BC8CE9FA8F5}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xbim.ExpressParser", "Xbim.ExpressParser\Xbim.ExpressParser.csproj", "{191A6A46-CD32-427D-846D-86D78A76074E}"
 EndProject
