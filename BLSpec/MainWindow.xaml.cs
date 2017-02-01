@@ -336,12 +336,29 @@ namespace BLSpec
                 aliasesControl.NameAliases = null;
                 aliasesControl.DefinitionAliases = null;
                 commentsControl.Entity = null;
+
+                txtSelectedPath.Text = null;
                 return;
             } 
 
             aliasesControl.NameAliases = args.NameAliases;
             aliasesControl.DefinitionAliases = args.DefinitionAliases;
             commentsControl.Entity  = entity as BLEntity;
+
+            var cls = entity as BLData.Classification.BLClassificationItem;
+            if (cls != null)
+                txtSelectedPath.Text = cls.Name;
+
+            var qpset = entity as BLData.PropertySets.QuantityPropertySetDef;
+            if (qpset != null)
+                txtSelectedPath.Text = qpset.Name;
+
+            var qp = entity as BLData.PropertySets.QuantityPropertyDef;
+            if (qp != null)
+            {
+                var set = Model.Get<BLData.PropertySets.QuantityPropertySetDef>(s => s.Definitions.Contains(qp)).FirstOrDefault();
+                txtSelectedPath.Text = set.Name + "." + qp.Name;
+            }
         }
 
         private void miExportAllComments_Click(object sender, RoutedEventArgs e)
@@ -466,6 +483,14 @@ namespace BLSpec
         private void miHideComments_Click(object sender, RoutedEventArgs e)
         {
             cdComments.Width = new GridLength(0);
+        }
+
+        private void btnCopyPath_Click(object sender, RoutedEventArgs e)
+        {
+            txtSelectedPath.Focus();
+            txtSelectedPath.SelectAll();
+            Clipboard.SetText(txtSelectedPath.Text);
+            e.Handled = true;
         }
     }
 }

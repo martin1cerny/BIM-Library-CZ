@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Controls="clr-namespace:BLSpec.Controls"
         Name="self"
-        Title="BIM Specifikace" Height="500" Width="900" Icon="img/TACR.ico" WindowStartupLocation="CenterScreen" WindowState="Maximized" >
+        Title="BIM Specification" Height="500" Width="900" Icon="img/TACR.ico" WindowStartupLocation="CenterScreen" WindowState="Maximized" >
     <Window.CommandBindings>
         <CommandBinding Command="Save"  CanExecute="CanExecuteAllways" Executed="CommandSave_Executed" x:Name="CommandSave"/>
         <CommandBinding Command="SaveAs"  CanExecute="CanExecuteAllways" Executed="CommandSaveAs_Executed" x:Name="CommandSaveAs"/>
@@ -22,22 +22,22 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" Name="menu">
-            <MenuItem Name="File" Header="Soubor">
-                <MenuItem Name="miOpen" Header="Otevřít" Command="Open" InputGestureText="Ctrl+O"/>
-                <MenuItem Name="miSave" Header="Uložit" Command="Save" InputGestureText="Ctrl+S"/>
-                <MenuItem Name="miSaveAs" Header="Uložit jako..." Command="SaveAs" InputGestureText="Ctrl+Shift+S"/>
-                <MenuItem Name="miCloseModel" Header="Zavřít" Command="Close" InputGestureText="Ctrl+W"/>
-                <MenuItem Name="miExit" Header="Ukončit" Click="miExit_Click" InputGestureText="Alt+F4"/>
+            <MenuItem Name="File" Header="File">
+                <MenuItem Name="miOpen" Header="Open" Command="Open" InputGestureText="Ctrl+O"/>
+                <MenuItem Name="miSave" Header="Save" Command="Save" InputGestureText="Ctrl+S"/>
+                <MenuItem Name="miSaveAs" Header="Save as..." Command="SaveAs" InputGestureText="Ctrl+Shift+S"/>
+                <MenuItem Name="miCloseModel" Header="Close" Command="Close" InputGestureText="Ctrl+W"/>
+                <MenuItem Name="miExit" Header="Quit" Click="miExit_Click" InputGestureText="Alt+F4"/>
             </MenuItem>
-            <MenuItem Name="miComments" Header="Komentáře">
+            <!--<MenuItem Name="miComments" Header="Komentáře">
                 <MenuItem Header="Skrýt" Name="miHideComments" Click="miHideComments_Click"/>
                 <MenuItem Header="Ukázat" Name="miShowComments" Click="miShowComments_Click"/>
                 <MenuItem Header="Exportovat vše..." Name="miExportAllComments" Click="miExportAllComments_Click"/>
                 <MenuItem Header="Exportovat aktuálního uživatele..." Name="miExportUsersComments" Click="miExportUsersComments_Click"/>
                 <MenuItem Header="Import..." Name="miImportComments" Click="miImportComments_Click"/>
-            </MenuItem>
+            </MenuItem>-->
             <MenuItem Name="Plugins" Header="Plug-ins"/>
-            <MenuItem Name="miAbout" Header="O programu" Click="miAbout_Click"/>
+            <MenuItem Name="miAbout" Header="About" Click="miAbout_Click"/>
         </Menu>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -70,11 +70,19 @@
                                           ClassificationItem="{Binding ElementName=clsControl, Path=SelectedItem}" 
                                           x:Name="psetsControl"
                                           EntityActive="EntityActiveHandler"/>
-            <Controls:PropertiesControl Grid.Column="4" PropertySet="{Binding ElementName=psetsControl,  Path=SelectedPropertySet}"
+            <DockPanel Grid.Column="4">
+                <DockPanel DockPanel.Dock="Top">
+                    <Button Name="btnCopyPath" Content="Copy" Click="btnCopyPath_Click" Margin="0,0,0,0"/>
+                    <TextBox Name="txtSelectedPath"/>
+                </DockPanel> 
+                <Controls:PropertiesControl  PropertySet="{Binding ElementName=psetsControl,  Path=SelectedPropertySet}"
                                         x:Name="propertiesControl"
                                         EntityActive="EntityActiveHandler"/>
+            </DockPanel>
+            
+            <!--SecondaryLanguage="{Binding ElementName=self, Path=SecondaryLanguage}"-->
             <Controls:NameAliasesControl Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="5"
-                                         SecondaryLanguage="{Binding ElementName=self, Path=SecondaryLanguage}"
+                                         SecondaryLanguage="xx-XX"
                                          PrimaryLanguage="{Binding ElementName=self, Path=Model.Information.Lang, Mode=OneWay}"
                                          x:Name="aliasesControl"
                                          />

@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <TabControl>
-            <TabItem Header="Všechny sady parametrů">
+            <TabItem Header="All property sets">
                 <DataGrid ItemsSource="{Binding ElementName=self, Path=ClassificationItem.DefinitionSetsUp}" 
                   AutoGenerateColumns="False" 
                   SelectedItem="{Binding ElementName=self, Path=SelectedPropertySet}"
@@ -20,7 +20,7 @@
                         </Style>
                     </DataGrid.CellStyle>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Název" 
+                        <DataGridTextColumn Header="Name" 
                                     Binding="{Binding LocalizedName}" 
                                     IsReadOnly="True" Width="*">
                             <DataGridTextColumn.ElementStyle>
@@ -40,7 +40,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
-            <TabItem Header="Pouze vlastní sady">
+            <TabItem Header="Only own sets">
                 <DataGrid ItemsSource="{Binding ElementName=self, Path=ClassificationItem.DefinitionSets}" 
                   AutoGenerateColumns="False" 
                   SelectedItem="{Binding ElementName=self, Path=SelectedPropertySet}"

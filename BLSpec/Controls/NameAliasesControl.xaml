@@ -10,8 +10,8 @@
         <ScrollViewer>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Name="grdColumnLeft" Width="*"/>
+                    <ColumnDefinition Name="grdColumnRight" Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock TextWrapping="Wrap"
                        Padding="10" Grid.Column="0">

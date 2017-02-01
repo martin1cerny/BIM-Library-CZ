@@ -30,7 +30,7 @@ namespace BLSpec.Controls
         private void SetLanguage() 
         {
             var secondaryCode = String.IsNullOrEmpty(SecondaryLanguage) ? "en-US" : SecondaryLanguage;
-            var primaryCode = String.IsNullOrEmpty(SecondaryLanguage) ? "en-US" : PrimaryLanguage;
+            var primaryCode = String.IsNullOrEmpty(PrimaryLanguage) ? "en-US" : PrimaryLanguage;
             if (NameAliases != null)
             {
                 var alias = NameAliases.FirstOrDefault(a => a.Lang == secondaryCode);
@@ -38,6 +38,12 @@ namespace BLSpec.Controls
 
                 var name = NameAliases.FirstOrDefault(a => a.Lang == primaryCode);
                 SetValue(ActiveNameProperty, name);
+
+                if (name == null || string.IsNullOrWhiteSpace(name.Value))
+                    grdColumnLeft.Width = new GridLength(0);
+
+                if (alias == null || string.IsNullOrWhiteSpace(alias.Value))
+                    grdColumnRight.Width = new GridLength(0);
             }
             if (DefinitionAliases != null)
             {

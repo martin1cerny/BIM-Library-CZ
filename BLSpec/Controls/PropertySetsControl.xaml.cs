@@ -43,19 +43,19 @@ namespace BLSpec.Controls
 
 
 
-        public PropertySetDef SelectedPropertySet
+        public QuantityPropertySetDef SelectedPropertySet
         {
-            get { return (PropertySetDef)GetValue(SelectedPropertySetProperty); }
+            get { return (QuantityPropertySetDef)GetValue(SelectedPropertySetProperty); }
             set { SetValue(SelectedPropertySetProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for SelectedPropertySet.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedPropertySetProperty =
-            DependencyProperty.Register("SelectedPropertySet", typeof(PropertySetDef), typeof(PropertySetsControl), new PropertyMetadata(null));
+            DependencyProperty.Register("SelectedPropertySet", typeof(QuantityPropertySetDef), typeof(PropertySetsControl), new PropertyMetadata(null));
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var entity = e.AddedItems.Cast<PropertySetDef>().FirstOrDefault();
+            var entity = e.AddedItems.Cast<INamedEntity>().FirstOrDefault();
             if (entity != null)
                 OnEntityActive(entity);
         }
