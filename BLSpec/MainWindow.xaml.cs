@@ -5,7 +5,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -54,10 +53,10 @@ namespace BLSpec
         {
             base.OnInitialized(e);
 
-#if !DEBUG
-            //Show TACR branding for a sec
-            Thread.Sleep(2000);
-#endif
+//#if !DEBUG
+//            //Show TACR branding for a sec
+//            Thread.Sleep(2000);
+//#endif
             //load plugins from the subfolder
             var location = GetType().Assembly.Location;
             location = Path.GetDirectoryName(location);
@@ -101,7 +100,7 @@ namespace BLSpec
                     }
                     catch (Exception)
                     {
-                        MessageBox.Show(this, "Neplatný formát souboru");
+                        MessageBox.Show(this, "Invalid file format.");
                         Model = new BLModel();
                     }
                 return;
@@ -206,7 +205,7 @@ namespace BLSpec
                 DefaultExt = ".blsx",
                 Filter = "BIM specification|*.blsx",
 #endif
-                Title = "Otevřít BIM specifikaci...",
+                Title = "Open BIM specification...",
                 CheckFileExists = true,
                 CheckPathExists = true,
                 Multiselect = false,
@@ -240,7 +239,7 @@ namespace BLSpec
                 Filter = "BIM specification|*.blsx",
 #endif
                 OverwritePrompt = true,
-                Title = "Uložit BIM specifikaci..."
+                Title = "Save BIM specification..."
             };
 
             if (dlg.ShowDialog(this) == true)
@@ -309,7 +308,7 @@ namespace BLSpec
             //there are changes to be saved
             if (Model.Session.IsDirty)
             {
-                if (MessageBox.Show("Chcete uložit poslední změny?", "Dotaz", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Do you want to save latest changes?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == MessageBoxResult.Yes)
                     miSave_Click(sender, e);
             }
             Model = new BLModel();
@@ -369,9 +368,9 @@ namespace BLSpec
             {
                 AddExtension = true,
                 DefaultExt = ".blcx",
-                Filter = "Komentáře|*.blcx",
+                Filter = "Comments|*.blcx",
                 OverwritePrompt = true,
-                Title = "Uložit komentáře..."
+                Title = "Save comments..."
             };
 
             if (dlg.ShowDialog(this) == true)
@@ -384,7 +383,7 @@ namespace BLSpec
             var person = commentsControl.Person;
             if (person == null)
             {
-                MessageBox.Show(this, "Není vybrán uživatel.");
+                MessageBox.Show(this, "No user selected.");
                 return;
             }
 
@@ -394,9 +393,9 @@ namespace BLSpec
             {
                 AddExtension = true,
                 DefaultExt = ".blcx",
-                Filter = "Komentáře|*.blcx",
+                Filter = "Comments|*.blcx",
                 OverwritePrompt = true,
-                Title = "Uložit komentáře..."
+                Title = "Save comments..."
             };
 
             if (dlg.ShowDialog(this) == true)
@@ -410,8 +409,8 @@ namespace BLSpec
             {
                 AddExtension = true,
                 DefaultExt = ".blcx",
-                Filter = "Komentáře|*.blcx",
-                Title = "Importovat komentáře...",
+                Filter = "Comments|*.blcx",
+                Title = "Import comments...",
                 CheckFileExists = true,
                 CheckPathExists = true,
                 Multiselect = false,
@@ -428,8 +427,8 @@ namespace BLSpec
                         var msg = exchange.AddToModel(Model);
                         if (!string.IsNullOrEmpty(msg))
                         {
-                            if (MessageBox.Show(this,"Během importu se vyskytly chyby. Chcete vrátit provedené změny? \n\n" + msg,
-                                "Varovani", 
+                            if (MessageBox.Show(this,"Import failed. Do you want to reverse all changes? \n\n" + msg,
+                                "Warning", 
                                 MessageBoxButton.YesNo, 
                                 MessageBoxImage.Warning, 
                                 MessageBoxResult.No) == MessageBoxResult.Yes)

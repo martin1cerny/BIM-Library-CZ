@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace BLData.PropertySets
@@ -11,6 +9,139 @@ namespace BLData.PropertySets
     [XmlInclude(typeof(PropertyDef))]
     public class QuantityPropertyDef : BLEntity, INamedEntity
     {
+        [XmlIgnore]
+        public string PropertyTypeString
+        {
+            get
+            {
+                var qto = this as QtoDef;
+                if (qto != null)
+                    return "Quantity";
+
+                var prop = this as PropertyDef;
+                if (prop == null)
+                    return "Unknown";
+
+                var propType = prop.PropertyType.PropertyValueType;
+                var single = propType as TypePropertySingleValue;
+                if (single != null)
+                    return "Single Value";
+
+                var enumerated = propType as TypePropertyEnumeratedValue;
+                if (enumerated != null)
+                    return "Enumeration";
+
+                var bounded = propType as TypePropertyBoundedValue;
+                if (bounded != null)
+                    return "Bounded Value";
+
+                var table = propType as TypePropertyTableValue;
+                if (table != null)
+                    return "Table";
+
+                var reference = propType as TypePropertyReferenceValue;
+                if (reference != null)
+                    return "Reference";
+
+                var list = propType as TypePropertyListValue;
+                if (list != null)
+                    return "List of values";
+
+                var complex = propType as TypeComplexProperty;
+                if (complex != null)
+                    return "Complex";
+
+                return "Unknown";
+            }
+        }
+
+        [XmlIgnore]
+        public string ValueTypeString
+        {
+            get
+            {
+                var qto = this as QtoDef;
+                if (qto != null)
+                {
+                    var valType = qto.QuantityType.ToString().Substring(2).ToLower(); //strip Q_ at the beginning
+                    return valType[0].ToString().ToUpper() + valType.Substring(1);
+                }
+
+                var prop = this as PropertyDef;
+                if (prop == null)
+                    return "Unknown";
+
+                var propType = prop.PropertyType.PropertyValueType;
+                var single = propType as TypePropertySingleValue;
+                if (single != null)
+                {
+                    var valType = single?.DataType?.Type?.ToString();
+                    return MakeHumanText(valType);
+                }
+
+                var enumerated = propType as TypePropertyEnumeratedValue;
+                if (enumerated != null)
+                {
+                    if (enumerated?.EnumList?.Items == null)
+                        return "Unknown";
+                    return string.Join(", ", enumerated.EnumList.Items);
+                }
+
+                var bounded = propType as TypePropertyBoundedValue;
+                if (bounded != null)
+                {
+                    var valType = bounded?.DataType?.Type?.ToString();
+                    return MakeHumanText(valType);
+                }
+
+                var table = propType as TypePropertyTableValue;
+                if (table != null)
+                {
+                    var defining = table?.DefiningValue?.DataType.Type?.ToString();
+                    defining =  MakeHumanText(defining);
+
+                    var defined = table?.DefinedValue?.DataType.Type?.ToString();
+                    defined = MakeHumanText(defined);
+
+                    return $"Defining: {defining}, Defined: {defined}";
+                }
+
+                var reference = propType as TypePropertyReferenceValue;
+                if (reference != null)
+                {
+                    var valType = reference?.ReferenceType.Value.ToString();
+                    return MakeHumanText(valType);
+                }
+
+                var list = propType as TypePropertyListValue;
+                if (list != null)
+                {
+                    var valType = list?.ListValue?.DataType?.Type.ToString();
+                    return MakeHumanText(valType);
+                }
+
+                var complex = propType as TypeComplexProperty;
+                if (complex != null)
+                    return "Complex";
+
+                return "Unknown";
+            }
+        }
+
+        private string MakeHumanText(string ifcType)
+        {
+            if (ifcType == null)
+                return "Unknown";
+
+            //strip Ifc at the beginning
+            if (ifcType.StartsWith("Ifc"))
+                ifcType = ifcType.Substring(3);
+
+            //insert spaces between upper and lower case letters
+            ifcType = System.Text.RegularExpressions.Regex.Replace(ifcType, "((?<=[a-z])[A-Z]|[A-Z](?=[a-z]))", " $1").Trim();
+            return ifcType;
+        }
+
         private string _name;
         /// <summary>
         /// The name of property.

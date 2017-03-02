@@ -25,6 +25,16 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
+                <DataGridTextColumn Header="Property Type" Binding="{Binding PropertyTypeString}" IsReadOnly="True" Width="Auto">
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Value Type" Binding="{Binding ValueTypeString}" IsReadOnly="True" Width="Auto" MaxWidth="300">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
                 <!--<DataGridTextColumn Header="Definice" Binding="{Binding LocalizedDefinition}" Width="*"
                                     IsReadOnly="True">
                     <DataGridTextColumn.ElementStyle>

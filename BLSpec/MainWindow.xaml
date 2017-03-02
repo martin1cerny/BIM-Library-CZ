@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Controls="clr-namespace:BLSpec.Controls"
         Name="self"
-        Title="BIM Specification" Height="500" Width="900" Icon="img/TACR.ico" WindowStartupLocation="CenterScreen" WindowState="Maximized" >
+        Title="BIM Specification" Height="500" Width="900" Icon="img/xbim.ico" WindowStartupLocation="CenterScreen" WindowState="Maximized" >
     <Window.CommandBindings>
         <CommandBinding Command="Save"  CanExecute="CanExecuteAllways" Executed="CommandSave_Executed" x:Name="CommandSave"/>
         <CommandBinding Command="SaveAs"  CanExecute="CanExecuteAllways" Executed="CommandSaveAs_Executed" x:Name="CommandSaveAs"/>

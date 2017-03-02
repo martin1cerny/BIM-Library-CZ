@@ -36,7 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>img\TACR.ico</ApplicationIcon>
+    <ApplicationIcon>img\xbim.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
@@ -649,7 +649,13 @@
     <None Include="Data\PsetDefinitions\Pset_ZoneCommon.xml" />
   </ItemGroup>
   <ItemGroup>
-    <SplashScreen Include="img\Splash_screen.png" />
+    <Resource Include="img\xbim.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="xbim.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\xbim.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
